@@ -34,31 +34,24 @@ body {
 }
 .navbar-logo {
   position: relative;
-  display: inline-block;
-  width: 170px;
-  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  height: 40px; /* Altura correcta para evitar recortes */
+  text-decoration: none;
   transition: height 0.3s ease;
 }
 .navbar-logo img {
-  position: absolute;
-  top: -47px;
-  left: 0;
-  width: 180px;
-  height: auto;
+  height: 100%;
+  width: auto;
   filter: brightness(0.95) drop-shadow(0 4px 12px rgba(0,0,0,0.4));
   transition: all 0.3s ease;
-  z-index: 10;
 }
 .navbar-logo:hover img {
   filter: brightness(1.05) drop-shadow(0 6px 18px rgba(0,0,0,0.6));
   transform: scale(1.02);
 }
 .navbar.scrolled .navbar-logo {
-  height: 28px;
-}
-.navbar.scrolled .navbar-logo img {
-  top: -38px;
-  width: 145px;
+  height: 32px;
 }
 .nav-links { display: flex; gap: 36px; list-style: none; }
 .nav-links a {
@@ -265,9 +258,25 @@ body.no-scroll {
 @media (max-width: 768px) {
   .navbar { padding: 18px 24px; }
   .navbar.scrolled { padding: 12px 24px; }
-  .navbar-logo { width: 130px; height: 24px; }
-  .navbar-logo img { width: 135px; top: -35px; }
-  .navbar.scrolled .navbar-logo img { width: 115px; top: -30px; }
+  .navbar-logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .navbar-logo img {
+    height: 100%;
+    width: auto;
+    position: static;
+    top: auto;
+  }
+  .navbar.scrolled .navbar-logo {
+    height: 20px;
+  }
   
   /* Mostrar botón de menú hamburguesa */
   .menu-toggle {
