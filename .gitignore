@@ -1,5 +1,6 @@
 # Dependencias
 node_modules/
+.firebase/
 
 # Archivos de diseño muy pesados (Photoshop)
 *.psd
