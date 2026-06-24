@@ -1,0 +1,250 @@
+/* ══ RESET & VARIABLES ════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --deep: #080e18;
+  --panel: #080d18;
+  --orange: #e87b20;
+  --blue: #5aadcf;
+  --accent-orange: #e87b20;
+  --accent-blue: #5aadcf;
+  --white: #f0f4f8;
+  --muted: rgba(240,244,248,0.42);
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--deep);
+  font-family: 'Barlow', sans-serif;
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ══ NAVBAR ══════════════════════════════════════════ */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 52px; z-index: 200;
+  background: rgba(8,14,24,0.0); backdrop-filter: blur(0px);
+  transition: background 0.4s, backdrop-filter 0.4s, padding 0.4s;
+}
+.navbar.scrolled {
+  background: rgba(6,9,15,0.92);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  padding: 15px 52px;
+}
+.navbar-logo {
+  position: relative;
+  display: inline-block;
+  width: 170px;
+  height: 32px;
+  transition: height 0.3s ease;
+}
+.navbar-logo img {
+  position: absolute;
+  top: -47px;
+  left: 0;
+  width: 180px;
+  height: auto;
+  filter: brightness(0.95) drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+.navbar-logo:hover img {
+  filter: brightness(1.05) drop-shadow(0 6px 18px rgba(0,0,0,0.6));
+  transform: scale(1.02);
+}
+.navbar.scrolled .navbar-logo {
+  height: 28px;
+}
+.navbar.scrolled .navbar-logo img {
+  top: -38px;
+  width: 145px;
+}
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(240,244,248,0.45); text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--white); }
+.nav-cta {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 0.78rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange);
+  border: 1px solid rgba(232,123,32,0.4); padding: 8px 22px; text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-cta:hover { background: var(--orange); color: var(--deep); }
+
+/* ══ FOOTER ════════════════════════════════════════ */
+.site-footer {
+  background: #050b13;
+  border-top: 1px solid rgba(90,173,207,0.1);
+  padding: 60px 0 0;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 56px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 48px 52px;
+  flex-wrap: wrap;
+}
+
+/* Brand block */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  flex: 0 0 auto;
+}
+.footer-logo {
+  width: clamp(140px, 14vw, 190px);
+  filter: brightness(0.88);
+  transition: filter 0.3s;
+}
+.footer-logo:hover { filter: brightness(1.05); }
+.footer-tagline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: rgba(240,244,248,0.25);
+}
+
+/* Divisor vertical */
+.footer-divider {
+  width: 1px;
+  align-self: stretch;
+  background: rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+/* Nav */
+.footer-nav, .footer-contact { flex: 0 0 auto; }
+.footer-nav-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+  margin-bottom: 18px;
+}
+.footer-nav ul, .footer-contact ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.footer-nav ul li a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.88rem;
+  letter-spacing: 0.1em;
+  color: rgba(240,244,248,0.45);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-nav ul li a:hover { color: var(--white); }
+
+/* Contacto */
+.footer-contact ul li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(240,244,248,0.4);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.88rem;
+  letter-spacing: 0.06em;
+}
+.footer-contact ul li svg {
+  width: 14px;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+.footer-contact ul li a {
+  color: rgba(240,244,248,0.4);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-contact ul li a:hover { color: var(--accent-blue); }
+
+/* Bottom bar */
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 48px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: rgba(240,244,248,0.2);
+}
+.footer-credit a {
+  color: rgba(90,173,207,0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-credit a:hover { color: var(--accent-blue); }
+
+/* ══ WHATSAPP FLOTANTE ═══════════════════════════ */
+.wa-float {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 56px;
+  height: 56px;
+  background: #25d366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+  z-index: 9999;
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s;
+}
+.wa-float:hover {
+  transform: scale(1.12);
+  box-shadow: 0 6px 28px rgba(37,211,102,0.55);
+}
+.wa-icon {
+  width: 28px;
+  height: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Pulso animado */
+.wa-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #25d366;
+  animation: waPulse 2.4s ease-out infinite;
+  z-index: 0;
+}
+@keyframes waPulse {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  70%  { transform: scale(1.6); opacity: 0;   }
+  100% { transform: scale(1.6); opacity: 0;   }
+}
+
+/* ── Responsive ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .navbar { padding: 18px 24px; }
+  .navbar.scrolled { padding: 12px 24px; }
+  .navbar-logo { width: 130px; height: 24px; }
+  .navbar-logo img { width: 135px; top: -35px; }
+  .navbar.scrolled .navbar-logo img { width: 115px; top: -30px; }
+  .nav-links { display: none; }
+  .footer-inner { flex-direction: column; gap: 36px; padding: 0 28px 40px; }
+  .footer-divider { display: none; }
+  .footer-bottom { flex-direction: column; gap: 6px; text-align: center; padding: 16px 28px; }
+  .wa-float { bottom: 22px; right: 22px; width: 50px; height: 50px; }
+  .wa-icon  { width: 24px; height: 24px; }
+}

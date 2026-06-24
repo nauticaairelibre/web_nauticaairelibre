@@ -1,0 +1,36 @@
+# Dependencias
+node_modules/
+
+# Archivos de diseño muy pesados (Photoshop)
+*.psd
+
+# Archivos comprimidos y respaldos
+*.zip
+*.rar
+*.tar.gz
+
+# Carpetas de pruebas y temporales
+modelo web prueba 1 porbando en antigravity/
+Leads Nautica AL/
+dashboard actualizado/
+files/
+
+# Evitar subir archivos sueltos de diseño/respaldo en la raíz
+/*.png
+/*.jpg
+/*.jpeg
+/*.html
+/*.mp4
+
+# Archivos del sistema operativo
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+.Spotlight-V100
+.Trashes
+
+# Entornos y claves (por si se agregan en el futuro)
+.env
+.env.local
+.env.*.local

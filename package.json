@@ -1,0 +1,13 @@
+{
+  "name": "nautica-aire-libre",
+  "version": "1.0.0",
+  "description": "Functional web application for Náutica Aire Libre",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
