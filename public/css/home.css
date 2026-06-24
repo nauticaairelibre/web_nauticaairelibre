@@ -104,6 +104,7 @@
     .brands-section {
       background: var(--deep);
       padding: 100px 0 120px;
+      scroll-margin-top: 70px;
     }
     .brands-section::before {
       content: ''; display: block;
@@ -142,6 +143,13 @@
       overflow: hidden;
       cursor: pointer;
       text-decoration: none;
+      border-radius: 16px;
+      isolation: isolate;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      transition:
+        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
+        opacity   0.65s ease                            var(--delay, 0s),
+        box-shadow 0.4s ease;
     }
 
     /* ── ANIMACIÓN DE ENTRADA ──────────────────────────────
@@ -150,12 +158,6 @@
        dispara la transición con el delay individual de cada celda. */
     .from-left  { transform: translateX(-110px) scaleX(0.92); opacity: 0; }
     .from-right { transform: translateX( 110px) scaleX(0.92); opacity: 0; }
-
-    .brand-cell {
-      transition:
-        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
-        opacity   0.65s ease                            var(--delay, 0s);
-    }
     .brand-cell.is-visible {
       transform: translateX(0) scaleX(1);
       opacity: 1;
@@ -273,14 +275,29 @@
     .brand-cell:hover .cell-cta { color: rgba(90,173,207,0.85); transform: translateY(0); }
     .brand-cell:hover .cell-cta svg { transform: translateX(4px); }
 
+    .brand-cell:hover {
+      box-shadow: 0 12px 38px rgba(0, 0, 0, 0.52), 0 0 0 1px rgba(90, 173, 207, 0.16);
+    }
+
     /* ══ RESPONSIVE MEDIA QUERIES ════════════════════════ */
     @media (max-width: 768px) {
+      .site-header {
+        height: 100dvh; /* Evita que varíe la altura al ocultarse la barra del navegador */
+      }
       .navbar {
         padding: 18px 24px;
         justify-content: flex-end; /* Alinea el botón Consultar a la derecha */
       }
       .nav-links {
         display: none;
+      }
+      .navbar-logo {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .navbar.scrolled .navbar-logo {
+        opacity: 1;
+        pointer-events: auto;
       }
       .brands-section {
         padding: 60px 0 80px;
@@ -298,6 +315,7 @@
       }
       .brand-cell {
         height: 120px; /* Altura reducida para crear una proporción apaisada en móvil */
+        border-radius: 12px;
       }
       .cell-content {
         padding: 12px;
@@ -307,6 +325,9 @@
         max-width: 100%;
         max-height: 42px;
         object-fit: contain;
+      }
+      .cell-cta {
+        display: none !important; /* Oculta el CTA invisible para centrar verticalmente el logo */
       }
     }
   

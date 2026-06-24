@@ -190,14 +190,21 @@
       overflow: hidden;
       cursor: pointer;
       text-decoration: none;
+      border-radius: 16px;
+      isolation: isolate;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      transition:
+        transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
+        opacity   0.65s ease                            var(--delay, 0s),
+        box-shadow 0.4s ease;
     }
+
+    /* ── ANIMACIÓN DE ENTRADA ──────────────────────────────
+       Estado inicial: fuera de pantalla + invisible + leve escala
+       La clase .is-visible (añadida por IntersectionObserver)
+       dispara la transición con el delay individual de cada celda. */
     .from-left  { transform: translateX(-110px) scaleX(0.92); opacity: 0; }
     .from-right { transform: translateX( 110px) scaleX(0.92); opacity: 0; }
-    .brand-cell {
-      transition:
-        transform 0.75s cubic-bezier(0.22,1,0.36,1) var(--delay,0s),
-        opacity   0.65s ease                         var(--delay,0s);
-    }
     .brand-cell.is-visible { transform: translateX(0) scaleX(1); opacity: 1; }
 
     /* Barrido de luz al entrar */
@@ -256,6 +263,9 @@
     .brand-cell:hover::after {
       border-color: rgba(90,173,207,0.32);
       box-shadow: inset 0 0 50px rgba(90,173,207,0.06);
+    }
+    .brand-cell:hover {
+      box-shadow: 0 12px 38px rgba(0, 0, 0, 0.52), 0 0 0 1px rgba(90, 173, 207, 0.16);
     }
 
     .cell-content {
@@ -409,7 +419,20 @@
     @media (max-width: 768px) {
       .navbar { padding: 18px 24px; }
       .navbar.scrolled { padding: 14px 24px; }
-      .catalog-grid { grid-template-columns: 1fr; padding: 0 20px; }
+      .catalog-grid { grid-template-columns: 1fr; padding: 0 20px; gap: 16px; }
+      .brand-cell {
+        height: 140px; /* Un poco más bajas para móvil */
+        border-radius: 12px;
+      }
+      .cell-content {
+        padding: 12px 20px;
+      }
+      .model-name {
+        font-size: 1.6rem;
+      }
+      .cell-cta {
+        display: none !important; /* Oculta el cta en móvil para centrar el nombre del modelo */
+      }
       .hero-breadcrumb { margin-bottom: 16px; }
       .footer-inner { flex-direction: column; gap: 36px; padding: 0 28px 40px; }
       .footer-divider { display: none; }
