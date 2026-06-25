@@ -281,6 +281,7 @@ body.no-scroll {
   /* Mostrar botón de menú hamburguesa */
   .menu-toggle {
     display: flex;
+    margin-left: auto; /* Empuja el botón a la derecha */
   }
   
   /* Mostrar elementos específicos de móvil */
