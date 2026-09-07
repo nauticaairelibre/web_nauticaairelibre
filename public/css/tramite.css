@@ -1,0 +1,257 @@
+/* ══ TRAMITE CARNET DE TIMONEL ═══════════════════════════ */
+:root {
+  --deep: #060c15;
+  --mid: #0a1525;
+  --accent-orange: #e87b20;
+  --accent-blue: #5aadcf;
+  --white: #f0f4f8;
+}
+
+/* Base sections */
+.tramite-hero {
+  position: relative;
+  height: 60vh;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.tramite-hero .hero-photo {
+  position: absolute; inset: -30px;
+  background-image: url('/img/cover-timonel.jpg');
+  background-size: cover;
+  background-position: center 40%;
+  filter: saturate(0.7) brightness(0.4);
+  transform: scale(1.04);
+  animation: heroZoom 12s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1.04); }
+  to   { transform: scale(1.10); }
+}
+
+.tramite-hero .hero-overlay {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 90% 80% at 50% 50%, transparent 30%, rgba(8,14,24,0.65) 100%),
+    linear-gradient(180deg, rgba(8,14,24,0.45) 0%, rgba(8,14,24,0.1) 40%, rgba(8,14,24,0.9) 100%);
+  pointer-events: none;
+}
+
+.tramite-hero .hero-shimmer {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-blue), var(--accent-orange), var(--accent-blue), transparent);
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%,100% { opacity: 0.35; transform: scaleX(0.8); }
+  50%      { opacity: 1;    transform: scaleX(1);   }
+}
+
+.tramite-hero .hero-content {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  animation: fadeUp 1s ease both;
+  padding: 0 24px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tramite-hero .hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  margin-bottom: 8px;
+}
+
+.tramite-hero .hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-shadow: 0 4px 20px rgba(0,0,0,0.85);
+}
+
+.tramite-hero .hero-rule {
+  display: flex; align-items: center; justify-content: center;
+  width: 120px; height: 16px; margin: 16px 0;
+  position: relative;
+}
+.tramite-hero .hero-rule::before,
+.tramite-hero .hero-rule::after {
+  content: ''; width: 45px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(90,173,207,0.4));
+}
+.tramite-hero .hero-rule::after {
+  background: linear-gradient(270deg, transparent, rgba(90,173,207,0.4));
+}
+.tramite-hero .hero-rule-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-orange); margin: 0 8px;
+  box-shadow: 0 0 10px var(--accent-orange);
+}
+
+/* Content Container */
+.tramite-container {
+  max-width: 900px;
+  margin: -80px auto 80px;
+  padding: 0 24px;
+  position: relative;
+  z-index: 5;
+}
+
+.tramite-card {
+  background: rgba(10, 21, 37, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 48px 40px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+  animation: fadeUp 1.2s ease both;
+}
+
+.tramite-question {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.25;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 36px;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 24px;
+}
+
+/* Step list style */
+.tramite-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tramite-step {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 24px;
+  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+.tramite-step:hover {
+  transform: translateY(-2px);
+  border-color: rgba(90, 173, 207, 0.25);
+  background: rgba(90, 173, 207, 0.03);
+}
+
+.step-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 1.8rem;
+  color: var(--accent-orange);
+  line-height: 1;
+  background: rgba(232, 123, 32, 0.1);
+  border: 1px solid rgba(232, 123, 32, 0.2);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 15px rgba(232, 123, 32, 0.05);
+}
+
+.step-body {
+  flex-grow: 1;
+}
+
+.step-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.step-description {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(240, 244, 248, 0.8);
+  margin-bottom: 20px;
+}
+
+.step-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--accent-orange) 0%, #ff963b 100%);
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 12px 28px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(232, 123, 32, 0.35);
+  transition: transform 0.25s, box-shadow 0.25s, filter 0.25s;
+}
+
+.step-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(232, 123, 32, 0.5);
+  filter: brightness(1.08);
+}
+
+.step-action-btn svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.25s;
+}
+
+.step-action-btn:hover svg {
+  transform: translateX(4px);
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .tramite-hero {
+    height: 50vh;
+    min-height: 350px;
+  }
+  .tramite-container {
+    margin-top: -40px;
+  }
+  .tramite-card {
+    padding: 32px 20px;
+  }
+  .tramite-step {
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    text-align: center;
+  }
+}

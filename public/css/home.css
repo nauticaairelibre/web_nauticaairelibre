@@ -14,103 +14,17 @@
       overflow-x: hidden;
     }
 
-    /* ══ HEADER ══════════════════════════════════════════ */
-    .site-header {
-      position: relative; width: 100%; height: 100vh; min-height: 600px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    .site-header .navbar {
-      cursor: default;
-    }
-    .bg-boat {
-      position: absolute; inset: -50px;
-      background-image: url('/images/bg-boat.jpg');
-      background-size: cover; background-position: center;
-      opacity: 0.12; filter: saturate(0.3) brightness(0.65);
-      will-change: transform;
-    }
-    .bg-overlay {
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 100%, rgba(90,173,207,0.07) 0%, transparent 70%),
-        linear-gradient(180deg, rgba(8,14,24,0.55) 0%, rgba(8,14,24,0.18) 40%, rgba(8,14,24,0.72) 100%);
-      pointer-events: none;
-    }
-    .bg-shimmer {
-      position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent-blue), var(--accent-orange), var(--accent-blue), transparent);
-      animation: shimmer 4s ease-in-out infinite;
-    }
-    @keyframes shimmer {
-      0%,100% { opacity: 0.3; transform: scaleX(0.8); }
-      50%      { opacity: 0.9; transform: scaleX(1); }
-    }
-    .navbar {
-      position: absolute; top: 0; left: 0; right: 0;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 28px 52px; z-index: 10;
-    }
-    .nav-links { display: flex; gap: 36px; list-style: none; }
-    .nav-links a {
-      font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem;
-      letter-spacing: 0.16em; text-transform: uppercase;
-      color: rgba(240,244,248,0.5); text-decoration: none; transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--white); }
-    .nav-cta {
-      font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 0.8rem;
-      letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-orange);
-      border: 1px solid rgba(232,123,32,0.45); padding: 9px 24px; text-decoration: none;
-      transition: background 0.2s, color 0.2s;
-    }
-    .nav-cta:hover { background: var(--accent-orange); color: var(--deep); }
-    .logo-wrap {
-      position: relative; z-index: 5;
-      display: flex; flex-direction: column; align-items: center; gap: 22px;
-      animation: fadeUp 1.2s ease both;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .logo-wrap img {
-      width: clamp(240px, 38vw, 520px);
-      filter: drop-shadow(0 0 50px rgba(90,173,207,0.2)) drop-shadow(0 0 100px rgba(232,123,32,0.1));
-    }
-    .logo-tagline {
-      font-family: 'Barlow Condensed', sans-serif; font-weight: 300;
-      font-size: clamp(0.7rem, 1.3vw, 0.95rem); letter-spacing: 0.44em;
-      text-transform: uppercase; color: rgba(240,244,248,0.35);
-      animation: fadeUp 1.4s 0.35s ease both;
-    }
-    .scroll-hint {
-      position: absolute; bottom: 38px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      opacity: 0.3; animation: bounce 2.6s ease-in-out infinite; z-index: 5;
-    }
-    .scroll-hint span {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.68rem; letter-spacing: 0.28em; text-transform: uppercase;
-    }
-    .scroll-hint svg { width: 16px; }
-    @keyframes bounce {
-      0%,100% { transform: translateX(-50%) translateY(0); }
-      50%      { transform: translateX(-50%) translateY(7px); }
-    }
-
     /* ══ BRANDS SECTION ═══════════════════════════════════ */
     .brands-section {
       background: var(--deep);
-      padding: 100px 0 120px;
+      padding: 130px 0 100px;
       scroll-margin-top: 70px;
     }
     .brands-section::before {
-      content: ''; display: block;
+      content: ''; display: none;
       width: 36px; height: 2px;
       background: linear-gradient(90deg, var(--accent-orange), var(--accent-blue));
-      margin: 0 auto 56px;
+      margin: 0 auto 40px;
     }
     .brands-header { text-align: center; margin-bottom: 64px; }
     .brands-label {
@@ -150,6 +64,10 @@
         transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
         opacity   0.65s ease                            var(--delay, 0s),
         box-shadow 0.4s ease;
+    }
+    .brand-cell.cell-full {
+      grid-column: 1 / -1;
+      height: clamp(200px, 22vw, 270px);
     }
 
     /* ── ANIMACIÓN DE ENTRADA ──────────────────────────────
@@ -243,9 +161,20 @@
       gap: 14px; padding: 28px;
     }
     .brand-logo {
-      max-width: 200px; max-height: 68px; object-fit: contain;
+      max-width: 240px; max-height: 68px; object-fit: contain;
       filter: drop-shadow(0 2px 12px rgba(0,0,0,0.8)) brightness(0.92);
       transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.45s;
+    }
+    .brand-logo-usados,
+    .brand-logo-automoviles {
+      mix-blend-mode: screen;
+      filter: invert(1) drop-shadow(0 2px 12px rgba(0,0,0,0.8));
+      max-width: 220px;
+      max-height: 62px;
+    }
+    .brand-logo-promociones {
+      max-width: 320px;
+      max-height: 54px;
     }
     .brand-cell:hover .brand-logo {
       transform: scale(1.1);
@@ -263,6 +192,36 @@
     .brand-cell:hover .brand-text {
       color: rgba(240,244,248,0.78); transform: scale(1.06);
     }
+    .brand-title-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-shadow: 0 4px 20px rgba(0,0,0,0.85);
+      transition: color 0.4s ease, transform 0.45s ease;
+    }
+    .brand-cell:hover .brand-title-text {
+      color: var(--accent-orange);
+      transform: scale(1.06);
+    }
+    .brand-subtitle {
+      font-family: 'Barlow', sans-serif;
+      font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.85);
+      margin-top: -6px;
+      transition: color 0.4s ease, transform 0.45s ease;
+      z-index: 1;
+    }
+    .brand-cell:hover .brand-subtitle {
+      color: var(--white);
+      transform: scale(1.06);
+    }
     .cell-cta {
       display: flex; align-items: center; gap: 7px;
       font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem;
@@ -279,31 +238,43 @@
       box-shadow: 0 12px 38px rgba(0, 0, 0, 0.52), 0 0 0 1px rgba(90, 173, 207, 0.16);
     }
 
+    .card-badge {
+      position: absolute;
+      top: 28px;
+      right: 28px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid rgba(232, 123, 32, 0.45);
+      background: rgba(8, 14, 24, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-orange);
+      box-shadow: 0 0 15px rgba(232, 123, 32, 0.2);
+      z-index: 4;
+      transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  border-color 0.45s,
+                  color 0.45s,
+                  box-shadow 0.45s;
+    }
+    .brand-cell:hover .card-badge {
+      transform: scale(1.1) rotate(15deg);
+      border-color: var(--accent-orange);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(232, 123, 32, 0.55), inset 0 0 10px rgba(232, 123, 32, 0.2);
+    }
+    .badge-icon {
+      width: 22px;
+      height: 22px;
+    }
+
     /* ══ RESPONSIVE MEDIA QUERIES ════════════════════════ */
     @media (max-width: 768px) {
-      .site-header {
-        height: 100dvh; /* Evita que varíe la altura al ocultarse la barra del navegador */
-      }
-      .navbar {
-        padding: 18px 24px;
-        justify-content: flex-end; /* Alinea el botón Consultar a la derecha */
-      }
-      .nav-links {
-        display: none;
-      }
-      .navbar-logo {
-        opacity: 0;
-        pointer-events: none;
-      }
-      .navbar.scrolled .navbar-logo {
-        opacity: 1;
-        pointer-events: auto;
-      }
       .brands-section {
-        padding: 60px 0 80px;
-      }
-      .brands-section::before {
-        margin: 0 auto 36px;
+        padding: 90px 0 60px;
       }
       .brands-header {
         margin-bottom: 40px;
@@ -317,17 +288,76 @@
         height: 120px; /* Altura reducida para crear una proporción apaisada en móvil */
         border-radius: 12px;
       }
+      .brand-cell.cell-full {
+        grid-column: 1 / -1;
+        height: 140px;
+      }
       .cell-content {
-        padding: 12px;
+        padding: 12px 16px;
         gap: 8px;
       }
       .brand-logo {
-        max-width: 100%;
-        max-height: 42px;
+        max-width: 82%;
+        max-height: 40px;
         object-fit: contain;
+      }
+      .brand-cell.cell-full .brand-logo:not(.brand-logo-promociones) {
+        max-width: 175px;
+        max-height: 40px;
+      }
+      .brand-logo-usados,
+      .brand-logo-automoviles {
+        max-width: 85% !important;
+        max-height: 40px !important;
+      }
+      .brand-logo-promociones {
+        max-width: 250px !important;
+        max-height: 40px !important;
+      }
+      .brand-subtitle {
+        font-size: 0.74rem;
+        letter-spacing: 0.12em;
+        margin-top: -2px;
       }
       .cell-cta {
         display: none !important; /* Oculta el CTA invisible para centrar verticalmente el logo */
+      }
+      .card-badge {
+        top: 12px;
+        right: 12px;
+        width: 32px;
+        height: 32px;
+        border-width: 1.5px;
+      }
+      .badge-icon {
+        width: 15px;
+        height: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .cell-content {
+        padding: 10px 12px;
+      }
+      .brand-logo {
+        max-width: 78%;
+        max-height: 36px;
+      }
+      .brand-cell.cell-full .brand-logo:not(.brand-logo-promociones) {
+        max-width: 155px;
+        max-height: 36px;
+      }
+      .brand-logo-usados,
+      .brand-logo-automoviles {
+        max-width: 80% !important;
+        max-height: 36px !important;
+      }
+      .brand-logo-promociones {
+        max-width: 230px !important;
+        max-height: 36px !important;
+      }
+      .brand-subtitle {
+        font-size: 0.70rem;
       }
     }
   

@@ -16,12 +16,50 @@
       <img src="/images/logo.png" alt="Náutica Aire Libre" />
     </a>
     <ul class="nav-links">
-      <li><a href="/catalog" class="active">Embarcaciones</a></li>
-      <li><a href="#">Motores</a></li>
-      <li><a href="#">Nosotros</a></li>
-      <li class="mobile-only"><a href="https://wa.me/5493794000000" class="nav-cta-mobile">Consultar</a></li>
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/legal.html">Estructura Organizativa y Legal</a></li>
+      <li><a href="/tramite.html">Trámite Carnet de Timonel</a></li>
+      <li class="mobile-only nav-contact-wrapper">
+        <button type="button" class="nav-cta-mobile" id="navContactToggle" aria-expanded="false">
+          <span>Consultar</span>
+          <svg class="nav-cta-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="nav-contact-dropdown" id="navContactDropdown">
+          <a href="https://wa.me/5493764711617" class="nav-contact-item" target="_blank" rel="noopener" data-phone="5493764711617">
+            <div class="nav-contact-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
+            <div class="nav-contact-info">
+              <span class="nav-contact-name">Posadas</span>
+              <span class="nav-contact-desc">Ventas Misiones</span>
+            </div>
+            <svg class="nav-contact-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+
+          <a href="https://wa.me/543625455852" class="nav-contact-item" target="_blank" rel="noopener" data-phone="543625455852">
+            <div class="nav-contact-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
+            <div class="nav-contact-info">
+              <span class="nav-contact-name">Resistencia</span>
+              <span class="nav-contact-desc">Ventas Chaco</span>
+            </div>
+            <svg class="nav-contact-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+
+          <a href="https://wa.me/543764387033" class="nav-contact-item" target="_blank" rel="noopener" data-phone="543764387033">
+            <div class="nav-contact-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.96.76 1.58V19z"/></svg>
+            </div>
+            <div class="nav-contact-info">
+              <span class="nav-contact-name">Administración</span>
+              <span class="nav-contact-desc">Consultas & Gestiones</span>
+            </div>
+            <svg class="nav-contact-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </li>
     </ul>
-    <a href="https://wa.me/5493794000000" class="nav-cta">Consultar</a>
     <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
       <span></span>
       <span></span>
@@ -37,7 +75,8 @@
 
     <div class="hero-content">
       <p class="hero-eyebrow">Catálogo de embarcaciones</p>
-      <img src="/images/logo-bermuda.png" alt="Bermuda" class="hero-brand-logo" id="catalogHeroBrandLogo" />
+      <img src="" alt="" class="hero-brand-logo" id="catalogHeroBrandLogo" style="display: none;" />
+      <h1 class="hero-brand-title" id="catalogHeroBrandTitle" style="display: none;"></h1>
       <div class="hero-rule"><div class="hero-rule-dot"></div></div>
       <p class="hero-subtitle">Elegí tu modelo</p>
     </div>
@@ -47,12 +86,12 @@
   <section class="catalog-section">
     <div class="catalog-header">
       <p class="catalog-label">Línea completa</p>
-      <h2 class="catalog-title" id="catalogSectionTitle">Modelos Bermuda</h2>
+      <h2 class="catalog-title" id="catalogSectionTitle"></h2>
     </div>
     <div class="catalog-grid" id="catalogGrid">
       <!-- SAFARI 550 -->
       <a href="/detail" class="brand-cell from-left" data-brand="bermuda" style="--delay:0.0s">
-        <div class="cell-photo" style="background-image: url('/img/safari-1.jpg'); background-position: center 30%;"></div>
+        <div class="cell-photo" style="background-image: url('/img/safari-cover-lake.webp'); background-position: center 30%;"></div>
         <div class="cell-dark"></div>
         <div class="cell-glow"></div>
         <div class="cell-content">
@@ -129,7 +168,7 @@
 
       <!-- SAFARI OPEN -->
       <a href="/detail?model=safariopen" class="brand-cell from-right" data-brand="bermuda" style="--delay:0.39s">
-        <div class="cell-photo" style="background-image: url('/img/safari-open.jpg'); background-position: center 50%;"></div>
+        <div class="cell-photo" style="background-image: url('/img/safariopen-gal-6.webp'); background-position: center 50%;"></div>
         <div class="cell-dark"></div>
         <div class="cell-glow"></div>
         <div class="cell-content">
@@ -170,6 +209,337 @@
           <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
         </div>
       </a>
+
+      <!-- ECLIPSE 24SS -->
+      <a href="/detail?model=eclipse24ss" class="brand-cell from-right" data-brand="eclipse" style="--delay:0.13s">
+        <div class="cell-photo" style="background-image: url('/img/eclipse-24ss.jpg'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Eclipse 24SS</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- GEUNA F165 -->
+      <a href="/detail?model=geunaf165" class="brand-cell from-left" data-brand="geuna" style="--delay:0.0s">
+        <div class="cell-photo" style="background-image: url('/img/geuna-f165.webp'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Geuna F165</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- GEUNA 170 WAKE -->
+      <a href="/detail?model=geuna170wake" class="brand-cell from-right" data-brand="geuna" style="--delay:0.13s">
+        <div class="cell-photo" style="background-image: url('/img/geuna-170-wake.webp'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Geuna 170 Wake</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- GEUNA 540 -->
+      <a href="/detail?model=geuna540" class="brand-cell from-left" data-brand="geuna" style="--delay:0.26s">
+        <div class="cell-photo" style="background-image: url('/img/geuna-540.webp'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Geuna 540</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- GEUNA 212 SUPREME -->
+      <a href="/detail?model=geuna212" class="brand-cell from-right" data-brand="geuna" style="--delay:0.39s">
+        <div class="cell-photo" style="background-image: url('/img/geuna-212.webp'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Geuna 212 Supreme</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- PAMPA MARIN SF470 -->
+      <a href="/detail?model=pampasf470" class="brand-cell from-left" data-brand="pampamarin" style="--delay:0.0s">
+        <div class="cell-photo" style="background-image: url('/img/pampa-sf470-1.webp'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Pampa Marin SF470</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- PAMPA MARIN 520 -->
+      <a href="/detail?model=pampa520" class="brand-cell from-right" data-brand="pampamarin" style="--delay:0.13s">
+        <div class="cell-photo" style="background-image: url('/img/pampa-520-1.webp'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Pampa Marin 520</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- PAMPA MARIN SF190 STARFISH -->
+      <a href="/detail?model=pampasf190" class="brand-cell from-left" data-brand="pampamarin" style="--delay:0.26s">
+        <div class="cell-photo" style="background-image: url('/img/pampa-sf190-1.webp'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Pampa Starfish 190</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- DRAKKAR 23 -->
+      <a href="/detail?model=drakkar23" class="brand-cell from-left" data-brand="drakkar" style="--delay:0.0s">
+        <div class="cell-photo" style="background-image: url('/img/drakkar-23-new-1.png'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Drakkar 23</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- DRAKKAR 26 -->
+      <a href="/detail?model=drakkar26" class="brand-cell from-right" data-brand="drakkar" style="--delay:0.1s">
+        <div class="cell-photo" style="background-image: url('/img/drakkar-23-6.webp'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Drakkar 26</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- DRAKKAR 26 DOBLE DECK -->
+      <a href="/detail?model=drakkar26dobledeck" class="brand-cell from-left" data-brand="drakkar" style="--delay:0.2s">
+        <div class="cell-photo" style="background-image: url('/img/drakkar-26-dd-1.png'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Drakkar 26 Doble Deck</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- MERCURY 40 HP -->
+      <a href="/detail?model=mercury40" class="brand-cell from-left" data-brand="mercury" style="--delay:0.0s">
+        <div class="cell-photo" style="background-image: url('/img/mercury-transom-cover.jpg'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Mercury 40 HP EFI</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- MERCURY 50 HP -->
+      <a href="/detail?model=mercury50" class="brand-cell from-right" data-brand="mercury" style="--delay:0.0s">
+        <div class="cell-photo" style="background-image: url('/img/mercury-transom-cover.jpg'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Mercury 50 HP EFI</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- MERCURY 60 HP -->
+      <a href="/detail?model=mercury60" class="brand-cell from-left" data-brand="mercury" style="--delay:0.0s">
+        <div class="cell-photo" style="background-image: url('/img/mercury-transom-cover.jpg'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Mercury 60 HP EFI</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- MERCURY 75 HP -->
+      <a href="/detail?model=mercury75" class="brand-cell from-right" data-brand="mercury" style="--delay:0.13s">
+        <div class="cell-photo" style="background-image: url('/img/mercury-transom-cover.jpg'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Mercury 75 HP EFI</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- MERCURY 90 HP -->
+      <a href="/detail?model=mercury90" class="brand-cell from-left" data-brand="mercury" style="--delay:0.13s">
+        <div class="cell-photo" style="background-image: url('/img/mercury-transom-cover.jpg'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Mercury 90 HP EFI</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- MERCURY 115 HP -->
+      <a href="/detail?model=mercury115" class="brand-cell from-right" data-brand="mercury" style="--delay:0.26s">
+        <div class="cell-photo" style="background-image: url('/img/mercury-transom-cover.jpg'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Mercury 115 HP EFI</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- MERCURY 150 HP -->
+      <a href="/detail?model=mercury150" class="brand-cell from-right" data-brand="mercury" style="--delay:0.26s">
+        <div class="cell-photo" style="background-image: url('/img/mercury-transom-cover.jpg'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Mercury 150 HP EFI</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- MERCURY 200 HP -->
+      <a href="/detail?model=mercury200" class="brand-cell from-left" data-brand="mercury" style="--delay:0.26s">
+        <div class="cell-photo" style="background-image: url('/img/mercury-transom-cover.jpg'); background-position: center 50%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Mercury V6 200 HP</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- ================= USADOS ================= -->
+      <!-- KLASE A K210 (USADO) -->
+      <a href="/detail?model=klasea" class="brand-cell from-left" data-brand="usados" style="--delay:0.0s">
+        <div class="cell-photo" style="background-image: url('/img/usado-klasea.webp'); background-position: center 30%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Klase A K210</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- BERMUDA 180 SPORT (USADO) -->
+      <a href="/detail?model=bermuda180" class="brand-cell from-right" data-brand="usados" style="--delay:0.0s">
+        <div class="cell-photo" style="background-image: url('/img/usado-bermuda180.webp'); background-position: center 30%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Bermuda 180 Sport</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- GEUNA F170 (USADO) -->
+      <a href="/detail?model=geunaf170" class="brand-cell from-left" data-brand="usados" style="--delay:0.13s">
+        <div class="cell-photo" style="background-image: url('/img/usado-geunaf170.webp'); background-position: center 30%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Geuna F170</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- CANESTRARI 165 (USADO) -->
+      <a href="/detail?model=canestrari165" class="brand-cell from-right" data-brand="usados" style="--delay:0.13s">
+        <div class="cell-photo" style="background-image: url('/img/usado-canestrari165.webp'); background-position: center 30%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Canestrari 165</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- DORADO 550 (USADO) -->
+      <a href="/detail?model=dorado550" class="brand-cell from-left" data-brand="usados" style="--delay:0.26s">
+        <div class="cell-photo" style="background-image: url('/img/usado-dorado550.webp'); background-position: center 30%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Dorado 550</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- SPORTCRAFT 1600 (USADO) -->
+      <a href="/detail?model=sportcraft1600" class="brand-cell from-right" data-brand="usados" style="--delay:0.26s">
+        <div class="cell-photo" style="background-image: url('/img/usado-sportcraft1600.webp'); background-position: center 30%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Sportcraft 1600</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- CARGO OPEN 620 (USADO) -->
+      <a href="/detail?model=cargo620" class="brand-cell from-left" data-brand="usados" style="--delay:0.39s">
+        <div class="cell-photo" style="background-image: url('/img/usado-cargo620.webp'); background-position: center 30%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Cargo Open 620</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- SPORT 160M (USADO) -->
+      <a href="/detail?model=sport160m" class="brand-cell from-right" data-brand="usados" style="--delay:0.39s">
+        <div class="cell-photo" style="background-image: url('/img/usado-sport160m.webp'); background-position: center 30%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Sport 160M</span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- PEUGEOT 3008 (USADO) -->
+      <a href="/detail?model=peugeot3008" class="brand-cell from-left" data-brand="automoviles" style="--delay:0.0s">
+        <div class="cell-photo" style="background-image: url('/img/peugeot3008-gal-1.webp'); background-position: center 30%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Peugeot 3008 <small style="font-size: 0.65em; opacity: 0.8; display: block; margin-top: 4px; font-weight: 500;">Año 2018</small></span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- FIAT IDEA ATTRACTIVE (USADO) -->
+      <a href="/detail?model=fiatidea" class="brand-cell from-right" data-brand="automoviles" style="--delay:0.13s">
+        <div class="cell-photo" style="background-image: url('/img/fiatidea-gal-1.webp'); background-position: center 30%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Fiat Idea Attractive 1.4 <small style="font-size: 0.65em; opacity: 0.8; display: block; margin-top: 4px; font-weight: 500;">Año 2014</small></span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- VOLKSWAGEN AMAROK (USADO) -->
+      <a href="/detail?model=amarok" class="brand-cell from-left" data-brand="automoviles" style="--delay:0.26s">
+        <div class="cell-photo" style="background-image: url('/img/usado-amarok.webp'); background-position: center 30%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <span class="model-name">Volkswagen Amarok <small style="font-size: 0.65em; opacity: 0.8; display: block; margin-top: 4px; font-weight: 500;">Año 2010</small></span>
+          <span class="cell-cta">Ver ficha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
     </div>
 
     <!-- COMING SOON PANEL -->
@@ -183,12 +553,128 @@
         </div>
         <h3>Próximamente</h3>
         <p>Estamos preparando el catálogo completo de <strong id="comingSoonBrand">Eclipse</strong>. Muy pronto podrás ver todas sus fichas técnicas y modelos en detalle.</p>
-        <a href="https://wa.me/5493794000000" id="comingSoonWhatsAppBtn" target="_blank" class="coming-soon-btn">
+        <a href="https://wa.me/5493764711617" id="comingSoonWhatsAppBtn" target="_blank" class="coming-soon-btn">
           Consultar por WhatsApp
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </a>
+      </div>
+    </div>
+
+    <!-- LANCHA PLAN PANEL -->
+    <div class="lanchaplan-container" id="lanchaplanContainer" style="display: none;">
+      <div class="lanchaplan-hero-card">
+        <div class="lanchaplan-badge">Financiación Exclusiva</div>
+        <h3 class="lanchaplan-main-title">NUEVO LANCHA PLAN</h3>
+        <h4 class="lanchaplan-subtitle">LLEVATE LA LANCHA DE TUS SUEÑOS EN UN PLAN 80/20 EN 36 CUOTAS — CONSULTÁ</h4>
+        <div class="lanchaplan-divider"></div>
+        <p class="lanchaplan-description">
+          <strong>Aire Libre</strong> ahora te da la posibilidad de adquirir la lancha que deseas con el motor y los accesorios que elijas y te lo financia en <strong>36 pagos</strong>.
+        </p>
+
+        <div class="lanchaplan-grid">
+          <div class="lanchaplan-item">
+            <div class="lanchaplan-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V6m0 12v-2m0 0c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h5>Plan 80/20 en 36 Cuotas</h5>
+            <p>Financiación flexible y accesible pensada para que disfrutes de tu embarcación con total previsibilidad.</p>
+          </div>
+
+          <div class="lanchaplan-item">
+            <div class="lanchaplan-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <h5>Lancha, Motor y Accesorios</h5>
+            <p>Elegí la embarcación de tus sueños, la motorización y todo el equipamiento náutico que prefieras.</p>
+          </div>
+
+          <div class="lanchaplan-item">
+            <div class="lanchaplan-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <h5>Respaldo Oficial Aire Libre</h5>
+            <p>Concesionario oficial con entrega garantizada, asesoramiento personalizado y trayectoria.</p>
+          </div>
+        </div>
+
+        <div class="lanchaplan-actions">
+          <a href="https://wa.me/5493764711617?text=Hola!%20Quisiera%20consultar%20por%20el%20NUEVO%20LANCHA%20PLAN%20(Plan%2080/20%20en%2036%20cuotas)%20para%20adquirir%20una%20embarcaci%C3%B3n." target="_blank" rel="noopener" class="lanchaplan-cta-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+            CONSULTAR POR WHATSAPP
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROMOCIONES VIGENTES PANEL -->
+    <div class="promociones-container" id="promocionesContainer" style="display: none;">
+      <div class="promociones-grid">
+        
+        <!-- Promo 1 -->
+        <div class="promo-card">
+          <div class="promo-badge">Vigente hasta 17/8</div>
+          <div class="promo-photo-wrapper">
+            <img src="/img/promo-1.png" alt="Garantía de 5 años en Motores Mercury" class="promo-img" />
+            <div class="promo-overlay">
+              <span class="promo-zoom-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                Ampliar Imagen
+              </span>
+            </div>
+          </div>
+          <div class="promo-content">
+            <h4>Mercury & Eclipse 21SS</h4>
+            <p>Garantía especial de 5 años en motores Mercury, flete gratis y entrega inmediata para tu Eclipse 21SS.</p>
+          </div>
+        </div>
+
+        <!-- Promo 2 -->
+        <div class="promo-card">
+          <div class="promo-badge">Vigente hasta 17/8</div>
+          <div class="promo-photo-wrapper">
+            <img src="/img/promo-2.png" alt="Campaña Nacional Eclipse 21SS" class="promo-img" />
+            <div class="promo-overlay">
+              <span class="promo-zoom-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                Ampliar Imagen
+              </span>
+            </div>
+          </div>
+          <div class="promo-content">
+            <h4>Campaña Nacional Eclipse</h4>
+            <p>Promoción invernal de la Eclipse 21SS por medio de concesionarios oficiales. Capacidad para 9 personas y motorización de 150 HP.</p>
+          </div>
+        </div>
+
+        <!-- Promo 3 (Evento) -->
+        <div class="promo-card highlight">
+          <div class="promo-badge event">Evento Especial</div>
+          <div class="promo-photo-wrapper">
+            <img src="/img/promo-3.jpg" alt="Sunset en el Tacurú Club" class="promo-img" />
+            <div class="promo-overlay">
+              <span class="promo-zoom-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                Ampliar Imagen
+              </span>
+            </div>
+          </div>
+          <div class="promo-content">
+            <h4>¡Sunset! en el Tacurú Club</h4>
+            <p>Te invitamos a vivir un atardecer exclusivo. Tendremos sorpresas especiales y sorteos imperdibles para quienes asistan y adquieran una embarcación Eclipse o Bermuda.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PROMO LIGHTBOX -->
+    <div class="promo-lightbox" id="promoLightbox">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">&times;</button>
+      <div class="lightbox-content">
+        <img src="" id="lightboxImg" alt="Promoción Ampliada" />
       </div>
     </div>
   </section>
@@ -211,10 +697,9 @@
       <nav class="footer-nav">
         <p class="footer-nav-title">Navegación</p>
         <ul>
-          <li><a href="/catalog">Embarcaciones</a></li>
+          <li><a href="/">Embarcaciones</a></li>
           <li><a href="#">Motores</a></li>
-          <li><a href="#">Servicios</a></li>
-          <li><a href="#">Nosotros</a></li>
+          <li><a href="/legal.html">Estructura Organizativa y Legal</a></li>
           <li><a href="#">Contacto</a></li>
         </ul>
       </nav>
@@ -228,15 +713,15 @@
         <ul>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>
-            <span>Corrientes, Argentina</span>
+            <span>Av. Uruguay 5081. Posadas Misiones.</span>
           </li>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 3.07 5.18 2 2 0 0 1 5.07 3h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L9.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <a href="https://wa.me/5493794000000" target="_blank">+54 9 379 400-0000</a>
+            <a href="https://wa.me/5493764711617" target="_blank">+54 376 471-1617</a>
           </li>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            <a href="mailto:info@nauticaairebbe.com.ar">info@nauticaairecibre.com.ar</a>
+            <a href="mailto:info@nauticaairecibre.com.ar">info@nauticaairecibre.com.ar</a>
           </li>
         </ul>
       </div>
@@ -245,21 +730,76 @@
 
     <!-- Línea inferior -->
     <div class="footer-bottom">
-      <span>© 2025 Náutica Aire Libre — Todos los derechos reservados</span>
+      <span>© 2026 Náutica Aire Libre — Todos los derechos reservados</span>
       <span class="footer-credit">Desarrollado por <a href="https://mainumbysocialmedia.com.ar" target="_blank">Mainumby</a></span>
     </div>
 
   </footer>
 
-  <!-- WHATSAPP FLOTANTE -->
-  <a href="https://wa.me/5493794000000" target="_blank" rel="noopener" class="wa-float" aria-label="WhatsApp">
-    <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
-    </svg>
-    <span class="wa-pulse"></span>
-  </a>
+  <!-- ══ WHATSAPP FLOTANTE MULTI-SUCURSAL ════════════════════════════════ -->
+  <div class="wa-widget" id="waWidget">
+    <div class="wa-menu" id="waMenu">
+      <div class="wa-menu-header">
+        <div class="wa-menu-title">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          <span>Elegí una sucursal</span>
+        </div>
+        <button class="wa-menu-close" id="waMenuClose" aria-label="Cerrar">&times;</button>
+      </div>
+      
+      <a href="https://wa.me/5493764711617" class="wa-item" target="_blank" rel="noopener" data-phone="5493764711617">
+        <div class="wa-item-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        <div class="wa-item-info">
+          <span class="wa-item-name">Posadas</span>
+          <span class="wa-item-desc">Ventas Misiones</span>
+        </div>
+        <div class="wa-item-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
 
-  <script src="/js/main.js" defer></script>
-  <script src="/js/catalog.js" defer></script>
+      <a href="https://wa.me/543625455852" class="wa-item" target="_blank" rel="noopener" data-phone="543625455852">
+        <div class="wa-item-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        <div class="wa-item-info">
+          <span class="wa-item-name">Resistencia</span>
+          <span class="wa-item-desc">Ventas Chaco</span>
+        </div>
+        <div class="wa-item-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <a href="https://wa.me/543764387033" class="wa-item" target="_blank" rel="noopener" data-phone="543764387033">
+        <div class="wa-item-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.96.76 1.58V19z"/></svg>
+        </div>
+        <div class="wa-item-info">
+          <span class="wa-item-name">Administración</span>
+          <span class="wa-item-desc">Consultas & Gestiones</span>
+        </div>
+        <div class="wa-item-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+    </div>
+
+    <button class="wa-float" id="waToggle" aria-label="Contactar por WhatsApp" aria-expanded="false">
+      <svg class="wa-icon wa-icon-main" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+      </svg>
+      <svg class="wa-icon wa-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+      <span class="wa-text">Contactanos</span>
+      <span class="wa-pulse"></span>
+    </button>
+  </div>
+
+  <script src="/js/main.js?v=202609010900"></script>
+  <script src="/js/catalog.js?v=202609010900"></script>
 </body>
 </html>

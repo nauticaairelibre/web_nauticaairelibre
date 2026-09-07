@@ -22,6 +22,14 @@ app.get('/detail', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'detail.html'));
 });
 
+app.get('/legal', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'legal.html'));
+});
+
+app.get('/tramite', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'tramite.html'));
+});
+
 // Start the server
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {

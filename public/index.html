@@ -10,39 +10,62 @@
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="site-header" id="header">
-    <div class="bg-boat" id="bgBoat"></div>
-    <div class="bg-overlay"></div>
-    <div class="bg-shimmer"></div>
-    <nav class="navbar" id="navbar">
-      <a href="/" class="navbar-logo">
-        <img src="/images/logo.png" alt="Náutica Aire Libre" />
-      </a>
-      <ul class="nav-links">
-        <li><a href="/catalog">Embarcaciones</a></li>
-        <li><a href="#">Motores</a></li>
-        <li><a href="#">Nosotros</a></li>
-        <li class="mobile-only"><a href="https://wa.me/5493794000000" class="nav-cta-mobile">Consultar</a></li>
-      </ul>
-      <a href="https://wa.me/5493794000000" class="nav-cta">Consultar</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </nav>
-    <div class="logo-wrap">
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <a href="/" class="navbar-logo">
       <img src="/images/logo.png" alt="Náutica Aire Libre" />
-      <p class="logo-tagline">Libertad sobre el agua</p>
-    </div>
-    <div class="scroll-hint">
-      <span>Explorar</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M12 5v14M5 12l7 7-7 7"/>
-      </svg>
-    </div>
-  </header>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/" class="active">Inicio</a></li>
+      <li><a href="/legal.html">Estructura Organizativa y Legal</a></li>
+      <li><a href="/tramite.html">Trámite Carnet de Timonel</a></li>
+      <li class="mobile-only nav-contact-wrapper">
+        <button type="button" class="nav-cta-mobile" id="navContactToggle" aria-expanded="false">
+          <span>Consultar</span>
+          <svg class="nav-cta-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="nav-contact-dropdown" id="navContactDropdown">
+          <a href="https://wa.me/5493764711617" class="nav-contact-item" target="_blank" rel="noopener" data-phone="5493764711617">
+            <div class="nav-contact-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
+            <div class="nav-contact-info">
+              <span class="nav-contact-name">Posadas</span>
+              <span class="nav-contact-desc">Ventas Misiones</span>
+            </div>
+            <svg class="nav-contact-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+
+          <a href="https://wa.me/543625455852" class="nav-contact-item" target="_blank" rel="noopener" data-phone="543625455852">
+            <div class="nav-contact-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
+            <div class="nav-contact-info">
+              <span class="nav-contact-name">Resistencia</span>
+              <span class="nav-contact-desc">Ventas Chaco</span>
+            </div>
+            <svg class="nav-contact-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+
+          <a href="https://wa.me/543764387033" class="nav-contact-item" target="_blank" rel="noopener" data-phone="543764387033">
+            <div class="nav-contact-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.96.76 1.58V19z"/></svg>
+            </div>
+            <div class="nav-contact-info">
+              <span class="nav-contact-name">Administración</span>
+              <span class="nav-contact-desc">Consultas & Gestiones</span>
+            </div>
+            <svg class="nav-contact-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </li>
+    </ul>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
 
   <!-- MARCAS -->
   <section class="brands-section" id="embarcaciones">
@@ -52,8 +75,48 @@
     </div>
     <div class="brands-grid" id="brandsGrid">
 
+      <!-- USADOS -->
+      <a href="/catalog?brand=usados" class="brand-cell from-left" style="--delay:0.0s">
+        <div class="cell-photo" style="background-image: url('/img/cover-usados.png');"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <img src="/images/logo-usados-new.png" alt="Embarcaciones Usadas" class="brand-logo brand-logo-usados" />
+          <span class="cell-cta">Ver modelos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- AUTOMOVILES -->
+      <a href="/catalog?brand=automoviles" class="brand-cell from-right" style="--delay:0.0s">
+        <div class="cell-photo" style="background-image: url('/img/cover-automoviles.png');"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <img src="/images/logo-automoviles-new.png" alt="Automóviles Usados" class="brand-logo brand-logo-automoviles" />
+          <span class="cell-cta">Ver modelos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- PROMOCIONES VIGENTES -->
+      <a href="/catalog?brand=promociones" class="brand-cell cell-full from-left" style="--delay:0.13s">
+        <div class="cell-photo" style="background-image: url('/img/cover-promociones.jpg'); background-position: center 35%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="card-badge">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="12" cy="13" r="8"></circle>
+            <path d="M12 9v4l3 3M12 5V2M9 2h6M17.5 7.5l1.5-1.5"></path>
+          </svg>
+        </div>
+        <div class="cell-content">
+          <img src="/images/logo-promociones.png" alt="Promociones Vigentes" class="brand-logo brand-logo-promociones" />
+          <span class="brand-subtitle">Por tiempo limitado</span>
+          <span class="cell-cta">Ver ofertas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
       <!-- BERMUDA -->
-      <a href="/catalog?brand=bermuda" class="brand-cell from-left" style="--delay:0.0s">
+      <a href="/catalog?brand=bermuda" class="brand-cell from-left" style="--delay:0.26s">
         <div class="cell-photo" style="background-image: url('/img/cover-bermuda.png');"></div>
         <div class="cell-dark"></div>
         <div class="cell-glow"></div>
@@ -64,7 +127,7 @@
       </a>
 
       <!-- ECLIPSE -->
-      <a href="/catalog?brand=eclipse" class="brand-cell from-right" style="--delay:0.0s">
+      <a href="/catalog?brand=eclipse" class="brand-cell from-right" style="--delay:0.26s">
         <div class="cell-photo" style="background-image: url('/img/cover-eclipse.png');"></div>
         <div class="cell-dark"></div>
         <div class="cell-glow"></div>
@@ -75,7 +138,7 @@
       </a>
 
       <!-- GEUNA -->
-      <a href="/catalog?brand=geuna" class="brand-cell from-left" style="--delay:0.13s">
+      <a href="/catalog?brand=geuna" class="brand-cell from-left" style="--delay:0.39s">
         <div class="cell-photo"></div>
         <div class="cell-dark"></div>
         <div class="cell-glow"></div>
@@ -86,7 +149,7 @@
       </a>
 
       <!-- PAMPA MARIN -->
-      <a href="/catalog?brand=pampamarin" class="brand-cell from-right" style="--delay:0.13s">
+      <a href="/catalog?brand=pampamarin" class="brand-cell from-right" style="--delay:0.39s">
         <div class="cell-photo" style="background-image: url('/img/cover-pampamarin.png');"></div>
         <div class="cell-dark"></div>
         <div class="cell-glow"></div>
@@ -96,30 +159,19 @@
         </div>
       </a>
 
-      <!-- DRAKKAR -->
-      <a href="/catalog?brand=drakkar" class="brand-cell from-left" style="--delay:0.26s">
-        <div class="cell-photo" style="background-image: url('/img/cover-drakkar.png');"></div>
+      <!-- HIDEA -->
+      <a href="/catalog?brand=hidea" class="brand-cell from-left" style="--delay:0.52s">
+        <div class="cell-photo" style="background-image: url('/img/cover-hidea.jpg');"></div>
         <div class="cell-dark"></div>
         <div class="cell-glow"></div>
         <div class="cell-content">
-          <img src="/images/logo-drakkar.png" alt="Drakkar" class="brand-logo" />
-          <span class="cell-cta">Ver modelos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-        </div>
-      </a>
-
-      <!-- USADOS -->
-      <a href="/catalog?brand=usados" class="brand-cell from-right" style="--delay:0.26s">
-        <div class="cell-photo" style="background-image: url('/img/cover-usados.png');"></div>
-        <div class="cell-dark"></div>
-        <div class="cell-glow"></div>
-        <div class="cell-content">
-          <img src="/images/logo-usados.png" alt="Usados" class="brand-logo" />
+          <img src="/images/logo-hidea.png" alt="Hidea" class="brand-logo" />
           <span class="cell-cta">Ver modelos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
         </div>
       </a>
 
       <!-- MERCURY -->
-      <a href="/catalog?brand=mercury" class="brand-cell from-left" style="--delay:0.39s">
+      <a href="/catalog?brand=mercury" class="brand-cell from-right" style="--delay:0.52s">
         <div class="cell-photo" style="background-image: url('/img/cover-mercury.jpg');"></div>
         <div class="cell-dark"></div>
         <div class="cell-glow"></div>
@@ -129,14 +181,25 @@
         </div>
       </a>
 
-      <!-- HIDEA -->
-      <a href="/catalog?brand=hidea" class="brand-cell from-right" style="--delay:0.39s">
-        <div class="cell-photo" style="background-image: url('/img/cover-hidea.jpg');"></div>
+      <!-- DRAKKAR -->
+      <a href="/catalog?brand=drakkar" class="brand-cell cell-full from-left" style="--delay:0.65s">
+        <div class="cell-photo" style="background-image: url('/img/cover-drakkar.png'); background-position: center 45%;"></div>
         <div class="cell-dark"></div>
         <div class="cell-glow"></div>
         <div class="cell-content">
-          <img src="/images/logo-hidea.png" alt="Hidea" class="brand-logo" />
+          <img src="/images/logo-drakkar.png" alt="Drakkar" class="brand-logo" />
           <span class="cell-cta">Ver modelos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+      </a>
+
+      <!-- LANCHA PLAN -->
+      <a href="/catalog?brand=lanchaplan" class="brand-cell cell-full from-left" style="--delay:0.78s">
+        <div class="cell-photo" style="background-image: url('/img/cover-lanchaplan.jpg'); background-position: center 45%;"></div>
+        <div class="cell-dark"></div>
+        <div class="cell-glow"></div>
+        <div class="cell-content">
+          <img src="/images/logo-lanchaplan.png" alt="Lancha Plan" class="brand-logo" />
+          <span class="cell-cta">Ver planes <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
         </div>
       </a>
 
@@ -164,10 +227,9 @@
       <nav class="footer-nav">
         <p class="footer-nav-title">Navegación</p>
         <ul>
-          <li><a href="/catalog">Embarcaciones</a></li>
+          <li><a href="/">Embarcaciones</a></li>
           <li><a href="#">Motores</a></li>
-          <li><a href="#">Servicios</a></li>
-          <li><a href="#">Nosotros</a></li>
+          <li><a href="/legal.html">Estructura Organizativa y Legal</a></li>
           <li><a href="#">Contacto</a></li>
         </ul>
       </nav>
@@ -181,11 +243,11 @@
         <ul>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>
-            <span>Corrientes, Argentina</span>
+            <span>Av. Uruguay 5081. Posadas Misiones.</span>
           </li>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 3.07 5.18 2 2 0 0 1 5.07 3h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L9.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <a href="https://wa.me/5493794000000" target="_blank">+54 9 379 400-0000</a>
+            <a href="https://wa.me/5493764711617" target="_blank">+54 376 471-1617</a>
           </li>
           <li>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -198,23 +260,74 @@
 
     <!-- Línea inferior -->
     <div class="footer-bottom">
-      <span>© 2025 Náutica Aire Libre — Todos los derechos reservados</span>
+      <span>© 2026 Náutica Aire Libre — Todos los derechos reservados</span>
       <span class="footer-credit">Desarrollado por <a href="https://mainumbysocialmedia.com.ar" target="_blank">Mainumby</a></span>
     </div>
 
   </footer>
 
-  <!-- ══ WHATSAPP FLOTANTE ════════════════════════════════ -->
-  <a href="https://wa.me/5493794000000"
-     target="_blank"
-     rel="noopener"
-     class="wa-float"
-     aria-label="Contactar por WhatsApp">
-    <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
-    </svg>
-    <span class="wa-pulse"></span>
-  </a>
+  <!-- ══ WHATSAPP FLOTANTE MULTI-SUCURSAL ════════════════════════════════ -->
+  <div class="wa-widget" id="waWidget">
+    <div class="wa-menu" id="waMenu">
+      <div class="wa-menu-header">
+        <div class="wa-menu-title">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          <span>Elegí una sucursal</span>
+        </div>
+        <button class="wa-menu-close" id="waMenuClose" aria-label="Cerrar">&times;</button>
+      </div>
+      
+      <a href="https://wa.me/5493764711617" class="wa-item" target="_blank" rel="noopener" data-phone="5493764711617">
+        <div class="wa-item-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        <div class="wa-item-info">
+          <span class="wa-item-name">Posadas</span>
+          <span class="wa-item-desc">Ventas Misiones</span>
+        </div>
+        <div class="wa-item-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
 
+      <a href="https://wa.me/543625455852" class="wa-item" target="_blank" rel="noopener" data-phone="543625455852">
+        <div class="wa-item-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        <div class="wa-item-info">
+          <span class="wa-item-name">Resistencia</span>
+          <span class="wa-item-desc">Ventas Chaco</span>
+        </div>
+        <div class="wa-item-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <a href="https://wa.me/543764387033" class="wa-item" target="_blank" rel="noopener" data-phone="543764387033">
+        <div class="wa-item-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.96.76 1.58V19z"/></svg>
+        </div>
+        <div class="wa-item-info">
+          <span class="wa-item-name">Administración</span>
+          <span class="wa-item-desc">Consultas & Gestiones</span>
+        </div>
+        <div class="wa-item-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+    </div>
+
+    <button class="wa-float" id="waToggle" aria-label="Contactar por WhatsApp" aria-expanded="false">
+      <svg class="wa-icon wa-icon-main" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+      </svg>
+      <svg class="wa-icon wa-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+      <span class="wa-text">Contactanos</span>
+      <span class="wa-pulse"></span>
+    </button>
+  </div>
+  <script src="/js/main.js"></script>
 </body>
 </html>
