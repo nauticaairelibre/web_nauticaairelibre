@@ -176,12 +176,21 @@
       max-width: 320px;
       max-height: 54px;
     }
+    .brand-logo-mercury {
+      max-width: 275px;
+      max-height: 80px;
+      transform: scale(1.15);
+      filter: drop-shadow(0 2px 14px rgba(0,0,0,0.85)) brightness(1.05);
+    }
     .brand-cell:hover .brand-logo {
       transform: scale(1.1);
       filter:
         drop-shadow(0 0 18px rgba(90,173,207,0.55))
         drop-shadow(0 0 38px rgba(232,123,32,0.22))
         brightness(1.15);
+    }
+    .brand-cell:hover .brand-logo-mercury {
+      transform: scale(1.26);
     }
     .brand-text {
       font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
@@ -314,6 +323,11 @@
         max-width: 250px !important;
         max-height: 40px !important;
       }
+      .brand-logo-mercury {
+        max-width: 95% !important;
+        max-height: 48px !important;
+        transform: scale(1.18);
+      }
       .brand-subtitle {
         font-size: 0.74rem;
         letter-spacing: 0.12em;
@@ -355,6 +369,11 @@
       .brand-logo-promociones {
         max-width: 230px !important;
         max-height: 36px !important;
+      }
+      .brand-logo-mercury {
+        max-width: 90% !important;
+        max-height: 44px !important;
+        transform: scale(1.18);
       }
       .brand-subtitle {
         font-size: 0.70rem;
