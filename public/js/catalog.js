@@ -43,7 +43,7 @@
     mercury: {
       name: "Mercury",
       sectionTitle: "Motores Mercury",
-      logo: "/images/logo-mercury.png",
+      logo: "/images/logo-mercury.png?v=2",
       heroBg: "/img/cover-mercury.jpg",
       waMsg: "Hola! Quisiera obtener información y catálogo de motores fuera de borda Mercury."
     },

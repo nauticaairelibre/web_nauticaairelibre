@@ -764,7 +764,7 @@
     mercury40: {
       name: "Mercury 40 HP EFI",
       brand: "Mercury",
-      brandLogo: "/images/logo-mercury.png",
+      brandLogo: "/images/logo-mercury.png?v=2",
       category: "Motor fuera de borda",
       line1: "Mercury",
       line2: "40 HP",
@@ -793,7 +793,7 @@
     mercury50: {
       name: "Mercury 50 HP EFI",
       brand: "Mercury",
-      brandLogo: "/images/logo-mercury.png",
+      brandLogo: "/images/logo-mercury.png?v=2",
       category: "Motor fuera de borda",
       line1: "Mercury",
       line2: "50 HP",
@@ -828,7 +828,7 @@
     mercury60: {
       name: "Mercury 60 HP EFI",
       brand: "Mercury",
-      brandLogo: "/images/logo-mercury.png",
+      brandLogo: "/images/logo-mercury.png?v=2",
       category: "Motor fuera de borda",
       line1: "Mercury",
       line2: "60 HP",
@@ -863,7 +863,7 @@
     mercury75: {
       name: "Mercury 75 HP EFI",
       brand: "Mercury",
-      brandLogo: "/images/logo-mercury.png",
+      brandLogo: "/images/logo-mercury.png?v=2",
       category: "Motor fuera de borda",
       line1: "Mercury",
       line2: "75 HP",
@@ -898,7 +898,7 @@
     mercury90: {
       name: "Mercury 90 HP EFI",
       brand: "Mercury",
-      brandLogo: "/images/logo-mercury.png",
+      brandLogo: "/images/logo-mercury.png?v=2",
       category: "Motor fuera de borda",
       line1: "Mercury",
       line2: "90 HP",
@@ -933,7 +933,7 @@
     mercury115: {
       name: "Mercury 115 HP EFI",
       brand: "Mercury",
-      brandLogo: "/images/logo-mercury.png",
+      brandLogo: "/images/logo-mercury.png?v=2",
       category: "Motor fuera de borda de alto desempeño",
       line1: "Mercury",
       line2: "115 HP",
@@ -974,7 +974,7 @@
     mercury150: {
       name: "Mercury 150 HP EFI",
       brand: "Mercury",
-      brandLogo: "/images/logo-mercury.png",
+      brandLogo: "/images/logo-mercury.png?v=2",
       category: "Motor fuera de borda",
       line1: "Mercury",
       line2: "150 HP",
@@ -1008,7 +1008,7 @@
     mercury200: {
       name: "Mercury V6 200 HP",
       brand: "Mercury",
-      brandLogo: "/images/logo-mercury.png",
+      brandLogo: "/images/logo-mercury.png?v=2",
       category: "Motor fuera de borda de alta potencia",
       line1: "Mercury",
       line2: "V6 200 HP",
