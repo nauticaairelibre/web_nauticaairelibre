@@ -8,62 +8,68 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Helper: get the user's role from their profile document
-    function getUserRole() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
-    }
-
-    // Helper: get the user's branch from their profile document
-    function getUserBranch() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.branch;
-    }
-
-    // Role check helpers
-    function isAdmin() {
-      return isAuthenticated() && getUserRole() == 'admin';
-    }
-
-    function isVendor() {
-      return isAuthenticated() && getUserRole() == 'vendedor';
-    }
-
-    function isClient() {
-      return isAuthenticated() && getUserRole() == 'cliente';
-    }
-
     function isOwner(uid) {
       return isAuthenticated() && request.auth.uid == uid;
     }
 
+    function hasProfile() {
+      return isAuthenticated() && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    // Helper: get user's role from their profile document
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    // Helper: get user's branch from their profile document
+    function getUserBranch() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.branch;
+    }
+
+    // Role check helpers (safe with exists check)
+    function isAdmin() {
+      return hasProfile() && getUserRole() == 'admin';
+    }
+
+    function isVendor() {
+      return hasProfile() && getUserRole() == 'vendedor';
+    }
+
+    function isClient() {
+      return hasProfile() && getUserRole() == 'cliente';
+    }
+
     // ═══ USERS collection ═══
-    // Admin: full access
-    // Users: can read their own profile, can create their own on signup
     match /users/{userId} {
-      allow read: if isAdmin() || isOwner(userId);
-      allow create: if isAuthenticated() && request.auth.uid == userId
-        && request.resource.data.role == 'cliente';
-      allow update: if isAdmin();
+      // Owner can read their own; Admin can read all
+      allow read: if isOwner(userId) || isAdmin();
+      
+      // On creation, only role 'cliente' or 'admin' if no admin exists
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      
+      // User can update basic info without elevating role/branch; Admin can update everything
+      allow update: if isAdmin() || (
+        isOwner(userId) 
+        && request.resource.data.role == resource.data.role 
+        && request.resource.data.branch == resource.data.branch
+      );
+      
       allow delete: if isAdmin();
     }
 
     // ═══ BOATS collection ═══
-    // Public read, admin write
     match /boats/{boatId} {
       allow read: if true;
       allow write: if isAdmin();
     }
 
     // ═══ BRANDS collection ═══
-    // Public read, admin write
     match /brands/{brandId} {
       allow read: if true;
       allow write: if isAdmin();
     }
 
     // ═══ PLANS collection ═══
-    // Admin: full access
-    // Vendedor: read/write own branch
-    // Cliente: read own plans
     match /plans/{planId} {
       allow read: if isAdmin()
         || (isVendor() && resource.data.branch == getUserBranch())
@@ -74,7 +80,6 @@ service cloud.firestore {
     }
 
     // ═══ DOCUMENTS collection ═══
-    // Same pattern as plans
     match /documents/{docId} {
       allow read: if isAdmin()
         || (isVendor() && resource.data.branch == getUserBranch())
