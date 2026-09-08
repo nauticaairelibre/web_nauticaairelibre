@@ -1,11 +1,11 @@
 // public/js/firebase-config.js
 const firebaseConfig = {
-  apiKey: 'AIza_YOUR_API_KEY_HERE',
+  apiKey: 'AIzaSyBZ5tG8PczT-AuwfeK-Vvmngig6-T_6Hcg',
   authDomain: 'nautica-aire-libre.firebaseapp.com',
   projectId: 'nautica-aire-libre',
   storageBucket: 'nautica-aire-libre.firebasestorage.app',
-  messagingSenderId: '000000000000',
-  appId: '1:000000000000:web:0000000000000000'
+  messagingSenderId: '664667784948',
+  appId: '1:664667784948:web:a823c882604988361dc0a1'
 };
 
 // Initialize Firebase App
