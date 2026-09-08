@@ -42,12 +42,14 @@
     },
     mercury: {
       name: "Mercury",
+      sectionTitle: "Motores Mercury",
       logo: "/images/logo-mercury.png",
       heroBg: "/img/cover-mercury.jpg",
       waMsg: "Hola! Quisiera obtener información y catálogo de motores fuera de borda Mercury."
     },
     hidea: {
       name: "Hidea",
+      sectionTitle: "Motores Hidea",
       logo: "/images/logo-hidea.png",
       waMsg: "Hola! Quisiera obtener información y catálogo de motores fuera de borda Hidea."
     },
@@ -61,7 +63,7 @@
     },
     automoviles: {
       name: "Automóviles Usados",
-      sectionTitle: "Automóviles Seleccionados",
+      sectionTitle: "Automóviles Usados",
       logo: "/images/logo-automoviles.png",
       heroBg: "/img/cover-automoviles.png",
       waMsg: "Hola! Quisiera obtener información sobre el catálogo de automóviles usados disponibles."
