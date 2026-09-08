@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Panel - Náutica Aire Libre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/auth.css">
+    <style>
+        body { padding-top: 70px; }
+        .client-wrapper { max-width: 900px; margin: 0 auto; padding: 32px 20px; }
+        .client-wrapper h1 {
+            font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem;
+            font-weight: 600; margin-bottom: 4px;
+        }
+        .client-wrapper .subtitle { color: var(--muted); margin-bottom: 28px; }
+        .client-cards { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .client-card {
+            background: rgba(8,13,24,0.85); border: 1px solid rgba(240,244,248,0.06);
+            border-radius: 12px; padding: 28px; position: relative; overflow: hidden;
+        }
+        .client-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--orange), var(--blue));
+        }
+        .client-card h2 {
+            font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem;
+            font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+        }
+        .client-card h2 .icon { font-size: 1.4rem; }
+        .plan-detail { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+        .plan-item { padding: 12px 0; }
+        .plan-item .label { color: var(--muted); font-size: 0.8rem; margin-bottom: 2px; }
+        .plan-item .value { font-size: 1.1rem; font-weight: 500; color: var(--white); }
+        .plan-item .value.highlight { color: var(--orange); font-size: 1.3rem; font-weight: 700; }
+        .status-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .status-badge.active { background: rgba(76,175,80,0.15); color: #4caf50; }
+        .status-badge.pending { background: rgba(255,193,7,0.15); color: #ffc107; }
+        .doc-list { list-style: none; }
+        .doc-list li {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 0; border-bottom: 1px solid rgba(240,244,248,0.05);
+        }
+        .doc-list li:last-child { border-bottom: none; }
+        .doc-list .doc-name { display: flex; align-items: center; gap: 8px; }
+        .doc-list .doc-date { color: var(--muted); font-size: 0.8rem; }
+        .btn-download {
+            background: rgba(90,173,207,0.15); color: var(--blue);
+            border: none; padding: 6px 14px; border-radius: 6px;
+            cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
+        }
+        .btn-download:hover { background: rgba(90,173,207,0.3); }
+        .contact-info { display: flex; flex-direction: column; gap: 12px; }
+        .contact-row { display: flex; align-items: center; gap: 10px; color: var(--muted); }
+        .contact-row .value { color: var(--white); }
+        .empty-state { color: var(--muted); text-align: center; padding: 24px; font-style: italic; }
+        .topbar-user {
+            display: flex; align-items: center; gap: 12px;
+            position: fixed; top: 20px; right: 52px; z-index: 201;
+        }
+        .topbar-user .user-name { color: var(--muted); font-size: 0.85rem; }
+        .topbar-user .user-role {
+            background: rgba(76,175,80,0.15); color: #4caf50;
+            padding: 3px 10px; border-radius: 20px; font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .btn-logout {
+            background: none; border: 1px solid rgba(240,244,248,0.15);
+            color: var(--muted); padding: 6px 14px; border-radius: 6px;
+            cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
+        }
+        .btn-logout:hover { border-color: var(--orange); color: var(--orange); }
+        @media (max-width: 768px) {
+            .topbar-user { top: 18px; right: 16px; }
+            .topbar-user .user-name { display: none; }
+            .plan-detail { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/js/firebase-config.js"></script>
+    <script src="/js/auth.js"></script>
+</head>
+<body>
+
+    <nav class="navbar scrolled" style="background: rgba(6,9,15,0.95);">
+        <a href="/" class="navbar-logo">
+            <img src="/images/logo.png" alt="Náutica Aire Libre" />
+        </a>
+        <div class="topbar-user">
+            <span class="user-name" id="userName"></span>
+            <span class="user-role">cliente</span>
+            <button class="btn-logout" id="logoutBtn">Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <div class="client-wrapper" id="mainContent" style="display:none;">
+        <h1 id="welcomeMsg">Mi Panel</h1>
+        <p class="subtitle">Seguimiento de tu plan de financiación y documentos</p>
+
+        <div class="client-cards">
+            <!-- Plan de Financiación -->
+            <div class="client-card">
+                <h2><span class="icon">📋</span> Mi Plan de Financiación</h2>
+                <div id="planContent">
+                    <p class="empty-state">No tenés un plan de financiación activo actualmente. Consultá con tu vendedor.</p>
+                </div>
+            </div>
+
+            <!-- Documentos -->
+            <div class="client-card">
+                <h2><span class="icon">📁</span> Mis Documentos</h2>
+                <div id="docsContent">
+                    <p class="empty-state">No hay documentos disponibles todavía.</p>
+                </div>
+            </div>
+
+            <!-- Contacto -->
+            <div class="client-card">
+                <h2><span class="icon">📞</span> Datos de Contacto</h2>
+                <div class="contact-info">
+                    <div class="contact-row">
+                        <span>📍 Sucursal Posadas:</span>
+                        <a href="https://wa.me/5493764711617" target="_blank" rel="noopener" style="color: var(--blue); text-decoration: none;">+54 9 376 471-1617</a>
+                    </div>
+                    <div class="contact-row">
+                        <span>📍 Sucursal Resistencia:</span>
+                        <a href="https://wa.me/543625455852" target="_blank" rel="noopener" style="color: var(--blue); text-decoration: none;">+54 362 545-5852</a>
+                    </div>
+                    <div class="contact-row">
+                        <span>📧 Administración:</span>
+                        <a href="https://wa.me/543764387033" target="_blank" rel="noopener" style="color: var(--blue); text-decoration: none;">+54 376 438-7033</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const user = await authModule.requireAuth(['cliente', 'vendedor', 'admin']);
+                document.getElementById('userName').textContent = user.displayName || user.email;
+                document.getElementById('welcomeMsg').textContent = `Hola, ${user.displayName || 'Cliente'}`;
+                document.getElementById('mainContent').style.display = 'block';
+
+                // Load client's plans
+                try {
+                    const plansSnap = await db.collection('plans')
+                        .where('clientUid', '==', user.uid)
+                        .where('status', '==', 'activo').get();
+
+                    if (!plansSnap.empty) {
+                        const plan = plansSnap.docs[0].data();
+                        document.getElementById('planContent').innerHTML = `
+                            <div class="plan-detail">
+                                <div class="plan-item">
+                                    <div class="label">Embarcación</div>
+                                    <div class="value">${plan.boatModel || '—'}</div>
+                                </div>
+                                <div class="plan-item">
+                                    <div class="label">Tipo de Plan</div>
+                                    <div class="value">${plan.planType || '80/20'}</div>
+                                </div>
+                                <div class="plan-item">
+                                    <div class="label">Cuotas Pagas</div>
+                                    <div class="value highlight">${plan.paidInstallments || 0} / ${plan.installments || 36}</div>
+                                </div>
+                                <div class="plan-item">
+                                    <div class="label">Estado</div>
+                                    <div class="value"><span class="status-badge active">${plan.status}</span></div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                } catch (err) {
+                    console.log('Plans collection not available:', err.message);
+                }
+
+                // Load client's documents
+                try {
+                    const docsSnap = await db.collection('documents')
+                        .where('clientUid', '==', user.uid).get();
+
+                    if (!docsSnap.empty) {
+                        let html = '<ul class="doc-list">';
+                        docsSnap.forEach(doc => {
+                            const d = doc.data();
+                            html += `
+                                <li>
+                                    <div class="doc-name">📄 ${d.fileName || 'Documento'}</div>
+                                    <button class="btn-download" onclick="window.open('${d.storageUrl}')">Descargar</button>
+                                </li>
+                            `;
+                        });
+                        html += '</ul>';
+                        document.getElementById('docsContent').innerHTML = html;
+                    }
+                } catch (err) {
+                    console.log('Documents collection not available:', err.message);
+                }
+
+            } catch (error) {
+                console.error('Auth error:', error);
+            }
+
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                authModule.logout();
+            });
+        });
+    </script>
+</body>
+</html>

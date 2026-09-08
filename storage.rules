@@ -1,0 +1,44 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.role == 'admin';
+    }
+    
+    function isVendor() {
+      return isAuthenticated() && request.auth.token.role == 'vendedor';
+    }
+    
+    function isClient() {
+      return isAuthenticated() && request.auth.token.role == 'cliente';
+    }
+    
+    function isValidImage() {
+      return request.resource.contentType.matches('image/.*')
+             && request.resource.size < 10 * 1024 * 1024; // 10MB
+    }
+    
+    function isValidDocument() {
+      return request.resource.size < 20 * 1024 * 1024; // 20MB
+    }
+
+    // Rules
+    
+    match /boats/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidImage();
+    }
+    
+    match /documents/{clientUid}/{allPaths=**} {
+      allow read: if isAdmin() || isVendor() || (isAuthenticated() && request.auth.uid == clientUid);
+      allow write: if (isAdmin() || isVendor()) && isValidDocument();
+    }
+  }
+}

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Náutica Aire Libre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/auth.css">
+    <style>
+        body { padding-top: 70px; }
+        .dashboard-layout { display: flex; min-height: calc(100vh - 70px); }
+        .sidebar {
+            width: 240px; background: rgba(8,13,24,0.95);
+            border-right: 1px solid rgba(240,244,248,0.08);
+            padding: 24px 16px; flex-shrink: 0;
+        }
+        .sidebar-title {
+            font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.15em;
+            color: var(--muted); margin-bottom: 16px; padding: 0 12px;
+        }
+        .sidebar nav ul { list-style: none; }
+        .sidebar nav ul li { margin-bottom: 4px; }
+        .sidebar nav ul li a {
+            color: rgba(240,244,248,0.6); text-decoration: none;
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: 8px;
+            font-size: 0.9rem; transition: all 0.2s;
+        }
+        .sidebar nav ul li a:hover { background: rgba(232,123,32,0.1); color: var(--white); }
+        .sidebar nav ul li a.active { background: rgba(232,123,32,0.15); color: var(--orange); }
+        .sidebar nav ul li a .icon { font-size: 1.1rem; width: 24px; text-align: center; }
+        .main-content { flex-grow: 1; padding: 32px; overflow-y: auto; }
+        .main-content h1 {
+            font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem;
+            font-weight: 600; margin-bottom: 4px;
+        }
+        .main-content .subtitle { color: var(--muted); margin-bottom: 28px; }
+        .dashboard-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .stat-card {
+            background: rgba(8,13,24,0.85); border: 1px solid rgba(240,244,248,0.06);
+            border-radius: 12px; padding: 24px; position: relative; overflow: hidden;
+        }
+        .stat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--orange), var(--blue));
+        }
+        .stat-card .icon { font-size: 1.8rem; margin-bottom: 12px; }
+        .stat-card .label { color: var(--muted); font-size: 0.85rem; margin-bottom: 4px; }
+        .stat-card .number {
+            font-family: 'Barlow Condensed', sans-serif; font-size: 2.2rem;
+            font-weight: 700; color: var(--white);
+        }
+        .topbar-user {
+            display: flex; align-items: center; gap: 12px;
+            position: fixed; top: 20px; right: 52px; z-index: 201;
+        }
+        .topbar-user .user-name {
+            color: var(--muted); font-size: 0.85rem;
+        }
+        .topbar-user .user-role {
+            background: rgba(232,123,32,0.15); color: var(--orange);
+            padding: 3px 10px; border-radius: 20px; font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .btn-logout {
+            background: none; border: 1px solid rgba(240,244,248,0.15);
+            color: var(--muted); padding: 6px 14px; border-radius: 6px;
+            cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
+        }
+        .btn-logout:hover { border-color: var(--orange); color: var(--orange); }
+        @media (max-width: 768px) {
+            .dashboard-layout { flex-direction: column; }
+            .sidebar {
+                width: 100%; border-right: none;
+                border-bottom: 1px solid rgba(240,244,248,0.08);
+                padding: 12px;
+            }
+            .sidebar nav ul { display: flex; flex-wrap: wrap; gap: 6px; }
+            .sidebar nav ul li { margin-bottom: 0; }
+            .main-content { padding: 20px; }
+            .topbar-user { top: 18px; right: 16px; }
+            .topbar-user .user-name { display: none; }
+        }
+    </style>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/js/firebase-config.js"></script>
+    <script src="/js/auth.js"></script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar scrolled" style="background: rgba(6,9,15,0.95);">
+        <a href="/" class="navbar-logo">
+            <img src="/images/logo.png" alt="Náutica Aire Libre" />
+        </a>
+        <div class="topbar-user">
+            <span class="user-name" id="userName"></span>
+            <span class="user-role" id="userRole">admin</span>
+            <button class="btn-logout" id="logoutBtn">Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-title">Administración</div>
+            <nav>
+                <ul>
+                    <li><a href="/admin/" class="active"><span class="icon">📊</span> Dashboard</a></li>
+                    <li><a href="#embarcaciones"><span class="icon">🚤</span> Embarcaciones</a></li>
+                    <li><a href="#usuarios"><span class="icon">👥</span> Usuarios</a></li>
+                    <li><a href="#planes"><span class="icon">📋</span> Planes</a></li>
+                    <li><a href="#documentos"><span class="icon">📁</span> Documentos</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content" id="mainContent" style="display:none;">
+            <h1 id="welcomeMsg">Bienvenido</h1>
+            <p class="subtitle">Resumen general del sistema</p>
+
+            <div class="dashboard-cards">
+                <div class="stat-card">
+                    <div class="icon">🚤</div>
+                    <div class="label">Total Embarcaciones</div>
+                    <div class="number" id="totalBoats">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">👥</div>
+                    <div class="label">Total Usuarios</div>
+                    <div class="number" id="totalUsers">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">📋</div>
+                    <div class="label">Planes Activos</div>
+                    <div class="number" id="activePlans">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">📁</div>
+                    <div class="label">Documentos</div>
+                    <div class="number" id="totalDocs">—</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const user = await authModule.requireAuth(['admin']);
+                // User is authenticated and is admin
+                document.getElementById('userName').textContent = user.displayName || user.email;
+                document.getElementById('welcomeMsg').textContent = `Bienvenido, ${user.displayName || 'Administrador'}`;
+                document.getElementById('mainContent').style.display = 'block';
+
+                // Load dashboard stats from Firestore
+                try {
+                    const boatsSnap = await db.collection('boats').get();
+                    document.getElementById('totalBoats').textContent = boatsSnap.size;
+
+                    const usersSnap = await db.collection('users').get();
+                    document.getElementById('totalUsers').textContent = usersSnap.size;
+
+                    const plansSnap = await db.collection('plans').where('status', '==', 'activo').get();
+                    document.getElementById('activePlans').textContent = plansSnap.size;
+
+                    const docsSnap = await db.collection('documents').get();
+                    document.getElementById('totalDocs').textContent = docsSnap.size;
+                } catch (err) {
+                    console.log('Firestore collections not yet created:', err.message);
+                    document.getElementById('totalBoats').textContent = '0';
+                    document.getElementById('totalUsers').textContent = '0';
+                    document.getElementById('activePlans').textContent = '0';
+                    document.getElementById('totalDocs').textContent = '0';
+                }
+            } catch (error) {
+                console.error('Auth error:', error);
+            }
+
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                authModule.logout();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.role == 'admin';
+    }
+    
+    function isVendor() {
+      return isAuthenticated() && request.auth.token.role == 'vendedor';
+    }
+    
+    function isClient() {
+      return isAuthenticated() && request.auth.token.role == 'cliente';
+    }
+    
+    function userBranch() {
+      return request.auth.token.branch;
+    }
+    
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    // Collections rules
+    
+    match /users/{userId} {
+      allow read, write: if isAdmin();
+      allow read: if isOwner(userId);
+    }
+    
+    match /boats/{boatId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /brands/{brandId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /plans/{planId} {
+      allow read: if isAdmin() || (isVendor() && resource.data.branch == userBranch()) || (isClient() && resource.data.clientUid == request.auth.uid);
+      allow create, update: if isAdmin() || (isVendor() && request.resource.data.branch == userBranch());
+      allow delete: if isAdmin();
+    }
+    
+    match /documents/{docId} {
+      allow read: if isAdmin() || (isVendor() && resource.data.branch == userBranch()) || (isClient() && resource.data.clientUid == request.auth.uid);
+      allow create, update: if isAdmin() || (isVendor() && request.resource.data.branch == userBranch());
+      allow delete: if isAdmin();
+    }
+  }
+}
