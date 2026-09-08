@@ -3,7 +3,7 @@ const firebaseConfig = {
   apiKey: 'AIza_YOUR_API_KEY_HERE',
   authDomain: 'nautica-aire-libre.firebaseapp.com',
   projectId: 'nautica-aire-libre',
-  storageBucket: 'nautica-aire-libre.appspot.com',
+  storageBucket: 'nautica-aire-libre.firebasestorage.app',
   messagingSenderId: '000000000000',
   appId: '1:000000000000:web:0000000000000000'
 };

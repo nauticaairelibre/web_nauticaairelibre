@@ -3,57 +3,84 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper functions
+    // Helper: check if user is authenticated
     function isAuthenticated() {
       return request.auth != null;
     }
-    
+
+    // Helper: get the user's role from their profile document
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    // Helper: get the user's branch from their profile document
+    function getUserBranch() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.branch;
+    }
+
+    // Role check helpers
     function isAdmin() {
-      return isAuthenticated() && request.auth.token.role == 'admin';
+      return isAuthenticated() && getUserRole() == 'admin';
     }
-    
+
     function isVendor() {
-      return isAuthenticated() && request.auth.token.role == 'vendedor';
+      return isAuthenticated() && getUserRole() == 'vendedor';
     }
-    
+
     function isClient() {
-      return isAuthenticated() && request.auth.token.role == 'cliente';
+      return isAuthenticated() && getUserRole() == 'cliente';
     }
-    
-    function userBranch() {
-      return request.auth.token.branch;
-    }
-    
+
     function isOwner(uid) {
       return isAuthenticated() && request.auth.uid == uid;
     }
 
-    // Collections rules
-    
+    // ═══ USERS collection ═══
+    // Admin: full access
+    // Users: can read their own profile, can create their own on signup
     match /users/{userId} {
-      allow read, write: if isAdmin();
-      allow read: if isOwner(userId);
+      allow read: if isAdmin() || isOwner(userId);
+      allow create: if isAuthenticated() && request.auth.uid == userId
+        && request.resource.data.role == 'cliente';
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
     }
-    
+
+    // ═══ BOATS collection ═══
+    // Public read, admin write
     match /boats/{boatId} {
       allow read: if true;
       allow write: if isAdmin();
     }
-    
+
+    // ═══ BRANDS collection ═══
+    // Public read, admin write
     match /brands/{brandId} {
       allow read: if true;
       allow write: if isAdmin();
     }
-    
+
+    // ═══ PLANS collection ═══
+    // Admin: full access
+    // Vendedor: read/write own branch
+    // Cliente: read own plans
     match /plans/{planId} {
-      allow read: if isAdmin() || (isVendor() && resource.data.branch == userBranch()) || (isClient() && resource.data.clientUid == request.auth.uid);
-      allow create, update: if isAdmin() || (isVendor() && request.resource.data.branch == userBranch());
+      allow read: if isAdmin()
+        || (isVendor() && resource.data.branch == getUserBranch())
+        || (isClient() && resource.data.clientUid == request.auth.uid);
+      allow create, update: if isAdmin()
+        || (isVendor() && request.resource.data.branch == getUserBranch());
       allow delete: if isAdmin();
     }
-    
+
+    // ═══ DOCUMENTS collection ═══
+    // Same pattern as plans
     match /documents/{docId} {
-      allow read: if isAdmin() || (isVendor() && resource.data.branch == userBranch()) || (isClient() && resource.data.clientUid == request.auth.uid);
-      allow create, update: if isAdmin() || (isVendor() && request.resource.data.branch == userBranch());
+      allow read: if isAdmin()
+        || (isVendor() && resource.data.branch == getUserBranch())
+        || (isClient() && resource.data.clientUid == request.auth.uid);
+      allow create, update: if isAdmin()
+        || (isVendor() && request.resource.data.branch == getUserBranch());
       allow delete: if isAdmin();
     }
   }
