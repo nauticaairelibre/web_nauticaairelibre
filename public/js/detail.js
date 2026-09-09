@@ -1063,11 +1063,12 @@
       waMsg: "Hola! Quisiera obtener información y cotización sobre la lancha usada Klase A K210 Año 2023 con Mercury 150HP por USD 38.000.",
       isMotor: false,
       specs: [
-        { label: "Precio", value: "USD 38.000", svgPath: "M12 8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 14c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
         { label: "Año", value: "2023", svgPath: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" },
         { label: "Horas de Uso", value: "74 hs", svgPath: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" },
         { label: "Motor", value: "Mercury 150 HP 4T", svgPath: "M13 10V3L4 14h7v7l9-11h-7z" },
-        { label: "Tráiler", value: "Un Eje Reforzado", svgPath: "M8 9h8m-8 4h8m-9 4h10a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" }
+        { label: "Tráiler", value: "Un Eje Reforzado", svgPath: "M8 9h8m-8 4h8m-9 4h10a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" },
+        { label: "Condición", value: "Impecable", svgPath: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
+        { label: "Equipamiento", value: "Deportiva Premium", svgPath: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" }
       ],
       gallery: [
         { src: '/img/klasea-gal-3.webp', tag: 'Perfil Proa' },
@@ -1104,7 +1105,6 @@
       waMsg: "Hola! Quisiera obtener información y consultar sobre el casco usado Sportcraft 1600 Año 2015 por USD 4.800.",
       isMotor: false,
       specs: [
-        { label: "Precio", value: "USD 4.800", svgPath: "M12 8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 14c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
         { label: "Año", value: "2015", svgPath: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" },
         { label: "Eslora", value: "4.86<sup>m</sup>", svgPath: "M3 12h18M3 12l3-3m-3 3l3 3m15-3l-3-3m3 3l-3 3M9 8v2M15 8v2" },
         { label: "Manga", value: "2.16<sup>m</sup>", svgPath: "M12 3v18M12 3l-3 3m3-3l3 3m-3 15l-3-3m3 3l3-3M8 9h2M8 15h2" },
@@ -1145,7 +1145,6 @@
       waMsg: "Hola! Quisiera obtener información y cotización sobre la lancha usada Cargo Open 620 Año 2015 con Mariner 75HP por USD 11.500.",
       isMotor: false,
       specs: [
-        { label: "Precio", value: "USD 11.500", svgPath: "M12 8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 14c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
         { label: "Año", value: "2015", svgPath: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" },
         { label: "Motor", value: "Mariner 75 HP 4T", svgPath: "M13 10V3L4 14h7v7l9-11h-7z" },
         { label: "Eslora", value: "6.20<sup>m</sup>", svgPath: "M3 12h18M3 12l3-3m-3 3l3 3m15-3l-3-3m3 3l-3 3M9 8v2M15 8v2" },
@@ -1184,8 +1183,8 @@
       waMsg: "Hola! Quisiera obtener información y consultar sobre la lancha usada Moody Sport 160M con Suzuki 40HP por USD 8.100.",
       isMotor: false,
       specs: [
-        { label: "Precio", value: "USD 8.100", svgPath: "M12 8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 14c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
-        { label: "Casco / Tráiler", value: "Año 2024", svgPath: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" },
+        { label: "Año", value: "2024", svgPath: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" },
+        { label: "Casco / Tráiler", value: "Homologado 0km", svgPath: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
         { label: "Motor", value: "Suzuki 40 HP 2T (2010)", svgPath: "M13 10V3L4 14h7v7l9-11h-7z" },
         { label: "Piso", value: "Matrizado", svgPath: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
         { label: "Ecosonda", value: "Garmin", svgPath: "M9 19V6l12-3v13M9 10h12M9 21a3 3 0 11-6-0 3 3 0 016-0zm12-3a3 3 0 11-6 0 3 3 0 016 0z" },
@@ -1307,8 +1306,8 @@
         { label: "Año", value: "2010", svgPath: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" },
         { label: "Tracción", value: "4x4 Integrada", svgPath: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
         { label: "Kilometraje", value: "218.000 km", svgPath: "M12 8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 14c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
-        { label: "Precio Contado", value: "$18.000.000", svgPath: "M12 8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 14c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
-        { label: "Precio Lista", value: "$21.600 USD", svgPath: "M12 8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 14c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
+        { label: "Motorización", value: "2.0 BiTDI Turbodiésel", svgPath: "M13 10V3L4 14h7v7l9-11h-7z" },
+        { label: "Condición", value: "Excelente Estado", svgPath: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
         { label: "Transmisión", value: "Manual", svgPath: "M12 3v18M3 12h18m-5.64-5.64l11.28 11.28m-11.28 0L17.64 6.36" }
       ],
       gallery: [
@@ -1339,7 +1338,7 @@
       waMsg: "Hola! Quisiera obtener información y cotización sobre la lancha usada Dorado 550 con Casco Nuevo y Yamaha 50HP por USD 6.000.",
       isMotor: false,
       specs: [
-        { label: "Precio", value: "USD 6.000", svgPath: "M12 8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 14c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
+        { label: "Año", value: "2024 (0km)", svgPath: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" },
         { label: "Casco", value: "Nuevo (0km)", svgPath: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
         { label: "Motor", value: "Yamaha 50 HP 4T (2004)", svgPath: "M13 10V3L4 14h7v7l9-11h-7z" },
         { label: "Tráiler", value: "No incluye", svgPath: "M6 18L18 6M6 6l12 12" },
@@ -1374,7 +1373,7 @@
       waMsg: "Hola! Quisiera obtener información y cotización sobre la lancha usada Canestrari 165 con Mercury 90HP por USD 19.000.",
       isMotor: false,
       specs: [
-        { label: "Precio", value: "USD 19.000", svgPath: "M12 8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 14c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
+        { label: "Año", value: "2017", svgPath: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" },
         { label: "Condición", value: "Usada Seleccionada", svgPath: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
         { label: "Motor", value: "Mercury 90 HP 4T", svgPath: "M13 10V3L4 14h7v7l9-11h-7z" },
         { label: "Tráiler", value: "No incluido", svgPath: "M6 18L18 6M6 6l12 12" },
