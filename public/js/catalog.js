@@ -143,6 +143,15 @@
     }
   });
 
+  // Bermuda exclusivity check (sold exclusively in Posadas, Misiones)
+  const isBermudaBrand = (brand === 'bermuda');
+
+  // Hide or show Resistencia (Chaco) branch contacts
+  const resistenciaElements = document.querySelectorAll('[data-phone="543625455852"]');
+  resistenciaElements.forEach(el => {
+    el.style.display = isBermudaBrand ? 'none' : '';
+  });
+
   // Branch Selection Modal Setup (for CTA buttons)
   const branchModalWrap = document.getElementById('branchModalWrap');
   const branchModalClose = document.getElementById('branchModalClose');
@@ -157,6 +166,9 @@
       if (contextSub) {
         modalPrice.textContent = contextSub;
         modalPrice.style.display = 'inline-block';
+      } else if (isBermudaBrand) {
+        modalPrice.textContent = 'Posadas · Misiones';
+        modalPrice.style.display = 'inline-block';
       } else {
         modalPrice.textContent = '';
         modalPrice.style.display = 'none';
@@ -167,6 +179,9 @@
     modalLinks.forEach(item => {
       const phone = item.dataset.phone;
       if (phone) item.href = `https://wa.me/${phone}?text=${msgToUse}`;
+      if (phone === '543625455852') {
+        item.style.display = isBermudaBrand ? 'none' : '';
+      }
     });
     branchModalWrap.classList.add('open');
     branchModalWrap.setAttribute('aria-hidden', 'false');
