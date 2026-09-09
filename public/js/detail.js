@@ -1547,6 +1547,65 @@
     }
   });
 
+  // Branch Selection Modal Setup (for CTA buttons)
+  const branchModalWrap = document.getElementById('branchModalWrap');
+  const branchModalClose = document.getElementById('branchModalClose');
+  const branchModalBackdrop = document.getElementById('branchModalBackdrop');
+  const modalModel = document.getElementById('branchModalModel');
+  const modalPrice = document.getElementById('branchModalPrice');
+
+  if (modalModel) modalModel.textContent = info.name;
+  if (modalPrice) {
+    const displayPriceVal = info.price || info.usdPrice;
+    if (displayPriceVal) {
+      modalPrice.textContent = displayPriceVal;
+      modalPrice.style.display = 'inline-block';
+    } else {
+      modalPrice.textContent = '';
+      modalPrice.style.display = 'none';
+    }
+  }
+
+  function openBranchModal(customMsg) {
+    if (!branchModalWrap) return;
+    const msgToUse = customMsg ? encodeURIComponent(customMsg) : whatsappMsg;
+    const modalLinks = branchModalWrap.querySelectorAll('.branch-modal-item');
+    modalLinks.forEach(item => {
+      const phone = item.dataset.phone;
+      if (phone) item.href = `https://wa.me/${phone}?text=${msgToUse}`;
+    });
+    branchModalWrap.classList.add('open');
+    branchModalWrap.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeBranchModal() {
+    if (!branchModalWrap) return;
+    branchModalWrap.classList.remove('open');
+    branchModalWrap.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (branchModalClose) {
+    branchModalClose.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeBranchModal();
+    });
+  }
+  if (branchModalBackdrop) {
+    branchModalBackdrop.addEventListener('click', closeBranchModal);
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeBranchModal();
+  });
+
+  const branchModalLinks = document.querySelectorAll('.branch-modal-item');
+  branchModalLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      closeBranchModal();
+    });
+  });
+
   const heroCta = document.getElementById('detailHeroCta');
   if (heroCta) {
     heroCta.href = `${baseWhatsAppUrl}?text=${whatsappMsg}`;
@@ -1564,6 +1623,11 @@
       heroCta.classList.remove('btn-has-price');
       heroCta.innerHTML = `Consultar precio <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
     }
+
+    heroCta.addEventListener('click', (e) => {
+      e.preventDefault();
+      openBranchModal();
+    });
   }
 
   const descCta = document.getElementById('detailDescCta');
@@ -1606,6 +1670,10 @@
         cashBtn.style.background = 'var(--orange)';
         cashBtn.style.color = 'var(--deep)';
       };
+      cashBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openBranchModal("Hola! Quisiera consultar por el " + info.name + " al precio de Contado Efectivo de " + info.cashPrice);
+      });
 
       // USD price button (outlined / info style)
       const usdBtn = document.createElement('a');
@@ -1636,6 +1704,10 @@
         usdBtn.style.background = 'transparent';
         usdBtn.style.borderColor = 'rgba(255, 255, 255, 0.2)';
       };
+      usdBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openBranchModal("Hola! Quisiera consultar por el " + info.name + " al precio de " + info.usdPrice);
+      });
 
       // Standard WhatsApp button (standard outlined)
       const waBtn = document.createElement('a');
@@ -1647,6 +1719,10 @@
         Consultar disponibilidad
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 13px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       `;
+      waBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openBranchModal();
+      });
 
       btnContainer.appendChild(cashBtn);
       btnContainer.appendChild(usdBtn);
@@ -1670,6 +1746,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         `;
       }
+      descCta.addEventListener('click', (e) => {
+        e.preventDefault();
+        openBranchModal();
+      });
       const existingContainer = descCta.parentElement.querySelector('.custom-price-buttons');
       if (existingContainer) existingContainer.remove();
     }
