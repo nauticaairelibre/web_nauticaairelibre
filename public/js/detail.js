@@ -1054,6 +1054,7 @@
       pdfUrl: "/img/usado-klasea.webp",
       videoId: "hP2lxkVC01I",
       videoPoster: "/img/klasea-gal-2.webp",
+      price: "USD 38.000",
       description: [
         "Presentamos la Klase A K210 Año 2023, una embarcación deportiva de excelencia en estado impecable. Está motorizada con un motor fuera de borda Mercury de 150 HP de 4 tiempos con tan solo 74 horas de uso, conformando un equipo año 2023 listo para disfrutar de la navegación sin preocupaciones.",
         "Esta unidad viene equipada con un tráiler reglamentario de un eje reforzado, ideal para el traslado terrestre seguro. Su equipamiento de a bordo incluye relojería completa, ecosonda, sistema de estéreo con 4 parlantes, barra de esquí, mesa en cockpit, escalera de popa y luces de cortesía para paseos nocturnos.",
@@ -1094,6 +1095,7 @@
       ghostText: "Sportcraft 1600",
       heroPhoto: "/img/sportcraft-gal-4.webp",
       pdfUrl: "/img/usado-sportcraft1600.webp",
+      price: "USD 4.800",
       description: [
         "Ofrecemos a la venta la embarcación deportiva Sportcraft 1600, año 2015, en condición de usada seleccionada. Esta unidad se vende únicamente como casco (sin motor y sin tráiler), conformando una base excelente y en muy buen estado de conservación para equipar a gusto.",
         "Presenta unas dimensiones de 4.86 metros de eslora, 2.16 metros de manga y 0.90 metros de puntal, permitiendo la instalación de motores fuera de borda de hasta 115 HP de potencia máxima.",
@@ -1134,6 +1136,7 @@
       pdfUrl: "/img/usado-cargo620.webp",
       videoId: "J09fYRTC9q0",
       videoPoster: "/img/usado-cargo620.webp",
+      price: "USD 11.500",
       description: [
         "Presentamos la Cargo Open 620 Año 2015, una embarcación de excelente rendimiento y comodidad en estado impecable. Está motorizada con un motor fuera de borda Mariner de 75 HP de 4 tiempos (4T) año 2015, ofreciendo una navegación suave y económica.",
         "Cuenta con unas dimensiones muy cómodas para el río, destacando su manga de 1.95 metros y un puntal de 0.90 metros, con una capacidad habilitada para transportar de forma segura hasta 8 personas.",
@@ -1172,6 +1175,7 @@
       ghostText: "Sport 160M",
       heroPhoto: "/img/sport160m-gal-1.webp",
       pdfUrl: "/img/usado-sport160m.webp",
+      price: "USD 8.100",
       description: [
         "No dejes pasar esta excelente oportunidad, ¡es la última unidad disponible! Ofrecemos la lancha deportiva Moody Sport 160M con casco y tráiler impecable homologado del año 2024, motorizada con un Suzuki de 40 HP de 2 tiempos (2T) del año 2010.",
         "La embarcación se encuentra lista para navegar y cuenta con tapicería en excelente estado en tonos grises y blancos con costura romboidal y vivos rojos. Su piso es de tipo matrizado, facilitando el mantenimiento y brindando una terminación de alta gama.",
@@ -1322,19 +1326,20 @@
       category: "Embarcación deportiva usada",
       line1: "Dorado",
       line2: "550",
-      ruleText: "Casco Nuevo · Motor Yamaha 50HP 4T (2004) · USD 10.000",
+      ruleText: "Casco Nuevo · Motor Yamaha 50HP 4T (2004) · USD 6.000",
       ghostText: "Dorado 550",
       heroPhoto: "/img/dorado-gal-1.webp",
       pdfUrl: "/img/usado-dorado550.webp",
+      price: "USD 6.000",
       description: [
         "¡No dejes pasar esta excelente oportunidad, es la última unidad disponible! Presentamos la Dorado 550 con casco nuevo 0km y motorización fuera de borda Yamaha de 50 HP de 4 tiempos (4T) año 2004.",
         "La combinación perfecta de una estructura a estrenar con la confiabilidad legendaria del motor Yamaha 50HP, ideal para paseos, navegación en río y salidas de pesca con un consumo de combustible sumamente bajo.",
         "Nota importante: El precio no incluye tráiler de transporte. La lancha se encuentra lista para navegar, ofreciendo un amplio cockpit abierto con distribución funcional y tapizados a estrenar."
       ],
-      waMsg: "Hola! Quisiera obtener información y cotización sobre la lancha usada Dorado 550 con Casco Nuevo y Yamaha 50HP por USD 10.000.",
+      waMsg: "Hola! Quisiera obtener información y cotización sobre la lancha usada Dorado 550 con Casco Nuevo y Yamaha 50HP por USD 6.000.",
       isMotor: false,
       specs: [
-        { label: "Precio", value: "USD 10.000", svgPath: "M12 8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 14c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
+        { label: "Precio", value: "USD 6.000", svgPath: "M12 8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 14c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
         { label: "Casco", value: "Nuevo (0km)", svgPath: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
         { label: "Motor", value: "Yamaha 50 HP 4T (2004)", svgPath: "M13 10V3L4 14h7v7l9-11h-7z" },
         { label: "Tráiler", value: "No incluye", svgPath: "M6 18L18 6M6 6l12 12" },
@@ -1356,18 +1361,20 @@
       category: "Embarcación deportiva usada",
       line1: "Canestrari",
       line2: "165",
-      ruleText: "Deportiva completa · Equipada con Mercury 90HP 4T",
+      ruleText: "Deportiva completa · Mercury 90HP 4T · USD 19.000",
       ghostText: "Canestrari 165",
       heroPhoto: "/img/usado-canestrari165.webp",
       pdfUrl: "/img/usado-canestrari165.webp",
+      price: "USD 19.000",
       description: [
         "La Canestrari 165 es un clásico del astillero, reconocida por su excelente calidad de construcción y su navegación deportiva suave y divertida.",
         "Esta unidad, en condición usada seleccionada, cuenta con un motor fuera de borda Mercury de 90 HP de 4 tiempos (4T), garantizando un consumo bajo y una gran respuesta de potencia.",
         "Nota: La lancha no incluye tráiler. Cuenta con equipamiento deportivo completo y butacas confortables para disfrutar de largas jornadas en el agua de forma segura."
       ],
-      waMsg: "Hola! Quisiera obtener información y cotización sobre la lancha usada Canestrari 165 con Mercury 90HP.",
+      waMsg: "Hola! Quisiera obtener información y cotización sobre la lancha usada Canestrari 165 con Mercury 90HP por USD 19.000.",
       isMotor: false,
       specs: [
+        { label: "Precio", value: "USD 19.000", svgPath: "M12 8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 14c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" },
         { label: "Condición", value: "Usada Seleccionada", svgPath: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
         { label: "Motor", value: "Mercury 90 HP 4T", svgPath: "M13 10V3L4 14h7v7l9-11h-7z" },
         { label: "Tráiler", value: "No incluido", svgPath: "M6 18L18 6M6 6l12 12" },
@@ -1476,6 +1483,18 @@
   modelsDB['doble-deck'] = modelsDB.drakkar26dobledeck;
   modelsDB.dobledeck = modelsDB.drakkar26dobledeck;
   modelsDB.drakkar26dd = modelsDB.drakkar26dobledeck;
+  modelsDB.k210 = modelsDB.klasea;
+  modelsDB.klasek210 = modelsDB.klasea;
+  modelsDB['klase-a'] = modelsDB.klasea;
+  modelsDB['klase-a-k210'] = modelsDB.klasea;
+  modelsDB.cargoopen620 = modelsDB.cargo620;
+  modelsDB['cargo-620'] = modelsDB.cargo620;
+  modelsDB['cargo-open-620'] = modelsDB.cargo620;
+  modelsDB['sport-160m'] = modelsDB.sport160m;
+  modelsDB['sport160'] = modelsDB.sport160m;
+  modelsDB['sportcraft-1600'] = modelsDB.sportcraft1600;
+  modelsDB['canestrari-165'] = modelsDB.canestrari165;
+  modelsDB['dorado-550'] = modelsDB.dorado550;
 
   /* ══ DYNAMIC CONTENT LOADING ═════════════════════════════ */
   const urlParams = new URLSearchParams(window.location.search);
@@ -1530,7 +1549,16 @@
   });
 
   const heroCta = document.getElementById('detailHeroCta');
-  if (heroCta) heroCta.href = `${baseWhatsAppUrl}?text=${whatsappMsg}`;
+  if (heroCta) {
+    heroCta.href = `${baseWhatsAppUrl}?text=${whatsappMsg}`;
+    if (info.price) {
+      heroCta.innerHTML = `Precio: ${info.price} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+    } else if (info.usdPrice) {
+      heroCta.innerHTML = `Precio: ${info.usdPrice} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+    } else {
+      heroCta.innerHTML = `Consultar precio <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+    }
+  }
 
   const descCta = document.getElementById('detailDescCta');
   if (descCta) {
@@ -1626,6 +1654,9 @@
     } else {
       descCta.style.display = 'inline-flex';
       descCta.href = `${baseWhatsAppUrl}?text=${whatsappMsg}`;
+      if (info.price) {
+        descCta.innerHTML = `Precio: ${info.price} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 13px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+      }
       const existingContainer = descCta.parentElement.querySelector('.custom-price-buttons');
       if (existingContainer) existingContainer.remove();
     }
