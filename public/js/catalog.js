@@ -133,6 +133,97 @@
     heroPhoto.style.backgroundImage = `url('${info.heroBg || "/images/bg-boat.jpg"}')`;
   }
 
+  // Update floating WhatsApp widget and modal items with current brand context
+  const whatsappMsg = encodeURIComponent(info.waMsg || ("Hola! Quisiera consultar sobre " + info.name));
+  const waItems = document.querySelectorAll('.wa-item, .nav-contact-item');
+  waItems.forEach(item => {
+    const phone = item.dataset.phone;
+    if (phone) {
+      item.href = `https://wa.me/${phone}?text=${whatsappMsg}`;
+    }
+  });
+
+  // Branch Selection Modal Setup (for CTA buttons)
+  const branchModalWrap = document.getElementById('branchModalWrap');
+  const branchModalClose = document.getElementById('branchModalClose');
+  const branchModalBackdrop = document.getElementById('branchModalBackdrop');
+  const modalModel = document.getElementById('branchModalModel');
+  const modalPrice = document.getElementById('branchModalPrice');
+
+  function openBranchModal(contextTitle, contextSub, customMsg) {
+    if (!branchModalWrap) return;
+    if (modalModel && contextTitle) modalModel.textContent = contextTitle;
+    if (modalPrice) {
+      if (contextSub) {
+        modalPrice.textContent = contextSub;
+        modalPrice.style.display = 'inline-block';
+      } else {
+        modalPrice.textContent = '';
+        modalPrice.style.display = 'none';
+      }
+    }
+    const msgToUse = customMsg ? encodeURIComponent(customMsg) : whatsappMsg;
+    const modalLinks = branchModalWrap.querySelectorAll('.branch-modal-item');
+    modalLinks.forEach(item => {
+      const phone = item.dataset.phone;
+      if (phone) item.href = `https://wa.me/${phone}?text=${msgToUse}`;
+    });
+    branchModalWrap.classList.add('open');
+    branchModalWrap.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeBranchModal() {
+    if (!branchModalWrap) return;
+    branchModalWrap.classList.remove('open');
+    branchModalWrap.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (branchModalClose) {
+    branchModalClose.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeBranchModal();
+    });
+  }
+  if (branchModalBackdrop) {
+    branchModalBackdrop.addEventListener('click', closeBranchModal);
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeBranchModal();
+  });
+
+  const branchModalLinks = document.querySelectorAll('.branch-modal-item');
+  branchModalLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      closeBranchModal();
+    });
+  });
+
+  // Lancha Plan CTA Button
+  const lanchaplanCtaBtn = document.getElementById('lanchaplanCtaBtn') || document.querySelector('.lanchaplan-cta-btn');
+  if (lanchaplanCtaBtn) {
+    lanchaplanCtaBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openBranchModal(
+        "NUEVO LANCHA PLAN",
+        "PLAN 80/20 · 36 CUOTAS",
+        "Hola! Quisiera consultar por el NUEVO LANCHA PLAN (Plan 80/20 en 36 cuotas) para adquirir una embarcación."
+      );
+    });
+  }
+
+  if (comingSoonWhatsAppBtn) {
+    comingSoonWhatsAppBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openBranchModal(
+        info.name,
+        "",
+        info.waMsg || ("Hola! Quisiera consultar sobre " + info.name)
+      );
+    });
+  }
+
   const promocionesContainer = document.getElementById('promocionesContainer');
   const promoLightbox = document.getElementById('promoLightbox');
   const lightboxImg = document.getElementById('lightboxImg');

@@ -450,6 +450,82 @@ body {
   100% { transform: scale(1.6); opacity: 0;   }
 }
 
+/* ══ MODAL SUCURSALES (DESDE BOTONES CTA) ═══════════════════ */
+.branch-modal-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.branch-modal-wrap.open {
+  opacity: 1;
+  visibility: visible;
+}
+.branch-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 7, 12, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.branch-modal {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 380px;
+  background: rgba(14, 21, 33, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.85), 0 0 30px rgba(232, 123, 32, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transform: scale(0.92) translateY(12px);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.branch-modal-wrap.open .branch-modal {
+  transform: scale(1) translateY(0);
+}
+.branch-modal-context {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(232, 123, 32, 0.08);
+  border: 1px solid rgba(232, 123, 32, 0.25);
+  border-radius: 12px;
+  margin-bottom: 4px;
+}
+.bmc-model {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #fff;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bmc-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--orange);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
 /* Menú hamburguesa (toggle) */
 .menu-toggle {
   display: none;
