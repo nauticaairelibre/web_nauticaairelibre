@@ -1551,11 +1551,18 @@
   const heroCta = document.getElementById('detailHeroCta');
   if (heroCta) {
     heroCta.href = `${baseWhatsAppUrl}?text=${whatsappMsg}`;
-    if (info.price) {
-      heroCta.innerHTML = `Precio: ${info.price} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
-    } else if (info.usdPrice) {
-      heroCta.innerHTML = `Precio: ${info.usdPrice} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+    const displayPrice = info.price || info.usdPrice;
+    if (displayPrice) {
+      heroCta.classList.add('btn-has-price');
+      heroCta.innerHTML = `
+        <span class="cta-price-stack">
+          <span class="cta-price-label">PRECIO</span>
+          <span class="cta-price-val">${displayPrice}</span>
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      `;
     } else {
+      heroCta.classList.remove('btn-has-price');
       heroCta.innerHTML = `Consultar precio <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
     }
   }
@@ -1655,7 +1662,14 @@
       descCta.style.display = 'inline-flex';
       descCta.href = `${baseWhatsAppUrl}?text=${whatsappMsg}`;
       if (info.price) {
-        descCta.innerHTML = `Precio: ${info.price} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 13px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+        descCta.classList.add('btn-has-price');
+        descCta.innerHTML = `
+          <span class="cta-price-stack">
+            <span class="cta-price-label">PRECIO</span>
+            <span class="cta-price-val">${info.price}</span>
+          </span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        `;
       }
       const existingContainer = descCta.parentElement.querySelector('.custom-price-buttons');
       if (existingContainer) existingContainer.remove();
