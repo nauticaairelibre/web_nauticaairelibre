@@ -133,6 +133,11 @@
     heroPhoto.style.backgroundImage = `url('${info.heroBg || "/images/bg-boat.jpg"}')`;
   }
 
+  // Analytics: Track category view in GA4 / dataLayer
+  if (window.NauticaAnalytics) {
+    window.NauticaAnalytics.trackCategoryView(info.name);
+  }
+
   // Update floating WhatsApp widget and modal items with current brand context
   const whatsappMsg = encodeURIComponent(info.waMsg || ("Hola! Quisiera consultar sobre " + info.name));
   const waItems = document.querySelectorAll('.wa-item, .nav-contact-item');

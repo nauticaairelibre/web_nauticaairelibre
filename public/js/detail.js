@@ -1503,6 +1503,17 @@
   // Update Document metadata
   document.title = `${info.name} — Náutica Aire Libre`;
 
+  // Analytics: Track view_item in GA4 / dataLayer
+  if (window.NauticaAnalytics) {
+    window.NauticaAnalytics.trackViewItem({
+      name: info.name,
+      brand: info.brand,
+      category: info.category,
+      price: info.price || info.usdPrice || null,
+      isUsed: Boolean(info.price || modelKey.includes('usad'))
+    });
+  }
+
   // Update Hero Section
   const ghost = document.getElementById('detailHeroGhost');
   if (ghost) ghost.textContent = info.ghostText || info.name;
