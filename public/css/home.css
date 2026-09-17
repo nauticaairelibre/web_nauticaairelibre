@@ -189,6 +189,15 @@
         drop-shadow(0 0 38px rgba(232,123,32,0.22))
         brightness(1.15);
     }
+    .brand-cell:hover .brand-logo-usados,
+    .brand-cell:hover .brand-logo-automoviles {
+      transform: scale(1.1);
+      filter:
+        invert(1)
+        drop-shadow(0 0 18px rgba(90,173,207,0.55))
+        drop-shadow(0 0 38px rgba(232,123,32,0.22))
+        brightness(1.15);
+    }
     .brand-cell:hover .brand-logo-mercury {
       transform: scale(1.26);
     }
