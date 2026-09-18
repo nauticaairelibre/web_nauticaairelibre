@@ -12,10 +12,10 @@
   'use strict';
 
   /* ══ 1. CONFIGURACIÓN GLOBAL ══════════════════════════════════════ */
-  // Colocar aquí tus IDs cuando los crees o recibas:
+  // IDs oficiales configurados para Náutica Aire Libre:
   const ANALYTICS_CONFIG = {
-    gtmId: 'GTM-XXXXXXX',      // Reemplazar por tu ID de GTM (ej: GTM-ABC1234)
-    ga4Id: 'G-XXXXXXXXXX',     // Reemplazar por tu ID de GA4 (ej: G-7J8K9L0M)
+    gtmId: 'GTM-WVWN4LR3',     // ID de Google Tag Manager
+    ga4Id: 'G-TMN7R1KNLH',     // ID de medición de Google Analytics 4
     gadsId: 'AW-XXXXXXXXX',    // Opcional: ID de Google Ads (ej: AW-123456789)
     debug: false               // true para ver cada evento en la consola del navegador
   };
@@ -36,7 +36,6 @@
   });
 
   /* ══ 3. INYECCIÓN AUTOMÁTICA DE SCRIPTS (GTM & GA4) ═══════════════ */
-  // Si el usuario ingresa un ID válido que no sea placeholder, se cargan solos
   const isRealGtm = ANALYTICS_CONFIG.gtmId && !ANALYTICS_CONFIG.gtmId.includes('XXXXXXX');
   const isRealGa4 = ANALYTICS_CONFIG.ga4Id && !ANALYTICS_CONFIG.ga4Id.includes('XXXXXXXXXX');
 
@@ -50,7 +49,9 @@
     })(window,document,'script','dataLayer',ANALYTICS_CONFIG.gtmId);
 
     if (ANALYTICS_CONFIG.debug) console.log('[Analytics] GTM cargado con ID:', ANALYTICS_CONFIG.gtmId);
-  } else if (isRealGa4) {
+  }
+
+  if (isRealGa4) {
     const s = document.createElement('script');
     s.async = true;
     s.src = `https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_CONFIG.ga4Id}`;
