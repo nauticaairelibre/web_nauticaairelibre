@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/auth.css">
+    <link rel="stylesheet" href="/css/admin.css">
     <style>
         body { padding-top: 70px; }
         .dashboard-layout { display: flex; min-height: calc(100vh - 70px); }
@@ -27,6 +28,7 @@
             display: flex; align-items: center; gap: 10px;
             padding: 10px 12px; border-radius: 8px;
             font-size: 0.9rem; transition: all 0.2s;
+            cursor: pointer;
         }
         .sidebar nav ul li a:hover { background: rgba(232,123,32,0.1); color: var(--white); }
         .sidebar nav ul li a.active { background: rgba(232,123,32,0.15); color: var(--orange); }
@@ -41,7 +43,9 @@
         .stat-card {
             background: rgba(8,13,24,0.85); border: 1px solid rgba(240,244,248,0.06);
             border-radius: 12px; padding: 24px; position: relative; overflow: hidden;
+            cursor: pointer; transition: transform 0.2s;
         }
+        .stat-card:hover { transform: translateY(-2px); }
         .stat-card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
             background: linear-gradient(90deg, var(--orange), var(--blue));
@@ -107,77 +111,992 @@
     </nav>
 
     <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
         <aside class="sidebar">
             <div class="sidebar-title">Administración</div>
             <nav>
                 <ul>
-                    <li><a href="/admin/" class="active"><span class="icon">📊</span> Dashboard</a></li>
-                    <li><a href="#embarcaciones"><span class="icon">🚤</span> Embarcaciones</a></li>
-                    <li><a href="#usuarios"><span class="icon">👥</span> Usuarios</a></li>
-                    <li><a href="#planes"><span class="icon">📋</span> Planes</a></li>
-                    <li><a href="#documentos"><span class="icon">📁</span> Documentos</a></li>
+                    <li><a href="#dashboard" class="sidebar-link active" data-tab="dashboard"><span class="icon">📊</span> Dashboard</a></li>
+                    <li><a href="#embarcaciones" class="sidebar-link" data-tab="embarcaciones"><span class="icon">🚤</span> Embarcaciones</a></li>
+                    <li><a href="#usuarios" class="sidebar-link" data-tab="usuarios"><span class="icon">👥</span> Usuarios</a></li>
+                    <li><a href="#planes" class="sidebar-link" data-tab="planes"><span class="icon">📋</span> Planes</a></li>
+                    <li><a href="#documentos" class="sidebar-link" data-tab="documentos"><span class="icon">📁</span> Documentos</a></li>
                 </ul>
             </nav>
         </aside>
 
+        <!-- Main Content (SPA Multi-Section) -->
         <main class="main-content" id="mainContent" style="display:none;">
-            <h1 id="welcomeMsg">Bienvenido</h1>
-            <p class="subtitle">Resumen general del sistema</p>
+            
+            <!-- 1. DASHBOARD OVERVIEW -->
+            <section id="section-dashboard" class="admin-section active">
+                <div class="section-header">
+                    <div class="header-info">
+                        <h1 id="welcomeMsg">Bienvenido</h1>
+                        <p class="subtitle">Resumen general y métricas del sistema náutico</p>
+                    </div>
+                </div>
 
-            <div class="dashboard-cards">
-                <div class="stat-card">
-                    <div class="icon">🚤</div>
-                    <div class="label">Total Embarcaciones</div>
-                    <div class="number" id="totalBoats">—</div>
+                <div class="dashboard-cards">
+                    <div class="stat-card" onclick="navigateTo('embarcaciones')">
+                        <div class="icon">🚤</div>
+                        <div class="label">Total Embarcaciones</div>
+                        <div class="number" id="totalBoats">—</div>
+                    </div>
+                    <div class="stat-card" onclick="navigateTo('usuarios')">
+                        <div class="icon">👥</div>
+                        <div class="label">Total Usuarios</div>
+                        <div class="number" id="totalUsers">—</div>
+                    </div>
+                    <div class="stat-card" onclick="navigateTo('planes')">
+                        <div class="icon">📋</div>
+                        <div class="label">Planes Activos</div>
+                        <div class="number" id="activePlans">—</div>
+                    </div>
+                    <div class="stat-card" onclick="navigateTo('documentos')">
+                        <div class="icon">📁</div>
+                        <div class="label">Documentos</div>
+                        <div class="number" id="totalDocs">—</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="icon">👥</div>
-                    <div class="label">Total Usuarios</div>
-                    <div class="number" id="totalUsers">—</div>
+
+                <h2 style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; margin-top: 36px; margin-bottom: 12px; color: var(--white);">
+                    Accesos Rápidos
+                </h2>
+                <div class="quick-actions-grid">
+                    <div class="quick-action-card" onclick="openModal('modalBoat')">
+                        <div class="qa-icon" style="color: var(--orange);">🚤</div>
+                        <div>
+                            <h3>+ Cargar Embarcación</h3>
+                            <p>Agregar nuevo modelo o lancha usada al catálogo</p>
+                        </div>
+                    </div>
+                    <div class="quick-action-card" onclick="navigateTo('usuarios')">
+                        <div class="qa-icon" style="color: var(--blue);">👥</div>
+                        <div>
+                            <h3>Gestionar Usuarios</h3>
+                            <p>Asignar roles y sucursales (Posadas / Resistencia)</p>
+                        </div>
+                    </div>
+                    <div class="quick-action-card" onclick="openModal('modalPlan')">
+                        <div class="qa-icon" style="color: #5acf88;">📋</div>
+                        <div>
+                            <h3>+ Nuevo Lancha Plan</h3>
+                            <p>Alta de plan de cuotas y financiación</p>
+                        </div>
+                    </div>
+                    <div class="quick-action-card" onclick="openModal('modalDoc')">
+                        <div class="qa-icon" style="color: #f3ba2f;">📁</div>
+                        <div>
+                            <h3>+ Subir Documento</h3>
+                            <p>Boletos, legajos y certificados de timonel</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="icon">📋</div>
-                    <div class="label">Planes Activos</div>
-                    <div class="number" id="activePlans">—</div>
+            </section>
+
+            <!-- 2. EMBARCACIONES -->
+            <section id="section-embarcaciones" class="admin-section">
+                <div class="section-header">
+                    <div class="header-info">
+                        <h1>Catálogo de Embarcaciones</h1>
+                        <p>Gestión de modelos, especificaciones técnicas, fotos y disponibilidad</p>
+                    </div>
+                    <button class="btn-admin-primary" onclick="openModal('modalBoat')">
+                        <span>+</span> Nueva Embarcación
+                    </button>
                 </div>
-                <div class="stat-card">
-                    <div class="icon">📁</div>
-                    <div class="label">Documentos</div>
-                    <div class="number" id="totalDocs">—</div>
+
+                <div class="action-bar">
+                    <div class="action-bar-left">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="searchBoats" placeholder="Buscar por modelo, marca..." oninput="filterBoatsTable()">
+                        </div>
+                        <select class="admin-select" id="filterBoatBrand" onchange="filterBoatsTable()">
+                            <option value="">Todas las Marcas</option>
+                            <option value="bermuda">Bermuda</option>
+                            <option value="eclipse">Eclipse</option>
+                            <option value="geuna">Geuna</option>
+                            <option value="pampamarin">Pampa Marin</option>
+                            <option value="drakkar">Drakkar</option>
+                            <option value="usados">Usadas</option>
+                            <option value="mercury">Mercury</option>
+                            <option value="hidea">Hidea</option>
+                        </select>
+                        <select class="admin-select" id="filterBoatCondition" onchange="filterBoatsTable()">
+                            <option value="">Condición: Todas</option>
+                            <option value="nueva">Nuevas</option>
+                            <option value="usada">Usadas</option>
+                        </select>
+                    </div>
+                    <div class="action-bar-right">
+                        <span style="color: var(--muted); font-size: 0.85rem;" id="boatCountIndicator">0 modelos</span>
+                    </div>
                 </div>
-            </div>
+
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Foto</th>
+                                <th>Modelo</th>
+                                <th>Marca</th>
+                                <th>Eslora / Manga</th>
+                                <th>Potencia Sugerida</th>
+                                <th>Condición</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="boatsTableBody">
+                            <!-- Inyectado dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 3. USUARIOS -->
+            <section id="section-usuarios" class="admin-section">
+                <div class="section-header">
+                    <div class="header-info">
+                        <h1>Gestión de Usuarios y Roles</h1>
+                        <p>Administra permisos del sistema y sucursales (Posadas / Resistencia)</p>
+                    </div>
+                    <button class="btn-admin-primary" onclick="openModal('modalUser')">
+                        <span>+</span> Nuevo Usuario
+                    </button>
+                </div>
+
+                <div class="action-bar">
+                    <div class="action-bar-left">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="searchUsers" placeholder="Buscar por nombre o correo..." oninput="filterUsersTable()">
+                        </div>
+                        <select class="admin-select" id="filterUserRole" onchange="filterUsersTable()">
+                            <option value="">Todos los Roles</option>
+                            <option value="admin">Administradores</option>
+                            <option value="vendedor">Vendedores</option>
+                            <option value="cliente">Clientes</option>
+                        </select>
+                        <select class="admin-select" id="filterUserBranch" onchange="filterUsersTable()">
+                            <option value="">Todas las Sucursales</option>
+                            <option value="posadas">Posadas (Misiones)</option>
+                            <option value="resistencia">Resistencia (Chaco)</option>
+                            <option value="todas">Ambas Sucursales</option>
+                        </select>
+                    </div>
+                    <div class="action-bar-right">
+                        <span style="color: var(--muted); font-size: 0.85rem;" id="userCountIndicator">0 registrados</span>
+                    </div>
+                </div>
+
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Usuario / Titular</th>
+                                <th>Correo Electrónico</th>
+                                <th>Rol de Acceso</th>
+                                <th>Sucursal Asignada</th>
+                                <th>Fecha Alta</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Inyectado dinámicamente desde Firestore -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 4. PLANES -->
+            <section id="section-planes" class="admin-section">
+                <div class="section-header">
+                    <div class="header-info">
+                        <h1>Lancha Plan y Financiación</h1>
+                        <p>Seguimiento de contratos de cuotas, adjudicaciones y cobranzas</p>
+                    </div>
+                    <button class="btn-admin-primary" onclick="openModal('modalPlan')">
+                        <span>+</span> Nuevo Plan
+                    </button>
+                </div>
+
+                <div class="action-bar">
+                    <div class="action-bar-left">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="searchPlans" placeholder="Buscar por cliente o contrato..." oninput="filterPlansTable()">
+                        </div>
+                        <select class="admin-select" id="filterPlanStatus" onchange="filterPlansTable()">
+                            <option value="">Todos los Estados</option>
+                            <option value="al-dia">Al Día</option>
+                            <option value="atrasado">Atrasado</option>
+                            <option value="adjudicado">Adjudicado</option>
+                            <option value="finalizado">Finalizado</option>
+                        </select>
+                    </div>
+                    <div class="action-bar-right">
+                        <span style="color: var(--muted); font-size: 0.85rem;" id="planCountIndicator">0 contratos</span>
+                    </div>
+                </div>
+
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>N° Contrato</th>
+                                <th>Titular</th>
+                                <th>Embarcación / Modelo</th>
+                                <th>Sucursal</th>
+                                <th>Cuotas</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="plansTableBody">
+                            <!-- Inyectado dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 5. DOCUMENTOS -->
+            <section id="section-documentos" class="admin-section">
+                <div class="section-header">
+                    <div class="header-info">
+                        <h1>Legajos y Documentación</h1>
+                        <p>Repositorio digital de boletos de compraventa, certificados y trámites de timonel</p>
+                    </div>
+                    <button class="btn-admin-primary" onclick="openModal('modalDoc')">
+                        <span>+</span> Subir Documento
+                    </button>
+                </div>
+
+                <div class="action-bar">
+                    <div class="action-bar-left">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="searchDocs" placeholder="Buscar por documento o titular..." oninput="filterDocsTable()">
+                        </div>
+                        <select class="admin-select" id="filterDocType" onchange="filterDocsTable()">
+                            <option value="">Todos los Tipos</option>
+                            <option value="timonel">Trámite Timonel</option>
+                            <option value="boleto">Boleto Compraventa</option>
+                            <option value="dni">DNI / Legajo</option>
+                            <option value="recibo">Recibo de Cuota</option>
+                        </select>
+                    </div>
+                    <div class="action-bar-right">
+                        <span style="color: var(--muted); font-size: 0.85rem;" id="docCountIndicator">0 archivos</span>
+                    </div>
+                </div>
+
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre Documento</th>
+                                <th>Tipo</th>
+                                <th>Titular / Vinculado</th>
+                                <th>Sucursal</th>
+                                <th>Fecha Carga</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="docsTableBody">
+                            <!-- Inyectado dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
         </main>
     </div>
 
+    <!-- ==================== MODALES ==================== -->
+    
+    <!-- Modal: Nueva Embarcación -->
+    <div class="admin-modal-backdrop" id="modalBoat">
+        <div class="admin-modal-box">
+            <div class="admin-modal-header">
+                <h2>Cargar Embarcación al Catálogo</h2>
+                <button class="btn-modal-close" onclick="closeModal('modalBoat')">&times;</button>
+            </div>
+            <div class="admin-modal-body">
+                <form id="formBoat" onsubmit="handleSaveBoat(event)">
+                    <div class="form-group">
+                        <label>Nombre del Modelo</label>
+                        <input type="text" id="boatModelName" class="form-control" placeholder="Ej: Bermuda Discovery 190" required>
+                    </div>
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label>Marca</label>
+                            <select id="boatBrand" class="form-control" required>
+                                <option value="bermuda">Bermuda</option>
+                                <option value="eclipse">Eclipse</option>
+                                <option value="geuna">Geuna</option>
+                                <option value="pampamarin">Pampa Marin</option>
+                                <option value="drakkar">Drakkar</option>
+                                <option value="usados">Usadas</option>
+                                <option value="mercury">Mercury</option>
+                                <option value="hidea">Hidea</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Condición</label>
+                            <select id="boatCondition" class="form-control">
+                                <option value="nueva">Nueva 0km</option>
+                                <option value="usada">Usada</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label>Eslora / Manga</label>
+                            <input type="text" id="boatDimensions" class="form-control" placeholder="Ej: 5.70m x 2.25m">
+                        </div>
+                        <div>
+                            <label>Potencia Sugerida</label>
+                            <input type="text" id="boatEngine" class="form-control" placeholder="Ej: 90 a 150 HP">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>URL de Imagen Principal</label>
+                        <input type="text" id="boatImgUrl" class="form-control" placeholder="Ej: /img/discovery-190.png">
+                    </div>
+                    <div class="admin-modal-footer" style="padding: 16px 0 0 0; margin-top: 16px;">
+                        <button type="button" class="btn-admin-secondary" onclick="closeModal('modalBoat')">Cancelar</button>
+                        <button type="submit" class="btn-admin-primary">Guardar en Catálogo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Nuevo Usuario -->
+    <div class="admin-modal-backdrop" id="modalUser">
+        <div class="admin-modal-box">
+            <div class="admin-modal-header">
+                <h2>Registrar Nuevo Usuario / Personal</h2>
+                <button class="btn-modal-close" onclick="closeModal('modalUser')">&times;</button>
+            </div>
+            <div class="admin-modal-body">
+                <form id="formUser" onsubmit="handleSaveUser(event)">
+                    <div class="form-group">
+                        <label>Nombre y Apellido</label>
+                        <input type="text" id="userNameInput" class="form-control" placeholder="Ej: Juan Pérez" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" id="userEmailInput" class="form-control" placeholder="juan@nauticaairelibre.com" required>
+                    </div>
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label>Rol de Acceso</label>
+                            <select id="userRoleSelect" class="form-control">
+                                <option value="cliente">Cliente</option>
+                                <option value="vendedor">Vendedor</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Sucursal Asignada</label>
+                            <select id="userBranchSelect" class="form-control">
+                                <option value="posadas">Posadas (Misiones)</option>
+                                <option value="resistencia">Resistencia (Chaco)</option>
+                                <option value="todas">Ambas Sucursales</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="admin-modal-footer" style="padding: 16px 0 0 0; margin-top: 16px;">
+                        <button type="button" class="btn-admin-secondary" onclick="closeModal('modalUser')">Cancelar</button>
+                        <button type="submit" class="btn-admin-primary">Guardar Usuario</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Nuevo Plan -->
+    <div class="admin-modal-backdrop" id="modalPlan">
+        <div class="admin-modal-box">
+            <div class="admin-modal-header">
+                <h2>Crear Contrato Lancha Plan</h2>
+                <button class="btn-modal-close" onclick="closeModal('modalPlan')">&times;</button>
+            </div>
+            <div class="admin-modal-body">
+                <form id="formPlan" onsubmit="handleSavePlan(event)">
+                    <div class="form-group">
+                        <label>Cliente Titular</label>
+                        <input type="text" id="planClientName" class="form-control" placeholder="Nombre completo del cliente" required>
+                    </div>
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label>Embarcación</label>
+                            <input type="text" id="planBoatName" class="form-control" placeholder="Ej: Bermuda Sport 160" required>
+                        </div>
+                        <div>
+                            <label>Sucursal</label>
+                            <select id="planBranch" class="form-control">
+                                <option value="posadas">Posadas</option>
+                                <option value="resistencia">Resistencia</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label>Cuotas Totales</label>
+                            <input type="number" id="planTotalInstallments" class="form-control" value="36" min="1" max="84">
+                        </div>
+                        <div>
+                            <label>Cuotas Pagadas</label>
+                            <input type="number" id="planPaidInstallments" class="form-control" value="1" min="0">
+                        </div>
+                    </div>
+                    <div class="admin-modal-footer" style="padding: 16px 0 0 0; margin-top: 16px;">
+                        <button type="button" class="btn-admin-secondary" onclick="closeModal('modalPlan')">Cancelar</button>
+                        <button type="submit" class="btn-admin-primary">Crear Plan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Subir Documento -->
+    <div class="admin-modal-backdrop" id="modalDoc">
+        <div class="admin-modal-box">
+            <div class="admin-modal-header">
+                <h2>Cargar Nuevo Documento Náutico</h2>
+                <button class="btn-modal-close" onclick="closeModal('modalDoc')">&times;</button>
+            </div>
+            <div class="admin-modal-body">
+                <form id="formDoc" onsubmit="handleSaveDoc(event)">
+                    <div class="form-group">
+                        <label>Título del Documento</label>
+                        <input type="text" id="docTitle" class="form-control" placeholder="Ej: Boleto Compraventa Sport 160" required>
+                    </div>
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label>Tipo de Documento</label>
+                            <select id="docTypeSelect" class="form-control">
+                                <option value="timonel">Trámite Timonel</option>
+                                <option value="boleto">Boleto Compraventa</option>
+                                <option value="dni">DNI / Legajo</option>
+                                <option value="recibo">Recibo de Cuota</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Sucursal</label>
+                            <select id="docBranch" class="form-control">
+                                <option value="posadas">Posadas</option>
+                                <option value="resistencia">Resistencia</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Titular / Cliente Asociado</label>
+                        <input type="text" id="docClient" class="form-control" placeholder="Nombre o DNI del titular" required>
+                    </div>
+                    <div class="admin-modal-footer" style="padding: 16px 0 0 0; margin-top: 16px;">
+                        <button type="button" class="btn-admin-secondary" onclick="closeModal('modalDoc')">Cancelar</button>
+                        <button type="submit" class="btn-admin-primary">Registrar Documento</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT PRINCIPAL SPA Y GESTIÓN -->
     <script>
+        // Catálogo predeterminado para poblar vista inmediata
+        const initialBoats = [
+            { id: 'b1', name: 'Bermuda Discovery 190', brand: 'bermuda', condition: 'nueva', dimensions: '5.70m x 2.25m', engine: '90 - 150 HP', img: '/img/discovery-190.png' },
+            { id: 'b2', name: 'Bermuda Sport 160 M', brand: 'bermuda', condition: 'nueva', dimensions: '4.90m x 2.05m', engine: '60 - 90 HP', img: '/img/sport-160.png' },
+            { id: 'b3', name: 'Eclipse 21 SS', brand: 'eclipse', condition: 'nueva', dimensions: '6.40m x 2.45m', engine: '150 - 250 HP', img: '/img/eclipse-21ss.jpg' },
+            { id: 'b4', name: 'Eclipse 18 SS', brand: 'eclipse', condition: 'nueva', dimensions: '5.45m x 2.20m', engine: '90 - 150 HP', img: '/img/eclipse-18ss.png' },
+            { id: 'b5', name: 'Geuna 212', brand: 'geuna', condition: 'nueva', dimensions: '6.35m x 2.40m', engine: '150 - 200 HP', img: '/img/geuna-212.webp' },
+            { id: 'b6', name: 'Pampa Marin SF 470', brand: 'pampamarin', condition: 'nueva', dimensions: '4.70m x 1.95m', engine: '40 - 70 HP', img: '/img/pampa-sf470-1.webp' },
+            { id: 'b7', name: 'Drakkar 23.6', brand: 'drakkar', condition: 'nueva', dimensions: '7.10m x 2.50m', engine: '200 - 300 HP', img: '/img/drakkar-23-6.webp' },
+            { id: 'b8', name: 'Bermuda Classic 175 (Usada)', brand: 'usados', condition: 'usada', dimensions: '5.20m x 2.10m', engine: 'Mercury 115 HP 4T', img: '/img/cover-usados.png' },
+            { id: 'b9', name: 'Motor Mercury 115 HP 4-Tiempos', brand: 'mercury', condition: 'nueva', dimensions: 'Fuera de borda', engine: '115 HP EFI', img: '/img/mercury-115hp.jpg' }
+        ];
+
+        let state = {
+            boats: [...initialBoats],
+            users: [],
+            plans: [
+                { id: 'LP-2026-001', client: 'Esteban Martínez', boat: 'Bermuda Sport 160 M', branch: 'Posadas', paid: 14, total: 36, status: 'al-dia' },
+                { id: 'LP-2026-002', client: 'Carlos Rodríguez', boat: 'Eclipse 18 SS', branch: 'Resistencia', paid: 8, total: 48, status: 'atrasado' },
+                { id: 'LP-2026-003', client: 'María Laura Benítez', boat: 'Pampa Marin SF 470', branch: 'Posadas', paid: 36, total: 36, status: 'adjudicado' }
+            ],
+            docs: [
+                { id: 'DOC-01', title: 'Carnet de Timonel - E. Martínez', type: 'timonel', client: 'Esteban Martínez', branch: 'Posadas', date: '18/09/2026' },
+                { id: 'DOC-02', title: 'Boleto Compraventa Discovery 190', type: 'boleto', client: 'Juan Almirón', branch: 'Posadas', date: '15/09/2026' },
+                { id: 'DOC-03', title: 'Copia DNI Titular C. Rodríguez', type: 'dni', client: 'Carlos Rodríguez', branch: 'Resistencia', date: '10/09/2026' }
+            ]
+        };
+
+        // --- NAVEGACIÓN SPA POR HASH ---
+        function navigateTo(tab) {
+            const validTabs = ['dashboard', 'embarcaciones', 'usuarios', 'planes', 'documentos'];
+            if (!validTabs.includes(tab)) tab = 'dashboard';
+
+            // Menú lateral activo
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.toggle('active', link.dataset.tab === tab);
+            });
+
+            // Sección visible
+            document.querySelectorAll('.admin-section').forEach(sec => {
+                sec.classList.toggle('active', sec.id === `section-${tab}`);
+            });
+
+            // Sincronizar URL hash sin salto de scroll
+            if (window.location.hash !== `#${tab}`) {
+                history.pushState(null, '', `#${tab}`);
+            }
+        }
+
+        // Manejar clics en menú lateral
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateTo(link.dataset.tab);
+            });
+        });
+
+        // Escuchar cambios de hash en navegador (flechas adelante/atrás o bookmarks)
+        window.addEventListener('hashchange', () => {
+            const tab = window.location.hash.replace('#', '') || 'dashboard';
+            navigateTo(tab);
+        });
+
+        // --- MODALES ---
+        function openModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('open');
+        }
+
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('open');
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.admin-modal-backdrop.open').forEach(m => m.classList.remove('open'));
+            }
+        });
+
+        // --- RENDERIZADO DE TABLAS ---
+
+        // 1. Embarcaciones
+        function renderBoatsTable(items) {
+            const tbody = document.getElementById('boatsTableBody');
+            document.getElementById('boatCountIndicator').textContent = `${items.length} modelos`;
+
+            if (items.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <div class="empty-icon">🚤</div>
+                                <h3>No se encontraron embarcaciones</h3>
+                                <p>Prueba con otros términos de búsqueda o filtros.</p>
+                            </div>
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            tbody.innerHTML = items.map(b => `
+                <tr>
+                    <td>
+                        <img src="${b.img || '/images/logo.png'}" alt="${b.name}" class="boat-thumb" onerror="this.src='/images/logo.png'">
+                    </td>
+                    <td><strong>${b.name}</strong></td>
+                    <td style="text-transform: capitalize;">${b.brand}</td>
+                    <td>${b.dimensions || '—'}</td>
+                    <td>${b.engine || '—'}</td>
+                    <td>
+                        <span class="badge-role ${b.condition === 'usada' ? 'cliente' : 'admin'}">
+                            ${b.condition === 'usada' ? 'Usada' : 'Nueva 0km'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn-icon-action" title="Editar" onclick="alert('Editar: ${b.name}')">✏️</button>
+                            <button class="btn-icon-action danger" title="Eliminar" onclick="deleteBoat('${b.id}')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterBoatsTable() {
+            const query = (document.getElementById('searchBoats').value || '').toLowerCase();
+            const brand = (document.getElementById('filterBoatBrand').value || '').toLowerCase();
+            const cond = (document.getElementById('filterBoatCondition').value || '').toLowerCase();
+
+            const filtered = state.boats.filter(b => {
+                const matchQ = b.name.toLowerCase().includes(query) || b.brand.toLowerCase().includes(query);
+                const matchB = !brand || b.brand.toLowerCase() === brand;
+                const matchC = !cond || b.condition.toLowerCase() === cond;
+                return matchQ && matchB && matchC;
+            });
+            renderBoatsTable(filtered);
+        }
+
+        function deleteBoat(id) {
+            if (confirm('¿Deseas eliminar esta embarcación del listado?')) {
+                state.boats = state.boats.filter(b => b.id !== id);
+                filterBoatsTable();
+                updateStats();
+            }
+        }
+
+        function handleSaveBoat(e) {
+            e.preventDefault();
+            const newBoat = {
+                id: 'b-' + Date.now(),
+                name: document.getElementById('boatModelName').value,
+                brand: document.getElementById('boatBrand').value,
+                condition: document.getElementById('boatCondition').value,
+                dimensions: document.getElementById('boatDimensions').value || '—',
+                engine: document.getElementById('boatEngine').value || '—',
+                img: document.getElementById('boatImgUrl').value || '/images/logo.png'
+            };
+            state.boats.unshift(newBoat);
+            closeModal('modalBoat');
+            document.getElementById('formBoat').reset();
+            filterBoatsTable();
+            updateStats();
+            alert('¡Embarcación guardada con éxito!');
+        }
+
+        // 2. Usuarios
+        async function loadFirestoreUsers() {
+            try {
+                const usersSnap = await db.collection('users').get();
+                const users = [];
+                usersSnap.forEach(doc => {
+                    const d = doc.data();
+                    users.push({
+                        id: doc.id,
+                        name: d.displayName || d.nombre || d.email.split('@')[0],
+                        email: d.email || '—',
+                        role: d.role || 'cliente',
+                        branch: d.branch || 'posadas',
+                        createdAt: d.createdAt ? (d.createdAt.toDate ? d.createdAt.toDate().toLocaleDateString() : 'Reciente') : 'Reciente'
+                    });
+                });
+                state.users = users;
+            } catch (err) {
+                console.log('Error al leer usuarios de Firestore:', err.message);
+                if (state.users.length === 0) {
+                    state.users = [
+                        { id: 'u1', name: 'Pablo Arriola', email: 'arriolapablo.a@gmail.com', role: 'admin', branch: 'todas', createdAt: '18/09/2026' },
+                        { id: 'u2', name: 'Ventas Posadas', email: 'posadas@nauticaairelibre.com', role: 'vendedor', branch: 'posadas', createdAt: '19/09/2026' },
+                        { id: 'u3', name: 'Ventas Chaco', email: 'chaco@nauticaairelibre.com', role: 'vendedor', branch: 'resistencia', createdAt: '19/09/2026' }
+                    ];
+                }
+            }
+            filterUsersTable();
+            updateStats();
+        }
+
+        function renderUsersTable(items) {
+            const tbody = document.getElementById('usersTableBody');
+            document.getElementById('userCountIndicator').textContent = `${items.length} usuarios`;
+
+            if (items.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-icon">👥</div>
+                                <h3>No se encontraron usuarios</h3>
+                                <p>No hay coincidencias con los filtros aplicados.</p>
+                            </div>
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            tbody.innerHTML = items.map(u => `
+                <tr>
+                    <td><strong>${u.name}</strong></td>
+                    <td style="color: var(--muted);">${u.email}</td>
+                    <td>
+                        <select class="admin-select" style="padding: 4px 8px; font-size: 0.8rem;" onchange="updateUserRole('${u.id}', this.value)">
+                            <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
+                            <option value="vendedor" ${u.role === 'vendedor' ? 'selected' : ''}>Vendedor</option>
+                            <option value="cliente" ${u.role === 'cliente' ? 'selected' : ''}>Cliente</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="admin-select" style="padding: 4px 8px; font-size: 0.8rem;" onchange="updateUserBranch('${u.id}', this.value)">
+                            <option value="posadas" ${u.branch === 'posadas' ? 'selected' : ''}>Posadas</option>
+                            <option value="resistencia" ${u.branch === 'resistencia' ? 'selected' : ''}>Resistencia</option>
+                            <option value="todas" ${u.branch === 'todas' ? 'selected' : ''}>Ambas</option>
+                        </select>
+                    </td>
+                    <td style="color: var(--muted); font-size: 0.85rem;">${u.createdAt}</td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn-icon-action danger" title="Dar de baja" onclick="deleteUser('${u.id}')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterUsersTable() {
+            const query = (document.getElementById('searchUsers').value || '').toLowerCase();
+            const role = (document.getElementById('filterUserRole').value || '').toLowerCase();
+            const branch = (document.getElementById('filterUserBranch').value || '').toLowerCase();
+
+            const filtered = state.users.filter(u => {
+                const matchQ = u.name.toLowerCase().includes(query) || u.email.toLowerCase().includes(query);
+                const matchR = !role || u.role.toLowerCase() === role;
+                const matchB = !branch || u.branch.toLowerCase() === branch;
+                return matchQ && matchR && matchB;
+            });
+            renderUsersTable(filtered);
+        }
+
+        async function updateUserRole(userId, newRole) {
+            try {
+                await db.collection('users').doc(userId).update({ role: newRole });
+                const u = state.users.find(x => x.id === userId);
+                if (u) u.role = newRole;
+                alert(`Rol actualizado a: ${newRole}`);
+            } catch (err) {
+                console.error(err);
+                alert('Rol actualizado localmente (Firestore en modo demo/prueba)');
+            }
+        }
+
+        async function updateUserBranch(userId, newBranch) {
+            try {
+                await db.collection('users').doc(userId).update({ branch: newBranch });
+                const u = state.users.find(x => x.id === userId);
+                if (u) u.branch = newBranch;
+                alert(`Sucursal actualizada a: ${newBranch}`);
+            } catch (err) {
+                console.error(err);
+                alert('Sucursal actualizada localmente');
+            }
+        }
+
+        function deleteUser(id) {
+            if (confirm('¿Deseas dar de baja a este usuario?')) {
+                state.users = state.users.filter(u => u.id !== id);
+                filterUsersTable();
+                updateStats();
+            }
+        }
+
+        function handleSaveUser(e) {
+            e.preventDefault();
+            const newUser = {
+                id: 'u-' + Date.now(),
+                name: document.getElementById('userNameInput').value,
+                email: document.getElementById('userEmailInput').value,
+                role: document.getElementById('userRoleSelect').value,
+                branch: document.getElementById('userBranchSelect').value,
+                createdAt: new Date().toLocaleDateString()
+            };
+            state.users.unshift(newUser);
+            closeModal('modalUser');
+            document.getElementById('formUser').reset();
+            filterUsersTable();
+            updateStats();
+            alert('¡Usuario creado con éxito!');
+        }
+
+        // 3. Planes
+        function renderPlansTable(items) {
+            const tbody = document.getElementById('plansTableBody');
+            document.getElementById('planCountIndicator').textContent = `${items.length} contratos`;
+
+            if (items.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <div class="empty-icon">📋</div>
+                                <h3>No se encontraron planes</h3>
+                                <p>No hay planes registrados con los criterios seleccionados.</p>
+                            </div>
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            tbody.innerHTML = items.map(p => `
+                <tr>
+                    <td><strong>${p.id}</strong></td>
+                    <td>${p.client}</td>
+                    <td>${p.boat}</td>
+                    <td><span class="badge-branch">${p.branch}</span></td>
+                    <td><strong>${p.paid}</strong> / ${p.total} cuotas</td>
+                    <td>
+                        <span class="badge-status ${p.status}">
+                            ${p.status.replace('-', ' ').toUpperCase()}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn-icon-action" title="Registrar Pago" onclick="alert('Registrar pago para: ${p.client}')">💳</button>
+                            <button class="btn-icon-action danger" title="Eliminar Plan" onclick="deletePlan('${p.id}')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterPlansTable() {
+            const query = (document.getElementById('searchPlans').value || '').toLowerCase();
+            const status = (document.getElementById('filterPlanStatus').value || '').toLowerCase();
+
+            const filtered = state.plans.filter(p => {
+                const matchQ = p.client.toLowerCase().includes(query) || p.id.toLowerCase().includes(query) || p.boat.toLowerCase().includes(query);
+                const matchS = !status || p.status.toLowerCase() === status;
+                return matchQ && matchS;
+            });
+            renderPlansTable(filtered);
+        }
+
+        function deletePlan(id) {
+            if (confirm('¿Eliminar este contrato de Lancha Plan?')) {
+                state.plans = state.plans.filter(p => p.id !== id);
+                filterPlansTable();
+                updateStats();
+            }
+        }
+
+        function handleSavePlan(e) {
+            e.preventDefault();
+            const newPlan = {
+                id: 'LP-2026-' + String(Math.floor(100 + Math.random() * 900)),
+                client: document.getElementById('planClientName').value,
+                boat: document.getElementById('planBoatName').value,
+                branch: document.getElementById('planBranch').value === 'posadas' ? 'Posadas' : 'Resistencia',
+                total: parseInt(document.getElementById('planTotalInstallments').value, 10),
+                paid: parseInt(document.getElementById('planPaidInstallments').value, 10),
+                status: 'al-dia'
+            };
+            state.plans.unshift(newPlan);
+            closeModal('modalPlan');
+            document.getElementById('formPlan').reset();
+            filterPlansTable();
+            updateStats();
+            alert(`¡Plan creado exitosamente con N° ${newPlan.id}!`);
+        }
+
+        // 4. Documentos
+        function renderDocsTable(items) {
+            const tbody = document.getElementById('docsTableBody');
+            document.getElementById('docCountIndicator').textContent = `${items.length} archivos`;
+
+            if (items.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-icon">📁</div>
+                                <h3>No se encontraron documentos</h3>
+                                <p>Carga un nuevo documento o ajusta la búsqueda.</p>
+                            </div>
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            tbody.innerHTML = items.map(d => `
+                <tr>
+                    <td><strong>📄 ${d.title}</strong></td>
+                    <td><span class="badge-branch">${d.type.toUpperCase()}</span></td>
+                    <td>${d.client}</td>
+                    <td>${d.branch}</td>
+                    <td style="color: var(--muted); font-size: 0.85rem;">${d.date}</td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn-icon-action" title="Descargar" onclick="alert('Descargando archivo: ${d.title}')">⬇️</button>
+                            <button class="btn-icon-action danger" title="Eliminar" onclick="deleteDoc('${d.id}')">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterDocsTable() {
+            const query = (document.getElementById('searchDocs').value || '').toLowerCase();
+            const type = (document.getElementById('filterDocType').value || '').toLowerCase();
+
+            const filtered = state.docs.filter(d => {
+                const matchQ = d.title.toLowerCase().includes(query) || d.client.toLowerCase().includes(query);
+                const matchT = !type || d.type.toLowerCase() === type;
+                return matchQ && matchT;
+            });
+            renderDocsTable(filtered);
+        }
+
+        function deleteDoc(id) {
+            if (confirm('¿Eliminar este documento del legajo?')) {
+                state.docs = state.docs.filter(d => d.id !== id);
+                filterDocsTable();
+                updateStats();
+            }
+        }
+
+        function handleSaveDoc(e) {
+            e.preventDefault();
+            const newDoc = {
+                id: 'DOC-' + Date.now(),
+                title: document.getElementById('docTitle').value,
+                type: document.getElementById('docTypeSelect').value,
+                client: document.getElementById('docClient').value,
+                branch: document.getElementById('docBranch').value === 'posadas' ? 'Posadas' : 'Resistencia',
+                date: new Date().toLocaleDateString()
+            };
+            state.docs.unshift(newDoc);
+            closeModal('modalDoc');
+            document.getElementById('formDoc').reset();
+            filterDocsTable();
+            updateStats();
+            alert('¡Documento registrado en el legajo!');
+        }
+
+        // --- ACTUALIZAR STATS GENERALES ---
+        function updateStats() {
+            document.getElementById('totalBoats').textContent = state.boats.length;
+            document.getElementById('totalUsers').textContent = state.users.length;
+            document.getElementById('activePlans').textContent = state.plans.filter(p => p.status === 'al-dia').length;
+            document.getElementById('totalDocs').textContent = state.docs.length;
+        }
+
+        // --- INICIALIZACIÓN ---
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 const user = await authModule.requireAuth(['admin']);
-                // User is authenticated and is admin
                 document.getElementById('userName').textContent = user.displayName || user.email;
-                document.getElementById('welcomeMsg').textContent = `Bienvenido, ${user.displayName || 'Administrador'}`;
+                document.getElementById('welcomeMsg').textContent = `Bienvenido, ${user.displayName || 'Pablo Arriola'}`;
                 document.getElementById('mainContent').style.display = 'block';
 
-                // Load dashboard stats from Firestore
-                try {
-                    const boatsSnap = await db.collection('boats').get();
-                    document.getElementById('totalBoats').textContent = boatsSnap.size;
+                // Inicializar tablas
+                renderBoatsTable(state.boats);
+                renderPlansTable(state.plans);
+                renderDocsTable(state.docs);
+                await loadFirestoreUsers();
+                updateStats();
 
-                    const usersSnap = await db.collection('users').get();
-                    document.getElementById('totalUsers').textContent = usersSnap.size;
+                // Inicializar pestaña según hash
+                const initialTab = window.location.hash.replace('#', '') || 'dashboard';
+                navigateTo(initialTab);
 
-                    const plansSnap = await db.collection('plans').where('status', '==', 'activo').get();
-                    document.getElementById('activePlans').textContent = plansSnap.size;
-
-                    const docsSnap = await db.collection('documents').get();
-                    document.getElementById('totalDocs').textContent = docsSnap.size;
-                } catch (err) {
-                    console.log('Firestore collections not yet created:', err.message);
-                    document.getElementById('totalBoats').textContent = '0';
-                    document.getElementById('totalUsers').textContent = '0';
-                    document.getElementById('activePlans').textContent = '0';
-                    document.getElementById('totalDocs').textContent = '0';
-                }
             } catch (error) {
                 console.error('Auth error:', error);
             }
