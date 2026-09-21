@@ -21,7 +21,7 @@
             text-transform: uppercase; letter-spacing: 0.15em;
             color: var(--muted); margin-bottom: 16px; padding: 0 12px;
         }
-        .sidebar nav ul { list-style: none; }
+        .sidebar nav ul { list-style: none; margin: 0; padding: 0; }
         .sidebar nav ul li { margin-bottom: 4px; }
         .sidebar nav ul li a {
             color: rgba(240,244,248,0.6); text-decoration: none;
@@ -43,9 +43,9 @@
         .stat-card {
             background: rgba(8,13,24,0.85); border: 1px solid rgba(240,244,248,0.06);
             border-radius: 12px; padding: 24px; position: relative; overflow: hidden;
-            cursor: pointer; transition: transform 0.2s;
+            cursor: pointer; transition: transform 0.2s, border-color 0.2s;
         }
-        .stat-card:hover { transform: translateY(-2px); }
+        .stat-card:hover { transform: translateY(-2px); border-color: rgba(232,123,32,0.3); }
         .stat-card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
             background: linear-gradient(90deg, var(--orange), var(--blue));
@@ -89,10 +89,11 @@
         }
     </style>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK (Compat v10) -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
     <script src="/js/firebase-config.js"></script>
     <script src="/js/auth.js"></script>
 </head>
@@ -133,7 +134,7 @@
                 <div class="section-header">
                     <div class="header-info">
                         <h1 id="welcomeMsg">Bienvenido</h1>
-                        <p class="subtitle">Resumen general y métricas del sistema náutico</p>
+                        <p class="subtitle">Resumen general y métricas en tiempo real de Náutica Aire Libre</p>
                     </div>
                 </div>
 
@@ -155,7 +156,7 @@
                     </div>
                     <div class="stat-card" onclick="navigateTo('documentos')">
                         <div class="icon">📁</div>
-                        <div class="label">Documentos</div>
+                        <div class="label">Documentos / Legajos</div>
                         <div class="number" id="totalDocs">—</div>
                     </div>
                 </div>
@@ -168,7 +169,7 @@
                         <div class="qa-icon" style="color: var(--orange);">🚤</div>
                         <div>
                             <h3>+ Cargar Embarcación</h3>
-                            <p>Agregar nuevo modelo o lancha usada al catálogo</p>
+                            <p>Agregar nuevo modelo o lancha usada a Firestore</p>
                         </div>
                     </div>
                     <div class="quick-action-card" onclick="navigateTo('usuarios')">
@@ -189,7 +190,7 @@
                         <div class="qa-icon" style="color: #f3ba2f;">📁</div>
                         <div>
                             <h3>+ Subir Documento</h3>
-                            <p>Boletos, legajos y certificados de timonel</p>
+                            <p>Guardar archivo en Firebase Storage y legajo</p>
                         </div>
                     </div>
                 </div>
@@ -200,11 +201,25 @@
                 <div class="section-header">
                     <div class="header-info">
                         <h1>Catálogo de Embarcaciones</h1>
-                        <p>Gestión de modelos, especificaciones técnicas, fotos y disponibilidad</p>
+                        <p>Gestión de modelos, especificaciones técnicas, fotos y disponibilidad en Firestore</p>
                     </div>
-                    <button class="btn-admin-primary" onclick="openModal('modalBoat')">
-                        <span>+</span> Nueva Embarcación
-                    </button>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn-admin-secondary" onclick="syncInitialBoats()" id="btnSyncBoats">
+                            🔄 Sincronizar Base
+                        </button>
+                        <button class="btn-admin-primary" onclick="openModal('modalBoat')">
+                            <span>+</span> Nueva Embarcación
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Banner si la colección en Firestore está vacía -->
+                <div id="syncBanner" class="sync-banner" style="display:none;">
+                    <div class="sync-banner-text">
+                        <h4>⚡ Catálogo aún no precargado en Firestore</h4>
+                        <p>Podés importar el catálogo inicial de 9 modelos (Bermuda, Eclipse, Geuna, etc.) con un clic.</p>
+                    </div>
+                    <button class="btn-admin-primary" onclick="syncInitialBoats()">Sincronizar Catálogo Ahora</button>
                 </div>
 
                 <div class="action-bar">
@@ -260,7 +275,7 @@
                 <div class="section-header">
                     <div class="header-info">
                         <h1>Gestión de Usuarios y Roles</h1>
-                        <p>Administra permisos del sistema y sucursales (Posadas / Resistencia)</p>
+                        <p>Administra permisos de acceso en Firestore y sucursales (Posadas / Resistencia)</p>
                     </div>
                     <button class="btn-admin-primary" onclick="openModal('modalUser')">
                         <span>+</span> Nuevo Usuario
@@ -315,7 +330,7 @@
                 <div class="section-header">
                     <div class="header-info">
                         <h1>Lancha Plan y Financiación</h1>
-                        <p>Seguimiento de contratos de cuotas, adjudicaciones y cobranzas</p>
+                        <p>Seguimiento de contratos de cuotas, cobranzas y adjudicaciones en Firestore</p>
                     </div>
                     <button class="btn-admin-primary" onclick="openModal('modalPlan')">
                         <span>+</span> Nuevo Plan
@@ -366,7 +381,7 @@
                 <div class="section-header">
                     <div class="header-info">
                         <h1>Legajos y Documentación</h1>
-                        <p>Repositorio digital de boletos de compraventa, certificados y trámites de timonel</p>
+                        <p>Almacenamiento seguro en Firebase Storage y Firestore</p>
                     </div>
                     <button class="btn-admin-primary" onclick="openModal('modalDoc')">
                         <span>+</span> Subir Documento
@@ -414,17 +429,21 @@
         </main>
     </div>
 
+    <!-- Contenedor Toast Flotante -->
+    <div id="toastContainer" class="admin-toast-container"></div>
+
     <!-- ==================== MODALES ==================== -->
     
     <!-- Modal: Nueva Embarcación -->
     <div class="admin-modal-backdrop" id="modalBoat">
         <div class="admin-modal-box">
             <div class="admin-modal-header">
-                <h2>Cargar Embarcación al Catálogo</h2>
+                <h2 id="modalBoatTitle">Cargar Embarcación al Catálogo</h2>
                 <button class="btn-modal-close" onclick="closeModal('modalBoat')">&times;</button>
             </div>
             <div class="admin-modal-body">
                 <form id="formBoat" onsubmit="handleSaveBoat(event)">
+                    <input type="hidden" id="editBoatId" value="">
                     <div class="form-group">
                         <label>Nombre del Modelo</label>
                         <input type="text" id="boatModelName" class="form-control" placeholder="Ej: Bermuda Discovery 190" required>
@@ -467,7 +486,7 @@
                     </div>
                     <div class="admin-modal-footer" style="padding: 16px 0 0 0; margin-top: 16px;">
                         <button type="button" class="btn-admin-secondary" onclick="closeModal('modalBoat')">Cancelar</button>
-                        <button type="submit" class="btn-admin-primary">Guardar en Catálogo</button>
+                        <button type="submit" class="btn-admin-primary" id="btnSubmitBoat">Guardar en Catálogo</button>
                     </div>
                 </form>
             </div>
@@ -511,7 +530,7 @@
                     </div>
                     <div class="admin-modal-footer" style="padding: 16px 0 0 0; margin-top: 16px;">
                         <button type="button" class="btn-admin-secondary" onclick="closeModal('modalUser')">Cancelar</button>
-                        <button type="submit" class="btn-admin-primary">Guardar Usuario</button>
+                        <button type="submit" class="btn-admin-primary">Guardar en Firestore</button>
                     </div>
                 </form>
             </div>
@@ -534,29 +553,29 @@
                     <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                         <div>
                             <label>Embarcación</label>
-                            <input type="text" id="planBoatName" class="form-control" placeholder="Ej: Bermuda Sport 160" required>
+                            <input type="text" id="planBoatName" class="form-control" placeholder="Ej: Bermuda Sport 160 M" required>
                         </div>
                         <div>
                             <label>Sucursal</label>
                             <select id="planBranch" class="form-control">
-                                <option value="posadas">Posadas</option>
-                                <option value="resistencia">Resistencia</option>
+                                <option value="Posadas">Posadas</option>
+                                <option value="Resistencia">Resistencia</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                         <div>
                             <label>Cuotas Totales</label>
-                            <input type="number" id="planTotalInstallments" class="form-control" value="36" min="1" max="84">
+                            <input type="number" id="planTotalInstallments" class="form-control" value="36" min="1" max="84" required>
                         </div>
                         <div>
                             <label>Cuotas Pagadas</label>
-                            <input type="number" id="planPaidInstallments" class="form-control" value="1" min="0">
+                            <input type="number" id="planPaidInstallments" class="form-control" value="1" min="0" required>
                         </div>
                     </div>
                     <div class="admin-modal-footer" style="padding: 16px 0 0 0; margin-top: 16px;">
                         <button type="button" class="btn-admin-secondary" onclick="closeModal('modalPlan')">Cancelar</button>
-                        <button type="submit" class="btn-admin-primary">Crear Plan</button>
+                        <button type="submit" class="btn-admin-primary">Guardar en Firestore</button>
                     </div>
                 </form>
             </div>
@@ -589,8 +608,8 @@
                         <div>
                             <label>Sucursal</label>
                             <select id="docBranch" class="form-control">
-                                <option value="posadas">Posadas</option>
-                                <option value="resistencia">Resistencia</option>
+                                <option value="Posadas">Posadas</option>
+                                <option value="Resistencia">Resistencia</option>
                             </select>
                         </div>
                     </div>
@@ -598,44 +617,69 @@
                         <label>Titular / Cliente Asociado</label>
                         <input type="text" id="docClient" class="form-control" placeholder="Nombre o DNI del titular" required>
                     </div>
+                    <div class="form-group">
+                        <label>Adjuntar Archivo (PDF o Imagen - Opcional)</label>
+                        <input type="file" id="docFileInput" class="form-control" accept=".pdf,.png,.jpg,.jpeg">
+                        <small style="color: var(--muted); font-size: 0.78rem; display: block; margin-top: 4px;">
+                            Se almacenará de forma segura en Firebase Storage.
+                        </small>
+                    </div>
                     <div class="admin-modal-footer" style="padding: 16px 0 0 0; margin-top: 16px;">
                         <button type="button" class="btn-admin-secondary" onclick="closeModal('modalDoc')">Cancelar</button>
-                        <button type="submit" class="btn-admin-primary">Registrar Documento</button>
+                        <button type="submit" class="btn-admin-primary" id="btnSubmitDoc">Guardar Documento</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL SPA Y GESTIÓN -->
+    <!-- SCRIPT PRINCIPAL SPA Y GESTIÓN FIRESTORE/STORAGE -->
     <script>
-        // Catálogo predeterminado para poblar vista inmediata
-        const initialBoats = [
-            { id: 'b1', name: 'Bermuda Discovery 190', brand: 'bermuda', condition: 'nueva', dimensions: '5.70m x 2.25m', engine: '90 - 150 HP', img: '/img/discovery-190.png' },
-            { id: 'b2', name: 'Bermuda Sport 160 M', brand: 'bermuda', condition: 'nueva', dimensions: '4.90m x 2.05m', engine: '60 - 90 HP', img: '/img/sport-160.png' },
-            { id: 'b3', name: 'Eclipse 21 SS', brand: 'eclipse', condition: 'nueva', dimensions: '6.40m x 2.45m', engine: '150 - 250 HP', img: '/img/eclipse-21ss.jpg' },
-            { id: 'b4', name: 'Eclipse 18 SS', brand: 'eclipse', condition: 'nueva', dimensions: '5.45m x 2.20m', engine: '90 - 150 HP', img: '/img/eclipse-18ss.png' },
-            { id: 'b5', name: 'Geuna 212', brand: 'geuna', condition: 'nueva', dimensions: '6.35m x 2.40m', engine: '150 - 200 HP', img: '/img/geuna-212.webp' },
-            { id: 'b6', name: 'Pampa Marin SF 470', brand: 'pampamarin', condition: 'nueva', dimensions: '4.70m x 1.95m', engine: '40 - 70 HP', img: '/img/pampa-sf470-1.webp' },
-            { id: 'b7', name: 'Drakkar 23.6', brand: 'drakkar', condition: 'nueva', dimensions: '7.10m x 2.50m', engine: '200 - 300 HP', img: '/img/drakkar-23-6.webp' },
-            { id: 'b8', name: 'Bermuda Classic 175 (Usada)', brand: 'usados', condition: 'usada', dimensions: '5.20m x 2.10m', engine: 'Mercury 115 HP 4T', img: '/img/cover-usados.png' },
-            { id: 'b9', name: 'Motor Mercury 115 HP 4-Tiempos', brand: 'mercury', condition: 'nueva', dimensions: 'Fuera de borda', engine: '115 HP EFI', img: '/img/mercury-115hp.jpg' }
+        // Modelos de referencia para inicialización
+        const defaultBoatsCatalog = [
+            { name: 'Bermuda Discovery 190', brand: 'bermuda', condition: 'nueva', dimensions: '5.70m x 2.25m', engine: '90 - 150 HP', img: '/img/discovery-190.png' },
+            { name: 'Bermuda Sport 160 M', brand: 'bermuda', condition: 'nueva', dimensions: '4.90m x 2.05m', engine: '60 - 90 HP', img: '/img/sport-160.png' },
+            { name: 'Eclipse 21 SS', brand: 'eclipse', condition: 'nueva', dimensions: '6.40m x 2.45m', engine: '150 - 250 HP', img: '/img/eclipse-21ss.jpg' },
+            { name: 'Eclipse 18 SS', brand: 'eclipse', condition: 'nueva', dimensions: '5.45m x 2.20m', engine: '90 - 150 HP', img: '/img/eclipse-18ss.png' },
+            { name: 'Geuna 212', brand: 'geuna', condition: 'nueva', dimensions: '6.35m x 2.40m', engine: '150 - 200 HP', img: '/img/geuna-212.webp' },
+            { name: 'Pampa Marin SF 470', brand: 'pampamarin', condition: 'nueva', dimensions: '4.70m x 1.95m', engine: '40 - 70 HP', img: '/img/pampa-sf470-1.webp' },
+            { name: 'Drakkar 23.6', brand: 'drakkar', condition: 'nueva', dimensions: '7.10m x 2.50m', engine: '200 - 300 HP', img: '/img/drakkar-23-6.webp' },
+            { name: 'Bermuda Classic 175 (Usada)', brand: 'usados', condition: 'usada', dimensions: '5.20m x 2.10m', engine: 'Mercury 115 HP 4T', img: '/img/cover-usados.png' },
+            { name: 'Motor Mercury 115 HP 4-Tiempos', brand: 'mercury', condition: 'nueva', dimensions: 'Fuera de borda', engine: '115 HP EFI', img: '/img/mercury-115hp.jpg' }
         ];
 
         let state = {
-            boats: [...initialBoats],
+            boats: [],
             users: [],
-            plans: [
-                { id: 'LP-2026-001', client: 'Esteban Martínez', boat: 'Bermuda Sport 160 M', branch: 'Posadas', paid: 14, total: 36, status: 'al-dia' },
-                { id: 'LP-2026-002', client: 'Carlos Rodríguez', boat: 'Eclipse 18 SS', branch: 'Resistencia', paid: 8, total: 48, status: 'atrasado' },
-                { id: 'LP-2026-003', client: 'María Laura Benítez', boat: 'Pampa Marin SF 470', branch: 'Posadas', paid: 36, total: 36, status: 'adjudicado' }
-            ],
-            docs: [
-                { id: 'DOC-01', title: 'Carnet de Timonel - E. Martínez', type: 'timonel', client: 'Esteban Martínez', branch: 'Posadas', date: '18/09/2026' },
-                { id: 'DOC-02', title: 'Boleto Compraventa Discovery 190', type: 'boleto', client: 'Juan Almirón', branch: 'Posadas', date: '15/09/2026' },
-                { id: 'DOC-03', title: 'Copia DNI Titular C. Rodríguez', type: 'dni', client: 'Carlos Rodríguez', branch: 'Resistencia', date: '10/09/2026' }
-            ]
+            plans: [],
+            docs: []
         };
+
+        // --- SISTEMA DE TOAST NOTIFICATIONS ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = `admin-toast ${type}`;
+            const icon = type === 'success' ? '✅' : (type === 'error' ? '❌' : 'ℹ️');
+
+            toast.innerHTML = `
+                <span class="toast-icon">${icon}</span>
+                <span class="toast-msg">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            // Animar entrada
+            requestAnimationFrame(() => toast.classList.add('show'));
+
+            // Auto-remover en 3.5 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
 
         // --- NAVEGACIÓN SPA POR HASH ---
         function navigateTo(tab) {
@@ -652,13 +696,12 @@
                 sec.classList.toggle('active', sec.id === `section-${tab}`);
             });
 
-            // Sincronizar URL hash sin salto de scroll
+            // Sincronizar URL hash sin salto brusco
             if (window.location.hash !== `#${tab}`) {
                 history.pushState(null, '', `#${tab}`);
             }
         }
 
-        // Manejar clics en menú lateral
         document.querySelectorAll('.sidebar-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -666,7 +709,6 @@
             });
         });
 
-        // Escuchar cambios de hash en navegador (flechas adelante/atrás o bookmarks)
         window.addEventListener('hashchange', () => {
             const tab = window.location.hash.replace('#', '') || 'dashboard';
             navigateTo(tab);
@@ -681,6 +723,13 @@
         function closeModal(id) {
             const el = document.getElementById(id);
             if (el) el.classList.remove('open');
+            // Limpiar si era edición
+            if (id === 'modalBoat') {
+                document.getElementById('formBoat').reset();
+                document.getElementById('editBoatId').value = '';
+                document.getElementById('modalBoatTitle').textContent = 'Cargar Embarcación al Catálogo';
+                document.getElementById('btnSubmitBoat').textContent = 'Guardar en Catálogo';
+            }
         }
 
         window.addEventListener('keydown', (e) => {
@@ -689,9 +738,53 @@
             }
         });
 
-        // --- RENDERIZADO DE TABLAS ---
+        // ==================== 1. EMBARCACIONES (FIRESTORE) ====================
+        async function loadBoatsFromFirestore() {
+            try {
+                const snap = await db.collection('boats').get();
+                if (snap.empty) {
+                    document.getElementById('syncBanner').style.display = 'flex';
+                    state.boats = [];
+                } else {
+                    document.getElementById('syncBanner').style.display = 'none';
+                    state.boats = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                }
+            } catch (err) {
+                console.warn('Colección boats aún vacía o con permisos en creación:', err.message);
+                document.getElementById('syncBanner').style.display = 'flex';
+                state.boats = [];
+            }
+            filterBoatsTable();
+            updateStats();
+        }
 
-        // 1. Embarcaciones
+        async function syncInitialBoats() {
+            const btn = document.getElementById('btnSyncBoats');
+            if (btn) btn.disabled = true;
+
+            try {
+                showToast('Iniciando sincronización del catálogo inicial...', 'info');
+                const batch = db.batch();
+
+                defaultBoatsCatalog.forEach(boat => {
+                    const docRef = db.collection('boats').doc();
+                    batch.set(docRef, {
+                        ...boat,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+
+                await batch.commit();
+                showToast('¡Catálogo sincronizado con éxito en Firestore!', 'success');
+                await loadBoatsFromFirestore();
+            } catch (err) {
+                console.error('Error al sincronizar catálogo:', err);
+                showToast('Error al sincronizar: ' + err.message, 'error');
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        }
+
         function renderBoatsTable(items) {
             const tbody = document.getElementById('boatsTableBody');
             document.getElementById('boatCountIndicator').textContent = `${items.length} modelos`;
@@ -703,7 +796,7 @@
                             <div class="empty-state">
                                 <div class="empty-icon">🚤</div>
                                 <h3>No se encontraron embarcaciones</h3>
-                                <p>Prueba con otros términos de búsqueda o filtros.</p>
+                                <p>Carga un nuevo modelo o pulsa "Sincronizar Base" para importar los modelos predeterminados.</p>
                             </div>
                         </td>
                     </tr>`;
@@ -726,8 +819,8 @@
                     </td>
                     <td>
                         <div class="table-actions">
-                            <button class="btn-icon-action" title="Editar" onclick="alert('Editar: ${b.name}')">✏️</button>
-                            <button class="btn-icon-action danger" title="Eliminar" onclick="deleteBoat('${b.id}')">🗑️</button>
+                            <button class="btn-icon-action" title="Editar" onclick="editBoat('${b.id}')">✏️</button>
+                            <button class="btn-icon-action danger" title="Eliminar de Firestore" onclick="deleteBoat('${b.id}')">🗑️</button>
                         </div>
                     </td>
                 </tr>
@@ -740,67 +833,95 @@
             const cond = (document.getElementById('filterBoatCondition').value || '').toLowerCase();
 
             const filtered = state.boats.filter(b => {
-                const matchQ = b.name.toLowerCase().includes(query) || b.brand.toLowerCase().includes(query);
-                const matchB = !brand || b.brand.toLowerCase() === brand;
-                const matchC = !cond || b.condition.toLowerCase() === cond;
+                const matchQ = (b.name || '').toLowerCase().includes(query) || (b.brand || '').toLowerCase().includes(query);
+                const matchB = !brand || (b.brand || '').toLowerCase() === brand;
+                const matchC = !cond || (b.condition || '').toLowerCase() === cond;
                 return matchQ && matchB && matchC;
             });
             renderBoatsTable(filtered);
         }
 
-        function deleteBoat(id) {
-            if (confirm('¿Deseas eliminar esta embarcación del listado?')) {
-                state.boats = state.boats.filter(b => b.id !== id);
-                filterBoatsTable();
-                updateStats();
+        function editBoat(id) {
+            const b = state.boats.find(x => x.id === id);
+            if (!b) return;
+
+            document.getElementById('editBoatId').value = b.id;
+            document.getElementById('boatModelName').value = b.name || '';
+            document.getElementById('boatBrand').value = b.brand || 'bermuda';
+            document.getElementById('boatCondition').value = b.condition || 'nueva';
+            document.getElementById('boatDimensions').value = b.dimensions || '';
+            document.getElementById('boatEngine').value = b.engine || '';
+            document.getElementById('boatImgUrl').value = b.img || '';
+
+            document.getElementById('modalBoatTitle').textContent = 'Editar Embarcación';
+            document.getElementById('btnSubmitBoat').textContent = 'Guardar Cambios';
+            openModal('modalBoat');
+        }
+
+        async function handleSaveBoat(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editBoatId').value;
+            const boatData = {
+                name: document.getElementById('boatModelName').value.trim(),
+                brand: document.getElementById('boatBrand').value,
+                condition: document.getElementById('boatCondition').value,
+                dimensions: document.getElementById('boatDimensions').value.trim() || '—',
+                engine: document.getElementById('boatEngine').value.trim() || '—',
+                img: document.getElementById('boatImgUrl').value.trim() || '/images/logo.png',
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                if (editId) {
+                    await db.collection('boats').doc(editId).update(boatData);
+                    showToast('Embarcación actualizada en Firestore', 'success');
+                } else {
+                    boatData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('boats').add(boatData);
+                    showToast('Nueva embarcación guardada en Firestore', 'success');
+                }
+                closeModal('modalBoat');
+                await loadBoatsFromFirestore();
+            } catch (err) {
+                console.error(err);
+                showToast('Error al guardar: ' + err.message, 'error');
             }
         }
 
-        function handleSaveBoat(e) {
-            e.preventDefault();
-            const newBoat = {
-                id: 'b-' + Date.now(),
-                name: document.getElementById('boatModelName').value,
-                brand: document.getElementById('boatBrand').value,
-                condition: document.getElementById('boatCondition').value,
-                dimensions: document.getElementById('boatDimensions').value || '—',
-                engine: document.getElementById('boatEngine').value || '—',
-                img: document.getElementById('boatImgUrl').value || '/images/logo.png'
-            };
-            state.boats.unshift(newBoat);
-            closeModal('modalBoat');
-            document.getElementById('formBoat').reset();
-            filterBoatsTable();
-            updateStats();
-            alert('¡Embarcación guardada con éxito!');
+        async function deleteBoat(id) {
+            if (!confirm('¿Deseas eliminar permanentemente esta embarcación de Firestore?')) return;
+            try {
+                await db.collection('boats').doc(id).delete();
+                showToast('Embarcación eliminada de Firestore', 'success');
+                await loadBoatsFromFirestore();
+            } catch (err) {
+                console.error(err);
+                showToast('Error al eliminar: ' + err.message, 'error');
+            }
         }
 
-        // 2. Usuarios
-        async function loadFirestoreUsers() {
+        // ==================== 2. USUARIOS (FIRESTORE) ====================
+        async function loadUsersFromFirestore() {
             try {
                 const usersSnap = await db.collection('users').get();
-                const users = [];
-                usersSnap.forEach(doc => {
+                state.users = usersSnap.docs.map(doc => {
                     const d = doc.data();
-                    users.push({
+                    let dateStr = 'Reciente';
+                    if (d.createdAt) {
+                        dateStr = d.createdAt.toDate ? d.createdAt.toDate().toLocaleDateString() : 'Reciente';
+                    }
+                    return {
                         id: doc.id,
                         name: d.displayName || d.nombre || d.email.split('@')[0],
                         email: d.email || '—',
                         role: d.role || 'cliente',
                         branch: d.branch || 'posadas',
-                        createdAt: d.createdAt ? (d.createdAt.toDate ? d.createdAt.toDate().toLocaleDateString() : 'Reciente') : 'Reciente'
-                    });
+                        createdAt: dateStr
+                    };
                 });
-                state.users = users;
             } catch (err) {
-                console.log('Error al leer usuarios de Firestore:', err.message);
-                if (state.users.length === 0) {
-                    state.users = [
-                        { id: 'u1', name: 'Pablo Arriola', email: 'arriolapablo.a@gmail.com', role: 'admin', branch: 'todas', createdAt: '18/09/2026' },
-                        { id: 'u2', name: 'Ventas Posadas', email: 'posadas@nauticaairelibre.com', role: 'vendedor', branch: 'posadas', createdAt: '19/09/2026' },
-                        { id: 'u3', name: 'Ventas Chaco', email: 'chaco@nauticaairelibre.com', role: 'vendedor', branch: 'resistencia', createdAt: '19/09/2026' }
-                    ];
-                }
+                console.warn('Error al leer colección users:', err.message);
+                state.users = [];
             }
             filterUsersTable();
             updateStats();
@@ -829,14 +950,14 @@
                     <td><strong>${u.name}</strong></td>
                     <td style="color: var(--muted);">${u.email}</td>
                     <td>
-                        <select class="admin-select" style="padding: 4px 8px; font-size: 0.8rem;" onchange="updateUserRole('${u.id}', this.value)">
+                        <select class="admin-select" style="padding: 4px 8px; font-size: 0.8rem;" onchange="updateUserRoleInFirestore('${u.id}', this.value)">
                             <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
                             <option value="vendedor" ${u.role === 'vendedor' ? 'selected' : ''}>Vendedor</option>
                             <option value="cliente" ${u.role === 'cliente' ? 'selected' : ''}>Cliente</option>
                         </select>
                     </td>
                     <td>
-                        <select class="admin-select" style="padding: 4px 8px; font-size: 0.8rem;" onchange="updateUserBranch('${u.id}', this.value)">
+                        <select class="admin-select" style="padding: 4px 8px; font-size: 0.8rem;" onchange="updateUserBranchInFirestore('${u.id}', this.value)">
                             <option value="posadas" ${u.branch === 'posadas' ? 'selected' : ''}>Posadas</option>
                             <option value="resistencia" ${u.branch === 'resistencia' ? 'selected' : ''}>Resistencia</option>
                             <option value="todas" ${u.branch === 'todas' ? 'selected' : ''}>Ambas</option>
@@ -845,7 +966,7 @@
                     <td style="color: var(--muted); font-size: 0.85rem;">${u.createdAt}</td>
                     <td>
                         <div class="table-actions">
-                            <button class="btn-icon-action danger" title="Dar de baja" onclick="deleteUser('${u.id}')">🗑️</button>
+                            <button class="btn-icon-action danger" title="Eliminar de Firestore" onclick="deleteUserFromFirestore('${u.id}')">🗑️</button>
                         </div>
                     </td>
                 </tr>
@@ -858,65 +979,85 @@
             const branch = (document.getElementById('filterUserBranch').value || '').toLowerCase();
 
             const filtered = state.users.filter(u => {
-                const matchQ = u.name.toLowerCase().includes(query) || u.email.toLowerCase().includes(query);
-                const matchR = !role || u.role.toLowerCase() === role;
-                const matchB = !branch || u.branch.toLowerCase() === branch;
+                const matchQ = (u.name || '').toLowerCase().includes(query) || (u.email || '').toLowerCase().includes(query);
+                const matchR = !role || (u.role || '').toLowerCase() === role;
+                const matchB = !branch || (u.branch || '').toLowerCase() === branch;
                 return matchQ && matchR && matchB;
             });
             renderUsersTable(filtered);
         }
 
-        async function updateUserRole(userId, newRole) {
+        async function updateUserRoleInFirestore(userId, newRole) {
             try {
                 await db.collection('users').doc(userId).update({ role: newRole });
                 const u = state.users.find(x => x.id === userId);
                 if (u) u.role = newRole;
-                alert(`Rol actualizado a: ${newRole}`);
+                showToast(`Rol actualizado a "${newRole.toUpperCase()}" en Firestore`, 'success');
             } catch (err) {
                 console.error(err);
-                alert('Rol actualizado localmente (Firestore en modo demo/prueba)');
+                showToast('Error al actualizar rol: ' + err.message, 'error');
             }
         }
 
-        async function updateUserBranch(userId, newBranch) {
+        async function updateUserBranchInFirestore(userId, newBranch) {
             try {
                 await db.collection('users').doc(userId).update({ branch: newBranch });
                 const u = state.users.find(x => x.id === userId);
                 if (u) u.branch = newBranch;
-                alert(`Sucursal actualizada a: ${newBranch}`);
+                showToast(`Sucursal actualizada a "${newBranch.toUpperCase()}" en Firestore`, 'success');
             } catch (err) {
                 console.error(err);
-                alert('Sucursal actualizada localmente');
+                showToast('Error al actualizar sucursal: ' + err.message, 'error');
             }
         }
 
-        function deleteUser(id) {
-            if (confirm('¿Deseas dar de baja a este usuario?')) {
-                state.users = state.users.filter(u => u.id !== id);
-                filterUsersTable();
-                updateStats();
+        async function deleteUserFromFirestore(id) {
+            if (!confirm('¿Deseas dar de baja a este usuario en Firestore?')) return;
+            try {
+                await db.collection('users').doc(id).delete();
+                showToast('Usuario eliminado de Firestore', 'success');
+                await loadUsersFromFirestore();
+            } catch (err) {
+                console.error(err);
+                showToast('Error al eliminar: ' + err.message, 'error');
             }
         }
 
-        function handleSaveUser(e) {
+        async function handleSaveUser(e) {
             e.preventDefault();
-            const newUser = {
-                id: 'u-' + Date.now(),
-                name: document.getElementById('userNameInput').value,
-                email: document.getElementById('userEmailInput').value,
+            const userData = {
+                displayName: document.getElementById('userNameInput').value.trim(),
+                email: document.getElementById('userEmailInput').value.trim().toLowerCase(),
                 role: document.getElementById('userRoleSelect').value,
                 branch: document.getElementById('userBranchSelect').value,
-                createdAt: new Date().toLocaleDateString()
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
-            state.users.unshift(newUser);
-            closeModal('modalUser');
-            document.getElementById('formUser').reset();
-            filterUsersTable();
-            updateStats();
-            alert('¡Usuario creado con éxito!');
+
+            try {
+                await db.collection('users').add(userData);
+                closeModal('modalUser');
+                document.getElementById('formUser').reset();
+                showToast('Usuario registrado en Firestore', 'success');
+                await loadUsersFromFirestore();
+            } catch (err) {
+                console.error(err);
+                showToast('Error al crear usuario: ' + err.message, 'error');
+            }
         }
 
-        // 3. Planes
+        // ==================== 3. PLANES (FIRESTORE) ====================
+        async function loadPlansFromFirestore() {
+            try {
+                const snap = await db.collection('plans').get();
+                state.plans = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            } catch (err) {
+                console.warn('Colección plans aún vacía:', err.message);
+                state.plans = [];
+            }
+            filterPlansTable();
+            updateStats();
+        }
+
         function renderPlansTable(items) {
             const tbody = document.getElementById('plansTableBody');
             document.getElementById('planCountIndicator').textContent = `${items.length} contratos`;
@@ -927,8 +1068,8 @@
                         <td colspan="7">
                             <div class="empty-state">
                                 <div class="empty-icon">📋</div>
-                                <h3>No se encontraron planes</h3>
-                                <p>No hay planes registrados con los criterios seleccionados.</p>
+                                <h3>No hay contratos de Lancha Plan</h3>
+                                <p>Crea el primer plan haciendo clic en "+ Nuevo Plan".</p>
                             </div>
                         </td>
                     </tr>`;
@@ -937,20 +1078,20 @@
 
             tbody.innerHTML = items.map(p => `
                 <tr>
-                    <td><strong>${p.id}</strong></td>
+                    <td><strong>${p.contractCode || p.id}</strong></td>
                     <td>${p.client}</td>
                     <td>${p.boat}</td>
-                    <td><span class="badge-branch">${p.branch}</span></td>
+                    <td><span class="badge-branch">${p.branch || 'Posadas'}</span></td>
                     <td><strong>${p.paid}</strong> / ${p.total} cuotas</td>
                     <td>
-                        <span class="badge-status ${p.status}">
-                            ${p.status.replace('-', ' ').toUpperCase()}
+                        <span class="badge-status ${p.status || 'al-dia'}">
+                            ${(p.status || 'al-dia').replace('-', ' ').toUpperCase()}
                         </span>
                     </td>
                     <td>
                         <div class="table-actions">
-                            <button class="btn-icon-action" title="Registrar Pago" onclick="alert('Registrar pago para: ${p.client}')">💳</button>
-                            <button class="btn-icon-action danger" title="Eliminar Plan" onclick="deletePlan('${p.id}')">🗑️</button>
+                            <button class="btn-icon-action" title="Registrar Pago (+1 cuota)" onclick="recordPlanPayment('${p.id}')">💳</button>
+                            <button class="btn-icon-action danger" title="Eliminar de Firestore" onclick="deletePlanFromFirestore('${p.id}')">🗑️</button>
                         </div>
                     </td>
                 </tr>
@@ -962,41 +1103,91 @@
             const status = (document.getElementById('filterPlanStatus').value || '').toLowerCase();
 
             const filtered = state.plans.filter(p => {
-                const matchQ = p.client.toLowerCase().includes(query) || p.id.toLowerCase().includes(query) || p.boat.toLowerCase().includes(query);
-                const matchS = !status || p.status.toLowerCase() === status;
+                const matchQ = (p.client || '').toLowerCase().includes(query) || (p.contractCode || p.id || '').toLowerCase().includes(query) || (p.boat || '').toLowerCase().includes(query);
+                const matchS = !status || (p.status || '').toLowerCase() === status;
                 return matchQ && matchS;
             });
             renderPlansTable(filtered);
         }
 
-        function deletePlan(id) {
-            if (confirm('¿Eliminar este contrato de Lancha Plan?')) {
-                state.plans = state.plans.filter(p => p.id !== id);
-                filterPlansTable();
-                updateStats();
+        async function recordPlanPayment(id) {
+            const plan = state.plans.find(p => p.id === id);
+            if (!plan) return;
+
+            const nextPaid = (plan.paid || 0) + 1;
+            const newStatus = nextPaid >= plan.total ? 'finalizado' : 'al-dia';
+
+            try {
+                await db.collection('plans').doc(id).update({
+                    paid: nextPaid,
+                    status: newStatus,
+                    lastPaymentAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                showToast(`Cuota #${nextPaid} registrada para ${plan.client}`, 'success');
+                await loadPlansFromFirestore();
+            } catch (err) {
+                console.error(err);
+                showToast('Error al registrar pago: ' + err.message, 'error');
             }
         }
 
-        function handleSavePlan(e) {
+        async function handleSavePlan(e) {
             e.preventDefault();
-            const newPlan = {
-                id: 'LP-2026-' + String(Math.floor(100 + Math.random() * 900)),
-                client: document.getElementById('planClientName').value,
-                boat: document.getElementById('planBoatName').value,
-                branch: document.getElementById('planBranch').value === 'posadas' ? 'Posadas' : 'Resistencia',
+            const planData = {
+                contractCode: 'LP-2026-' + String(Math.floor(100 + Math.random() * 900)),
+                client: document.getElementById('planClientName').value.trim(),
+                boat: document.getElementById('planBoatName').value.trim(),
+                branch: document.getElementById('planBranch').value,
                 total: parseInt(document.getElementById('planTotalInstallments').value, 10),
                 paid: parseInt(document.getElementById('planPaidInstallments').value, 10),
-                status: 'al-dia'
+                status: 'al-dia',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
-            state.plans.unshift(newPlan);
-            closeModal('modalPlan');
-            document.getElementById('formPlan').reset();
-            filterPlansTable();
-            updateStats();
-            alert(`¡Plan creado exitosamente con N° ${newPlan.id}!`);
+
+            try {
+                await db.collection('plans').add(planData);
+                closeModal('modalPlan');
+                document.getElementById('formPlan').reset();
+                showToast(`Plan creado con N° ${planData.contractCode} en Firestore`, 'success');
+                await loadPlansFromFirestore();
+            } catch (err) {
+                console.error(err);
+                showToast('Error al crear plan: ' + err.message, 'error');
+            }
         }
 
-        // 4. Documentos
+        async function deletePlanFromFirestore(id) {
+            if (!confirm('¿Eliminar este plan de Firestore?')) return;
+            try {
+                await db.collection('plans').doc(id).delete();
+                showToast('Plan eliminado de Firestore', 'success');
+                await loadPlansFromFirestore();
+            } catch (err) {
+                console.error(err);
+                showToast('Error al eliminar: ' + err.message, 'error');
+            }
+        }
+
+        // ==================== 4. DOCUMENTOS (STORAGE + FIRESTORE) ====================
+        async function loadDocsFromFirestore() {
+            try {
+                const snap = await db.collection('documents').get();
+                state.docs = snap.docs.map(doc => {
+                    const d = doc.data();
+                    let dateStr = 'Reciente';
+                    if (d.createdAt) {
+                        dateStr = d.createdAt.toDate ? d.createdAt.toDate().toLocaleDateString() : 'Reciente';
+                    }
+                    return { id: doc.id, ...d, date: dateStr };
+                });
+            } catch (err) {
+                console.warn('Colección documents aún vacía:', err.message);
+                state.docs = [];
+            }
+            filterDocsTable();
+            updateStats();
+        }
+
         function renderDocsTable(items) {
             const tbody = document.getElementById('docsTableBody');
             document.getElementById('docCountIndicator').textContent = `${items.length} archivos`;
@@ -1008,7 +1199,7 @@
                             <div class="empty-state">
                                 <div class="empty-icon">📁</div>
                                 <h3>No se encontraron documentos</h3>
-                                <p>Carga un nuevo documento o ajusta la búsqueda.</p>
+                                <p>Carga un nuevo documento o legajo haciendo clic en "+ Subir Documento".</p>
                             </div>
                         </td>
                     </tr>`;
@@ -1018,14 +1209,14 @@
             tbody.innerHTML = items.map(d => `
                 <tr>
                     <td><strong>📄 ${d.title}</strong></td>
-                    <td><span class="badge-branch">${d.type.toUpperCase()}</span></td>
+                    <td><span class="badge-branch">${(d.type || '').toUpperCase()}</span></td>
                     <td>${d.client}</td>
                     <td>${d.branch}</td>
                     <td style="color: var(--muted); font-size: 0.85rem;">${d.date}</td>
                     <td>
                         <div class="table-actions">
-                            <button class="btn-icon-action" title="Descargar" onclick="alert('Descargando archivo: ${d.title}')">⬇️</button>
-                            <button class="btn-icon-action danger" title="Eliminar" onclick="deleteDoc('${d.id}')">🗑️</button>
+                            ${d.fileUrl ? `<a href="${d.fileUrl}" target="_blank" rel="noopener" class="btn-icon-action" title="Descargar/Ver archivo">⬇️</a>` : ''}
+                            <button class="btn-icon-action danger" title="Eliminar de Firestore" onclick="deleteDocFromFirestore('${d.id}')">🗑️</button>
                         </div>
                     </td>
                 </tr>
@@ -1037,48 +1228,75 @@
             const type = (document.getElementById('filterDocType').value || '').toLowerCase();
 
             const filtered = state.docs.filter(d => {
-                const matchQ = d.title.toLowerCase().includes(query) || d.client.toLowerCase().includes(query);
-                const matchT = !type || d.type.toLowerCase() === type;
+                const matchQ = (d.title || '').toLowerCase().includes(query) || (d.client || '').toLowerCase().includes(query);
+                const matchT = !type || (d.type || '').toLowerCase() === type;
                 return matchQ && matchT;
             });
             renderDocsTable(filtered);
         }
 
-        function deleteDoc(id) {
-            if (confirm('¿Eliminar este documento del legajo?')) {
-                state.docs = state.docs.filter(d => d.id !== id);
-                filterDocsTable();
-                updateStats();
+        async function handleSaveDoc(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('btnSubmitDoc');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Subiendo...';
+
+            const fileInput = document.getElementById('docFileInput');
+            let fileUrl = '';
+
+            try {
+                if (fileInput.files.length > 0 && window.storage) {
+                    const file = fileInput.files[0];
+                    showToast('Subiendo archivo a Firebase Storage...', 'info');
+                    const storageRef = storage.ref(`documents/${Date.now()}_${file.name}`);
+                    const uploadTask = await storageRef.put(file);
+                    fileUrl = await uploadTask.ref.getDownloadURL();
+                }
+
+                const docData = {
+                    title: document.getElementById('docTitle').value.trim(),
+                    type: document.getElementById('docTypeSelect').value,
+                    client: document.getElementById('docClient').value.trim(),
+                    branch: document.getElementById('docBranch').value,
+                    fileUrl: fileUrl,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                await db.collection('documents').add(docData);
+                closeModal('modalDoc');
+                document.getElementById('formDoc').reset();
+                showToast('Documento registrado con éxito', 'success');
+                await loadDocsFromFirestore();
+            } catch (err) {
+                console.error(err);
+                showToast('Error al guardar documento: ' + err.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Guardar Documento';
             }
         }
 
-        function handleSaveDoc(e) {
-            e.preventDefault();
-            const newDoc = {
-                id: 'DOC-' + Date.now(),
-                title: document.getElementById('docTitle').value,
-                type: document.getElementById('docTypeSelect').value,
-                client: document.getElementById('docClient').value,
-                branch: document.getElementById('docBranch').value === 'posadas' ? 'Posadas' : 'Resistencia',
-                date: new Date().toLocaleDateString()
-            };
-            state.docs.unshift(newDoc);
-            closeModal('modalDoc');
-            document.getElementById('formDoc').reset();
-            filterDocsTable();
-            updateStats();
-            alert('¡Documento registrado en el legajo!');
+        async function deleteDocFromFirestore(id) {
+            if (!confirm('¿Eliminar este documento de Firestore?')) return;
+            try {
+                await db.collection('documents').doc(id).delete();
+                showToast('Documento eliminado de Firestore', 'success');
+                await loadDocsFromFirestore();
+            } catch (err) {
+                console.error(err);
+                showToast('Error al eliminar: ' + err.message, 'error');
+            }
         }
 
-        // --- ACTUALIZAR STATS GENERALES ---
+        // ==================== ACTUALIZAR STATS GENERALES ====================
         function updateStats() {
             document.getElementById('totalBoats').textContent = state.boats.length;
             document.getElementById('totalUsers').textContent = state.users.length;
-            document.getElementById('activePlans').textContent = state.plans.filter(p => p.status === 'al-dia').length;
+            document.getElementById('activePlans').textContent = state.plans.filter(p => (p.status || 'al-dia') === 'al-dia').length;
             document.getElementById('totalDocs').textContent = state.docs.length;
         }
 
-        // --- INICIALIZACIÓN ---
+        // ==================== INICIALIZACIÓN ====================
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 const user = await authModule.requireAuth(['admin']);
@@ -1086,14 +1304,15 @@
                 document.getElementById('welcomeMsg').textContent = `Bienvenido, ${user.displayName || 'Pablo Arriola'}`;
                 document.getElementById('mainContent').style.display = 'block';
 
-                // Inicializar tablas
-                renderBoatsTable(state.boats);
-                renderPlansTable(state.plans);
-                renderDocsTable(state.docs);
-                await loadFirestoreUsers();
-                updateStats();
+                // Cargar todas las colecciones reales de Firestore
+                await Promise.all([
+                    loadBoatsFromFirestore(),
+                    loadUsersFromFirestore(),
+                    loadPlansFromFirestore(),
+                    loadDocsFromFirestore()
+                ]);
 
-                // Inicializar pestaña según hash
+                // Navegar a la pestaña inicial por hash
                 const initialTab = window.location.hash.replace('#', '') || 'dashboard';
                 navigateTo(initialTab);
 
