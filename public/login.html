@@ -23,28 +23,33 @@
 </head>
 <body>
 
-    <!-- Simplified Navbar for Login -->
-    <header class="navbar" style="padding: 1rem; border-bottom: 1px solid rgba(240, 244, 248, 0.1);">
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="/" class="logo" style="color: var(--orange); text-decoration: none; font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; text-transform: uppercase; font-weight: 600;">
-                Nautica Aire Libre
+    <!-- Header Navbar -->
+    <header class="auth-header">
+        <div class="auth-header-inner">
+            <a href="/" class="auth-header-logo" title="Náutica Aire Libre - Inicio">
+                <img src="/images/logo.png" alt="Náutica Aire Libre" />
             </a>
-            <nav>
-                <a href="/" style="color: var(--white); text-decoration: none; font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; font-size: 1.1rem; transition: color 0.3s ease;">Volver al Inicio</a>
-            </nav>
+            <a href="/" class="btn-back-home" title="Volver al Inicio">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Volver al Inicio</span>
+            </a>
         </div>
     </header>
 
     <main class="auth-wrapper">
-        <div class="auth-card">
-            <!-- Loading Overlay -->
-            <div class="loading-overlay" id="loadingOverlay">
-                <div class="spinner"></div>
-            </div>
+        <div class="auth-card-container">
+            <div class="auth-card">
+                <!-- Loading Overlay -->
+                <div class="loading-overlay" id="loadingOverlay">
+                    <div class="spinner"></div>
+                </div>
 
-            <div class="auth-logo">
-                <h2>Nautica Aire Libre</h2>
-            </div>
+                <div class="auth-logo">
+                    <img src="/images/logo.png" alt="Náutica Aire Libre" style="height: 38px; width: auto; margin-bottom: 8px;">
+                    <h2 style="font-size: 1.4rem; letter-spacing: 1px; margin: 0; color: var(--orange);">Portal de Acceso</h2>
+                </div>
 
             <div class="auth-tabs">
                 <button class="auth-tab active" onclick="switchTab('login')">Iniciar Sesión</button>
@@ -94,7 +99,18 @@
                 Continuar con Google
             </button>
         </div>
-    </main>
+
+        <!-- Botón / Enlace Centrado al Inicio -->
+        <div class="auth-bottom-nav">
+            <a href="/" class="auth-centered-back-btn">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Volver a la página principal</span>
+            </a>
+        </div>
+    </div>
+</main>
 
     <footer class="footer">
         <div class="container" style="text-align: center; padding: 1rem; color: var(--muted); font-size: 0.9rem; border-top: 1px solid rgba(240, 244, 248, 0.1);">
