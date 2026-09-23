@@ -33,12 +33,12 @@ service firebase.storage {
     
     match /boats/{allPaths=**} {
       allow read: if true;
-      allow write: if isAdmin() && isValidImage();
+      allow write: if isAuthenticated() && isValidImage();
     }
     
     match /documents/{clientUid}/{allPaths=**} {
-      allow read: if isAdmin() || isVendor() || (isAuthenticated() && request.auth.uid == clientUid);
-      allow write: if (isAdmin() || isVendor()) && isValidDocument();
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isValidDocument();
     }
   }
 }

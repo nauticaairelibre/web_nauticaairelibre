@@ -480,9 +480,39 @@
                             <input type="text" id="boatEngine" class="form-control" placeholder="Ej: 90 a 150 HP">
                         </div>
                     </div>
+                    <!-- Foto Principal -->
                     <div class="form-group">
-                        <label>URL de Imagen Principal</label>
-                        <input type="text" id="boatImgUrl" class="form-control" placeholder="Ej: /img/discovery-190.png">
+                        <label>Foto Principal (Portada)</label>
+                        <input type="file" id="boatMainPhotoFile" accept="image/*" style="display:none;" onchange="handleMainPhotoSelected(event)">
+                        <div class="image-upload-zone" onclick="document.getElementById('boatMainPhotoFile').click()">
+                            <div class="upload-zone-prompt" id="mainPhotoPrompt">
+                                <span class="upload-icon">📸</span>
+                                <p><strong>Subir Foto Principal</strong></p>
+                                <small>Toca aquí para seleccionar una imagen desde tu celular o PC</small>
+                            </div>
+                            <div class="upload-preview-container" id="mainPhotoPreviewContainer" style="display:none;">
+                                <img id="mainPhotoPreview" src="" alt="Vista previa principal" class="upload-preview-img">
+                                <button type="button" class="btn-remove-preview" onclick="event.stopPropagation(); removeMainPhoto();" title="Quitar imagen">&times;</button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="boatImgUrl" value="">
+                    </div>
+
+                    <!-- Galería de Fotos Múltiples -->
+                    <div class="form-group" style="margin-top: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <label style="margin: 0;">Galería de Fotos de la Embarcación</label>
+                            <button type="button" class="btn-admin-secondary" style="padding: 4px 12px; font-size: 0.8rem;" onclick="document.getElementById('boatGalleryFiles').click()">
+                                📸 + Agregar Fotos
+                            </button>
+                        </div>
+                        <input type="file" id="boatGalleryFiles" multiple accept="image/*" style="display:none;" onchange="handleGalleryPhotosSelected(event)">
+                        <small style="color: var(--muted); font-size: 0.78rem; display: block; margin-bottom: 10px;">
+                            Selecciona una o varias imágenes desde tu dispositivo (exterior, interior, consola, motor, etc.)
+                        </small>
+                        <div class="gallery-thumbs-grid" id="galleryThumbsGrid">
+                            <!-- Miniaturas dinámicas -->
+                        </div>
                     </div>
                     <div class="admin-modal-footer" style="padding: 16px 0 0 0; margin-top: 16px;">
                         <button type="button" class="btn-admin-secondary" onclick="closeModal('modalBoat')">Cancelar</button>
@@ -720,15 +750,100 @@
             if (el) el.classList.add('open');
         }
 
+        // Archivos temporales para carga de imágenes en modal
+        let newMainPhotoFile = null;
+        let newGalleryPhotoFiles = [];
+        let existingGalleryUrls = [];
+
+        function handleMainPhotoSelected(e) {
+            if (e.target.files && e.target.files[0]) {
+                newMainPhotoFile = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    document.getElementById('mainPhotoPreview').src = event.target.result;
+                    document.getElementById('mainPhotoPrompt').style.display = 'none';
+                    document.getElementById('mainPhotoPreviewContainer').style.display = 'block';
+                };
+                reader.readAsDataURL(newMainPhotoFile);
+            }
+        }
+
+        function removeMainPhoto() {
+            newMainPhotoFile = null;
+            document.getElementById('boatMainPhotoFile').value = '';
+            document.getElementById('boatImgUrl').value = '';
+            document.getElementById('mainPhotoPreview').src = '';
+            document.getElementById('mainPhotoPreviewContainer').style.display = 'none';
+            document.getElementById('mainPhotoPrompt').style.display = 'block';
+        }
+
+        function handleGalleryPhotosSelected(e) {
+            if (e.target.files && e.target.files.length > 0) {
+                Array.from(e.target.files).forEach(file => {
+                    newGalleryPhotoFiles.push(file);
+                });
+                renderGalleryThumbs();
+            }
+        }
+
+        function removeGalleryPhoto(index) {
+            newGalleryPhotoFiles.splice(index, 1);
+            renderGalleryThumbs();
+        }
+
+        function removeExistingGalleryPhoto(index) {
+            existingGalleryUrls.splice(index, 1);
+            renderGalleryThumbs();
+        }
+
+        function renderGalleryThumbs() {
+            const grid = document.getElementById('galleryThumbsGrid');
+            if (!grid) return;
+
+            if (existingGalleryUrls.length === 0 && newGalleryPhotoFiles.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: var(--muted); font-size: 0.82rem; padding: 10px;">Sin fotos en la galería. Toca "+ Agregar Fotos" para seleccionar desde tu celular o PC.</div>';
+                return;
+            }
+
+            let html = '';
+
+            // Fotos ya existentes en Firestore
+            existingGalleryUrls.forEach((url, i) => {
+                html += `
+                    <div class="gallery-thumb-item">
+                        <img src="${url}" alt="Galería ${i + 1}">
+                        <button type="button" class="btn-remove-thumb" onclick="removeExistingGalleryPhoto(${i})" title="Quitar foto">&times;</button>
+                    </div>
+                `;
+            });
+
+            // Nuevas fotos locales seleccionadas
+            newGalleryPhotoFiles.forEach((file, i) => {
+                const previewUrl = URL.createObjectURL(file);
+                html += `
+                    <div class="gallery-thumb-item">
+                        <img src="${previewUrl}" alt="Nueva foto ${i + 1}">
+                        <button type="button" class="btn-remove-thumb" onclick="removeGalleryPhoto(${i})" title="Quitar foto">&times;</button>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+        }
+
         function closeModal(id) {
             const el = document.getElementById(id);
             if (el) el.classList.remove('open');
-            // Limpiar si era edición
+            // Limpiar si era edición de embarcación
             if (id === 'modalBoat') {
                 document.getElementById('formBoat').reset();
                 document.getElementById('editBoatId').value = '';
                 document.getElementById('modalBoatTitle').textContent = 'Cargar Embarcación al Catálogo';
                 document.getElementById('btnSubmitBoat').textContent = 'Guardar en Catálogo';
+                removeMainPhoto();
+                newGalleryPhotoFiles = [];
+                existingGalleryUrls = [];
+                renderGalleryThumbs();
             }
         }
 
@@ -770,6 +885,7 @@
                     const docRef = db.collection('boats').doc();
                     batch.set(docRef, {
                         ...boat,
+                        gallery: [],
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 });
@@ -808,7 +924,10 @@
                     <td>
                         <img src="${b.img || '/images/logo.png'}" alt="${b.name}" class="boat-thumb" onerror="this.src='/images/logo.png'">
                     </td>
-                    <td><strong>${b.name}</strong></td>
+                    <td>
+                        <strong>${b.name}</strong>
+                        ${b.gallery && b.gallery.length ? `<br><small style="color: var(--blue); font-size: 0.75rem;">📸 ${b.gallery.length} foto${b.gallery.length > 1 ? 's' : ''} en galería</small>` : ''}
+                    </td>
                     <td style="text-transform: capitalize;">${b.brand}</td>
                     <td>${b.dimensions || '—'}</td>
                     <td>${b.engine || '—'}</td>
@@ -819,7 +938,7 @@
                     </td>
                     <td>
                         <div class="table-actions">
-                            <button class="btn-icon-action" title="Editar" onclick="editBoat('${b.id}')">✏️</button>
+                            <button class="btn-icon-action" title="Editar y ver galería" onclick="editBoat('${b.id}')">✏️</button>
                             <button class="btn-icon-action danger" title="Eliminar de Firestore" onclick="deleteBoat('${b.id}')">🗑️</button>
                         </div>
                     </td>
@@ -853,38 +972,95 @@
             document.getElementById('boatEngine').value = b.engine || '';
             document.getElementById('boatImgUrl').value = b.img || '';
 
-            document.getElementById('modalBoatTitle').textContent = 'Editar Embarcación';
+            // Resetear archivos locales
+            newMainPhotoFile = null;
+            newGalleryPhotoFiles = [];
+            document.getElementById('boatMainPhotoFile').value = '';
+            document.getElementById('boatGalleryFiles').value = '';
+
+            // Mostrar foto principal existente
+            if (b.img && b.img !== '/images/logo.png') {
+                document.getElementById('mainPhotoPreview').src = b.img;
+                document.getElementById('mainPhotoPrompt').style.display = 'none';
+                document.getElementById('mainPhotoPreviewContainer').style.display = 'block';
+            } else {
+                removeMainPhoto();
+            }
+
+            // Cargar galería existente
+            existingGalleryUrls = Array.isArray(b.gallery) ? [...b.gallery] : [];
+            renderGalleryThumbs();
+
+            document.getElementById('modalBoatTitle').textContent = 'Editar Embarcación y Galería';
             document.getElementById('btnSubmitBoat').textContent = 'Guardar Cambios';
             openModal('modalBoat');
         }
 
         async function handleSaveBoat(e) {
             e.preventDefault();
+            const submitBtn = document.getElementById('btnSubmitBoat');
+            submitBtn.disabled = true;
+
             const editId = document.getElementById('editBoatId').value;
-            const boatData = {
-                name: document.getElementById('boatModelName').value.trim(),
-                brand: document.getElementById('boatBrand').value,
-                condition: document.getElementById('boatCondition').value,
-                dimensions: document.getElementById('boatDimensions').value.trim() || '—',
-                engine: document.getElementById('boatEngine').value.trim() || '—',
-                img: document.getElementById('boatImgUrl').value.trim() || '/images/logo.png',
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
+            const boatId = editId || 'boat_' + Date.now();
+
+            let mainImgUrl = document.getElementById('boatImgUrl').value.trim() || '/images/logo.png';
 
             try {
+                // 1. Subir foto principal a Firebase Storage si se seleccionó archivo
+                if (newMainPhotoFile && window.storage) {
+                    submitBtn.textContent = 'Subiendo foto principal...';
+                    showToast('Subiendo foto principal a Storage...', 'info');
+                    const cleanName = newMainPhotoFile.name.replace(/[^a-zA-Z0-9.]/g, '_');
+                    const mainRef = storage.ref(`boats/${boatId}/main_${Date.now()}_${cleanName}`);
+                    const snap = await mainRef.put(newMainPhotoFile);
+                    mainImgUrl = await snap.ref.getDownloadURL();
+                }
+
+                // 2. Subir fotos de galería a Firebase Storage si se seleccionaron
+                const finalGallery = [...existingGalleryUrls];
+                if (newGalleryPhotoFiles.length > 0 && window.storage) {
+                    for (let i = 0; i < newGalleryPhotoFiles.length; i++) {
+                        const file = newGalleryPhotoFiles[i];
+                        submitBtn.textContent = `Subiendo fotos (${i + 1}/${newGalleryPhotoFiles.length})...`;
+                        const cleanName = file.name.replace(/[^a-zA-Z0-9.]/g, '_');
+                        const galRef = storage.ref(`boats/${boatId}/gallery_${Date.now()}_${i}_${cleanName}`);
+                        const snap = await galRef.put(file);
+                        const url = await snap.ref.getDownloadURL();
+                        finalGallery.push(url);
+                    }
+                }
+
+                submitBtn.textContent = 'Guardando en Firestore...';
+
+                const boatData = {
+                    name: document.getElementById('boatModelName').value.trim(),
+                    brand: document.getElementById('boatBrand').value,
+                    condition: document.getElementById('boatCondition').value,
+                    dimensions: document.getElementById('boatDimensions').value.trim() || '—',
+                    engine: document.getElementById('boatEngine').value.trim() || '—',
+                    img: mainImgUrl,
+                    gallery: finalGallery,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
                 if (editId) {
                     await db.collection('boats').doc(editId).update(boatData);
-                    showToast('Embarcación actualizada en Firestore', 'success');
+                    showToast('Embarcación y fotos actualizadas en Firestore', 'success');
                 } else {
                     boatData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-                    await db.collection('boats').add(boatData);
-                    showToast('Nueva embarcación guardada en Firestore', 'success');
+                    await db.collection('boats').doc(boatId).set(boatData);
+                    showToast('Nueva embarcación guardada con su galería', 'success');
                 }
+
                 closeModal('modalBoat');
                 await loadBoatsFromFirestore();
             } catch (err) {
-                console.error(err);
+                console.error('Error al guardar embarcación:', err);
                 showToast('Error al guardar: ' + err.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = editId ? 'Guardar Cambios' : 'Guardar en Catálogo';
             }
         }
 
