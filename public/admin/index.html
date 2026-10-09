@@ -546,7 +546,6 @@
                             <select id="userRoleSelect" class="form-control">
                                 <option value="cliente">Cliente</option>
                                 <option value="vendedor">Vendedor</option>
-                                <option value="admin">Administrador</option>
                             </select>
                         </div>
                         <div>
@@ -1166,32 +1165,39 @@
                 return;
             }
 
-            tbody.innerHTML = items.map(u => `
-                <tr>
-                    <td><strong>${u.name}</strong></td>
-                    <td style="color: var(--muted);">${u.email}</td>
-                    <td>
-                        <select class="admin-select" style="padding: 4px 8px; font-size: 0.8rem;" onchange="updateUserRoleInFirestore('${u.id}', this.value)">
-                            <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
+            tbody.innerHTML = items.map(u => {
+                const isSuper = (u.email || '').toLowerCase() === 'arriolapablo.a@gmail.com';
+                const roleBadgeOrSelect = isSuper 
+                    ? `<span style="background: rgba(232,123,32,0.2); color: var(--orange); border: 1px solid rgba(232,123,32,0.4); padding: 4px 10px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px;">👑 Super Admin</span>`
+                    : `<select class="admin-select" style="padding: 4px 8px; font-size: 0.8rem;" onchange="updateUserRoleInFirestore('${u.id}', this.value)">
                             <option value="vendedor" ${u.role === 'vendedor' ? 'selected' : ''}>Vendedor</option>
                             <option value="cliente" ${u.role === 'cliente' ? 'selected' : ''}>Cliente</option>
-                        </select>
-                    </td>
+                       </select>`;
+
+                const actionBtn = isSuper
+                    ? `<span title="Super Administrador protegido" style="font-size: 0.75rem; color: var(--muted); opacity: 0.7;">🔒 Protegido</span>`
+                    : `<button class="btn-icon-action danger" title="Eliminar de Firestore" onclick="deleteUserFromFirestore('${u.id}')">🗑️</button>`;
+
+                return `
+                <tr>
+                    <td><strong>${u.name}</strong> ${isSuper ? '<span style="font-size:0.75rem; color:var(--orange); font-weight:normal;">(Titular)</span>' : ''}</td>
+                    <td style="color: var(--muted);">${u.email}</td>
+                    <td>${roleBadgeOrSelect}</td>
                     <td>
-                        <select class="admin-select" style="padding: 4px 8px; font-size: 0.8rem;" onchange="updateUserBranchInFirestore('${u.id}', this.value)">
+                        <select class="admin-select" style="padding: 4px 8px; font-size: 0.8rem;" onchange="updateUserBranchInFirestore('${u.id}', this.value)" ${isSuper ? 'disabled title="Administrador global"' : ''}>
                             <option value="posadas" ${u.branch === 'posadas' ? 'selected' : ''}>Posadas</option>
                             <option value="resistencia" ${u.branch === 'resistencia' ? 'selected' : ''}>Resistencia</option>
-                            <option value="todas" ${u.branch === 'todas' ? 'selected' : ''}>Ambas</option>
+                            <option value="todas" ${u.branch === 'todas' || isSuper ? 'selected' : ''}>Ambas</option>
                         </select>
                     </td>
                     <td style="color: var(--muted); font-size: 0.85rem;">${u.createdAt}</td>
                     <td>
                         <div class="table-actions">
-                            <button class="btn-icon-action danger" title="Eliminar de Firestore" onclick="deleteUserFromFirestore('${u.id}')">🗑️</button>
+                            ${actionBtn}
                         </div>
                     </td>
                 </tr>
-            `).join('');
+            `}).join('');
         }
 
         function filterUsersTable() {
@@ -1209,9 +1215,19 @@
         }
 
         async function updateUserRoleInFirestore(userId, newRole) {
+            const u = state.users.find(x => x.id === userId);
+            if (u && (u.email || '').toLowerCase() === 'arriolapablo.a@gmail.com') {
+                showToast('El rol del Super Administrador no puede ser modificado', 'error');
+                await loadUsersFromFirestore();
+                return;
+            }
+            if (newRole === 'admin') {
+                showToast('Solo arriolapablo.a@gmail.com puede poseer permisos de Administrador', 'error');
+                await loadUsersFromFirestore();
+                return;
+            }
             try {
                 await db.collection('users').doc(userId).update({ role: newRole });
-                const u = state.users.find(x => x.id === userId);
                 if (u) u.role = newRole;
                 showToast(`Rol actualizado a "${newRole.toUpperCase()}" en Firestore`, 'success');
             } catch (err) {
@@ -1233,6 +1249,11 @@
         }
 
         async function deleteUserFromFirestore(id) {
+            const u = state.users.find(x => x.id === id);
+            if (u && (u.email || '').toLowerCase() === 'arriolapablo.a@gmail.com') {
+                showToast('La cuenta del Super Administrador está protegida y no puede ser eliminada', 'error');
+                return;
+            }
             if (!confirm('¿Deseas dar de baja a este usuario en Firestore?')) return;
             try {
                 await db.collection('users').doc(id).delete();
@@ -1246,11 +1267,17 @@
 
         async function handleSaveUser(e) {
             e.preventDefault();
+            const email = document.getElementById('userEmailInput').value.trim().toLowerCase();
+            const role = document.getElementById('userRoleSelect').value;
+            if (role === 'admin' && email !== 'arriolapablo.a@gmail.com') {
+                showToast('Solo arriolapablo.a@gmail.com puede registrarse como Administrador', 'error');
+                return;
+            }
             const userData = {
                 displayName: document.getElementById('userNameInput').value.trim(),
-                email: document.getElementById('userEmailInput').value.trim().toLowerCase(),
-                role: document.getElementById('userRoleSelect').value,
-                branch: document.getElementById('userBranchSelect').value,
+                email: email,
+                role: (email === 'arriolapablo.a@gmail.com') ? 'admin' : role,
+                branch: (email === 'arriolapablo.a@gmail.com') ? 'todas' : document.getElementById('userBranchSelect').value,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
@@ -1521,6 +1548,15 @@
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 const user = await authModule.requireAuth(['admin']);
+                const currentEmail = (user && user.email ? user.email.trim().toLowerCase() : '');
+                
+                // Validación estricta final: solo arriolapablo.a@gmail.com
+                if (currentEmail !== 'arriolapablo.a@gmail.com') {
+                    alert('Acceso Denegado. Solo arriolapablo.a@gmail.com tiene permisos de administración.');
+                    await authModule.logout();
+                    return;
+                }
+
                 document.getElementById('userName').textContent = user.displayName || user.email;
                 document.getElementById('welcomeMsg').textContent = `Bienvenido, ${user.displayName || 'Pablo Arriola'}`;
                 document.getElementById('mainContent').style.display = 'block';

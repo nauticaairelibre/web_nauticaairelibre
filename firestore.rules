@@ -8,6 +8,16 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // Helper: verify if user is the single authorized Super Administrator
+    function isSuperAdminEmail() {
+      return isAuthenticated() 
+        && request.auth.token.email != null 
+        && (
+          request.auth.token.email == 'arriolapablo.a@gmail.com' 
+          || request.auth.token.email.lower() == 'arriolapablo.a@gmail.com'
+        );
+    }
+
     function isOwner(uid) {
       return isAuthenticated() && request.auth.uid == uid;
     }
@@ -26,9 +36,9 @@ service cloud.firestore {
       return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.branch;
     }
 
-    // Role check helpers (safe with exists check)
+    // Role check helpers: ONLY arriolapablo.a@gmail.com can ever be Admin!
     function isAdmin() {
-      return hasProfile() && getUserRole() == 'admin';
+      return isSuperAdminEmail() && hasProfile() && getUserRole() == 'admin';
     }
 
     function isVendor() {
@@ -41,20 +51,30 @@ service cloud.firestore {
 
     // ═══ USERS collection ═══
     match /users/{userId} {
-      // Owner can read their own; Admin can read all
+      // Owner can read their own profile; Admin can read all
       allow read: if isOwner(userId) || isAdmin();
       
-      // On creation, only role 'cliente' or 'admin' if no admin exists
-      allow create: if isAuthenticated() && request.auth.uid == userId;
+      // On creation: Only arriolapablo.a@gmail.com can be created with role 'admin'.
+      // All other users must be created as 'cliente'.
+      allow create: if isAuthenticated() && request.auth.uid == userId
+        && (
+          (request.resource.data.role == 'admin' && isSuperAdminEmail())
+          || request.resource.data.role == 'cliente'
+        );
       
-      // User can update basic info without elevating role/branch; Admin can update everything
-      allow update: if isAdmin() || (
+      // On update: Admin can update, but cannot assign 'admin' to any other account.
+      // Owner can update basic info without elevating role/branch.
+      allow update: if (
+        isAdmin() && (
+          request.resource.data.role != 'admin' || (isOwner(userId) && isSuperAdminEmail())
+        )
+      ) || (
         isOwner(userId) 
         && request.resource.data.role == resource.data.role 
         && request.resource.data.branch == resource.data.branch
       );
       
-      allow delete: if isAdmin();
+      allow delete: if isAdmin() && !isOwner(userId);
     }
 
     // ═══ BOATS collection ═══

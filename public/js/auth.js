@@ -1,5 +1,12 @@
 // public/js/auth.js — Roles from Firestore (no Cloud Functions needed)
 const authModule = {
+  // Super Administrador único del sistema
+  SUPER_ADMIN_EMAIL: 'arriolapablo.a@gmail.com',
+
+  // Verifica si el correo corresponde exactamente al Super Administrador
+  isSuperAdmin(email) {
+    return Boolean(email && email.trim().toLowerCase() === this.SUPER_ADMIN_EMAIL.toLowerCase());
+  },
 
   // Sign in with email and password
   async loginWithEmail(email, password) {
@@ -32,12 +39,13 @@ const authModule = {
       const cred = await auth.createUserWithEmailAndPassword(email, password);
       if (cred.user) {
         await cred.user.updateProfile({ displayName: displayName });
-        // Create Firestore profile with default role
+        // Únicamente arriolapablo.a@gmail.com puede registrarse como admin
+        const isAdminUser = this.isSuperAdmin(email);
         await db.collection('users').doc(cred.user.uid).set({
-          email: email,
+          email: email.trim().toLowerCase(),
           displayName: displayName,
-          role: 'cliente',
-          branch: null,
+          role: isAdminUser ? 'admin' : 'cliente',
+          branch: isAdminUser ? 'todas' : null,
           phone: '',
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           lastLogin: firebase.firestore.FieldValue.serverTimestamp()
@@ -68,7 +76,7 @@ const authModule = {
     return auth.onAuthStateChanged(async (user) => {
       if (user) {
         try {
-          const role = await this._fetchRole(user.uid);
+          const role = await this._fetchRole(user.uid, user.email);
           const branch = await this._fetchBranch(user.uid);
           sessionStorage.setItem('userRole', role);
           if (branch) sessionStorage.setItem('userBranch', branch);
@@ -96,9 +104,18 @@ const authModule = {
           return;
         }
 
+        // Si la ruta requiere admin, verificar estrictamente que sea arriolapablo.a@gmail.com
+        if (allowedRoles.includes('admin') && !this.isSuperAdmin(user.email)) {
+          console.warn('Acceso denegado: solo el super administrador puede acceder a esta área.');
+          alert('Acceso Denegado. Solo el Administrador principal (arriolapablo.a@gmail.com) tiene permisos para ingresar.');
+          await auth.signOut();
+          window.location.href = '/login';
+          return;
+        }
+
         if (allowedRoles.length > 0) {
           try {
-            const role = await this._fetchRole(user.uid);
+            const role = await this._fetchRole(user.uid, user.email);
             sessionStorage.setItem('userRole', role);
 
             if (!allowedRoles.includes(role)) {
@@ -145,11 +162,20 @@ const authModule = {
   // --- Private helpers ---
 
   // Fetch role from Firestore users collection
-  async _fetchRole(uid) {
+  async _fetchRole(uid, userEmail = null) {
     try {
       const doc = await db.collection('users').doc(uid).get();
       if (doc.exists) {
-        return doc.data().role || 'cliente';
+        const data = doc.data() || {};
+        const role = data.role || 'cliente';
+        const email = (userEmail || data.email || (auth.currentUser ? auth.currentUser.email : '') || '').toLowerCase();
+
+        // Si un documento tuviera 'admin' pero el email no es arriolapablo.a@gmail.com, se bloquea a 'cliente'
+        if (role === 'admin' && !this.isSuperAdmin(email)) {
+          console.warn(`Seguridad: el usuario ${email} no es Super Admin. Degradando a rol 'cliente'.`);
+          return 'cliente';
+        }
+        return role;
       }
       return 'cliente';
     } catch (error) {
@@ -176,20 +202,28 @@ const authModule = {
     try {
       const docRef = db.collection('users').doc(user.uid);
       const doc = await docRef.get();
+      const isAdminUser = this.isSuperAdmin(user.email);
+
       if (!doc.exists) {
         await docRef.set({
-          email: user.email,
+          email: (user.email || '').toLowerCase(),
           displayName: user.displayName || '',
-          role: 'cliente',
-          branch: null,
+          role: isAdminUser ? 'admin' : 'cliente',
+          branch: isAdminUser ? 'todas' : null,
           phone: '',
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           lastLogin: firebase.firestore.FieldValue.serverTimestamp()
         });
       } else {
-        await docRef.update({
+        const updateData = {
           lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-        });
+        };
+        // Si es el Super Admin y no tiene rol admin, sincronizarlo
+        if (isAdminUser && doc.data().role !== 'admin') {
+          updateData.role = 'admin';
+          updateData.branch = 'todas';
+        }
+        await docRef.update(updateData);
       }
     } catch (error) {
       console.error('Error ensuring user profile:', error);

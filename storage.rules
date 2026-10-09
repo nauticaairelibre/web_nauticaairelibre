@@ -29,11 +29,20 @@ service firebase.storage {
       return request.resource.size < 20 * 1024 * 1024; // 20MB
     }
 
+    function isSuperAdminEmail() {
+      return isAuthenticated() 
+        && request.auth.token.email != null 
+        && (
+          request.auth.token.email == 'arriolapablo.a@gmail.com' 
+          || request.auth.token.email.lower() == 'arriolapablo.a@gmail.com'
+        );
+    }
+
     // Rules
     
     match /boats/{allPaths=**} {
       allow read: if true;
-      allow write: if isAuthenticated() && isValidImage();
+      allow write: if isSuperAdminEmail() && isValidImage();
     }
     
     match /documents/{clientUid}/{allPaths=**} {
