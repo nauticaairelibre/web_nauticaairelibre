@@ -934,6 +934,20 @@ body.no-scroll {
   transform: scale(0.9);
 }
 
+/* Ocultar Asesor IA completamente cuando el menú de WhatsApp esté abierto (evita superposición con Administración) */
+body.wa-menu-open .ai-chat-float,
+body:has(.wa-widget.open) .ai-chat-float,
+.ai-chat-widget.wa-open .ai-chat-float,
+body.wa-menu-open .ai-chat-window,
+body:has(.wa-widget.open) .ai-chat-window,
+.ai-chat-widget.wa-open .ai-chat-window {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: scale(0.7) translateY(12px) !important;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s !important;
+}
+
 /* Ventana emergente del Chatbot */
 .ai-chat-window {
   position: fixed;

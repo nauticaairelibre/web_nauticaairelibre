@@ -51,40 +51,52 @@ const waWidget = document.getElementById('waWidget');
 const waToggle = document.getElementById('waToggle');
 const waMenuClose = document.getElementById('waMenuClose');
 
-if (waWidget && waToggle) {
-  waToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isOpen = waWidget.classList.toggle('open');
-    waToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    // Si abren WhatsApp y el Asesor AI está abierto, cerrarlo para evitar solapamientos
-    const aiWidget = document.getElementById('aiChatWidget');
-    if (isOpen && aiWidget && aiWidget.classList.contains('open')) {
+function setWhatsAppMenuState(open) {
+  if (!waWidget || !waToggle) return;
+  waWidget.classList.toggle('open', open);
+  waToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  document.body.classList.toggle('wa-menu-open', open);
+
+  const aiWidget = document.getElementById('aiChatWidget');
+  if (aiWidget) {
+    aiWidget.classList.toggle('wa-open', open);
+    if (open && aiWidget.classList.contains('open')) {
       aiWidget.classList.remove('open');
       sessionStorage.setItem('aiChatDismissed', 'true');
     }
+  }
+}
+
+if (waWidget && waToggle) {
+  waToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const willOpen = !waWidget.classList.contains('open');
+    setWhatsAppMenuState(willOpen);
   });
 
   if (waMenuClose) {
     waMenuClose.addEventListener('click', (e) => {
       e.stopPropagation();
-      waWidget.classList.remove('open');
-      waToggle.setAttribute('aria-expanded', 'false');
+      setWhatsAppMenuState(false);
     });
   }
+
+  // Cerrar WhatsApp al hacer clic en cualquiera de las sucursales
+  document.querySelectorAll('.wa-item').forEach(item => {
+    item.addEventListener('click', () => setWhatsAppMenuState(false));
+  });
 
   // Close when clicking outside
   document.addEventListener('click', (e) => {
     if (!waWidget.contains(e.target)) {
-      waWidget.classList.remove('open');
-      waToggle.setAttribute('aria-expanded', 'false');
+      setWhatsAppMenuState(false);
     }
   });
 
   // Close when pressing Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && waWidget.classList.contains('open')) {
-      waWidget.classList.remove('open');
-      waToggle.setAttribute('aria-expanded', 'false');
+      setWhatsAppMenuState(false);
     }
   });
 }
@@ -145,12 +157,8 @@ function initAiChatbot() {
   const aiChatClose = document.getElementById('aiChatClose');
 
   const openAiChat = () => {
+    setWhatsAppMenuState(false);
     aiChatWidget.classList.add('open');
-    // Cerrar WhatsApp si estaba abierto para evitar solapamientos
-    if (typeof waWidget !== 'undefined' && waWidget && waWidget.classList.contains('open')) {
-      waWidget.classList.remove('open');
-      if (typeof waToggle !== 'undefined' && waToggle) waToggle.setAttribute('aria-expanded', 'false');
-    }
   };
 
   const closeAiChat = () => {
