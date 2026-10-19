@@ -129,7 +129,7 @@ function initAiChatbot() {
         <div class="ai-chat-header">
           <div class="ai-chat-header-info">
             <span class="ai-chat-status-dot"></span>
-            <span class="ai-chat-header-title">Asesor Comercial AI</span>
+            <span class="ai-chat-header-title">Asesor Náutico AI</span>
             <span class="ai-chat-header-tag">Náutica Aire Libre</span>
           </div>
           <div class="ai-chat-header-actions">
@@ -141,8 +141,8 @@ function initAiChatbot() {
         <div class="ai-chat-iframe-container">
           <iframe 
             id="aiChatIframe"
-            src="https://asesor-comercial-ai.onrender.com/admin?tenant=RHTdvIML8DSz4HkJQVUeOucu5ih2#/chat" 
-            title="Asesor Comercial AI - Náutica Aire Libre"
+            src="https://asesor-comercial-ai.vercel.app/" 
+            title="Asesor Náutico AI - Náutica Aire Libre"
             allow="clipboard-write; microphone">
           </iframe>
         </div>

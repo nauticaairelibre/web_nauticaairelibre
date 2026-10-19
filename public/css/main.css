@@ -953,7 +953,7 @@ body:has(.wa-widget.open) .ai-chat-window,
   position: fixed;
   bottom: 96px;
   right: 32px;
-  width: 400px;
+  width: 380px;
   height: 600px;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 120px);
