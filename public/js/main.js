@@ -126,18 +126,9 @@ function initAiChatbot() {
 
       <!-- Ventana Flotante del Chatbot -->
       <div class="ai-chat-window" id="aiChatWindow">
-        <div class="ai-chat-header">
-          <div class="ai-chat-header-info">
-            <span class="ai-chat-status-dot"></span>
-            <span class="ai-chat-header-title">Asesor Náutico AI</span>
-            <span class="ai-chat-header-tag">Náutica Aire Libre</span>
-          </div>
-          <div class="ai-chat-header-actions">
-            <button class="ai-chat-btn-minimize" id="aiChatClose" aria-label="Minimizar chat" title="Minimizar">
-              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </button>
-          </div>
-        </div>
+        <button class="ai-chat-btn-close-floating" id="aiChatClose" aria-label="Cerrar chat" title="Cerrar">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
         <div class="ai-chat-iframe-container">
           <iframe 
             id="aiChatIframe"

@@ -982,83 +982,40 @@ body:has(.wa-widget.open) .ai-chat-window,
   pointer-events: auto;
 }
 
-/* Cabecera del Chatbot */
-.ai-chat-header {
-  height: 44px;
-  background: #0d1726;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 14px;
-  user-select: none;
-  flex-shrink: 0;
-}
-
-.ai-chat-header-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.ai-chat-status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #25d366;
-  box-shadow: 0 0 8px #25d366;
-  display: inline-block;
-}
-
-.ai-chat-header-title {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.3px;
-}
-
-.ai-chat-header-tag {
-  font-size: 0.68rem;
-  color: #e87b20;
-  font-weight: 600;
-  background: rgba(232, 123, 32, 0.15);
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-.ai-chat-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.ai-chat-btn-minimize {
+/* Botón flotante para cerrar/minimizar dentro de la ventana */
+.ai-chat-btn-close-floating {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   width: 28px;
   height: 28px;
-  border-radius: 6px;
-  border: none;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  background: rgba(14, 21, 33, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
+  z-index: 10005;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
-.ai-chat-btn-minimize:hover {
-  background: rgba(232, 123, 32, 0.3);
-  color: #fff;
-  transform: scale(1.05);
+.ai-chat-btn-close-floating:hover {
+  background: #e87b20;
+  border-color: #e87b20;
+  transform: scale(1.1);
 }
 
-/* Contenedor del iframe */
+/* Contenedor del iframe a pantalla completa de la ventana */
 .ai-chat-iframe-container {
-  flex: 1;
   width: 100%;
-  height: calc(100% - 44px);
+  height: 100%;
   position: relative;
-  background: #ffffff;
+  background: transparent;
 }
 
 .ai-chat-iframe-container iframe {
@@ -1066,6 +1023,7 @@ body:has(.wa-widget.open) .ai-chat-window,
   height: 100%;
   border: none;
   display: block;
+  border-radius: 16px;
 }
 
 /* Ajustes Responsive en Móviles */
