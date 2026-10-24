@@ -109,19 +109,15 @@ function initAiChatbot() {
 
   const widgetHtml = `
     <div class="ai-chat-widget" id="aiChatWidget">
-      <!-- Botón Flotante (ubicado por arriba del chat de contactanos) -->
-      <button class="ai-chat-float" id="aiChatToggle" aria-label="Abrir Asesor Comercial AI" title="Consultar con nuestro Asesor Virtual">
-        <div class="ai-chat-icon">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
-            <rect x="3" y="8" width="18" height="12" rx="4"/>
-            <circle cx="8.5" cy="13.5" r="1.5" fill="currentColor"/>
-            <circle cx="15.5" cy="13.5" r="1.5" fill="currentColor"/>
-            <path d="M9 17h6"/>
-          </svg>
-        </div>
-        <span class="ai-chat-text">Asesor IA</span>
-        <span class="ai-chat-badge">Online</span>
+      <!-- Burbuja de saludo predefinido -->
+      <div class="ai-chat-greeting" id="aiChatGreeting" role="button" tabindex="0">
+        <button class="ai-chat-greeting-close" id="aiChatGreetingClose" aria-label="Ocultar saludo">&times;</button>
+        ¡Hola! Soy tu asistente. ¿En qué te puedo ayudar hoy?
+      </div>
+      <!-- Botón Flotante con icono de la marca (por arriba de Contactanos) -->
+      <button class="ai-chat-float" id="aiChatToggle" aria-label="Abrir Asistente Virtual" title="Asistente Virtual">
+        <span class="ai-chat-brand-icon" aria-hidden="true"></span>
+        <span class="ai-chat-online-dot" aria-hidden="true"></span>
       </button>
 
       <!-- Ventana Flotante del Chatbot -->
@@ -132,7 +128,7 @@ function initAiChatbot() {
         <div class="ai-chat-iframe-container">
           <iframe 
             id="aiChatIframe"
-            src="https://asesor-comercial-ai.vercel.app/" 
+            src="https://asesor-comercial-ai.vercel.app/?tenant=RHTdvIML8DSz4HkJQVUeOucu5ih2" 
             title="Asesor Náutico AI - Náutica Aire Libre"
             allow="clipboard-write; microphone">
           </iframe>
@@ -146,11 +142,28 @@ function initAiChatbot() {
   const aiChatWidget = document.getElementById('aiChatWidget');
   const aiChatToggle = document.getElementById('aiChatToggle');
   const aiChatClose = document.getElementById('aiChatClose');
+  const aiChatGreeting = document.getElementById('aiChatGreeting');
+  const aiChatGreetingClose = document.getElementById('aiChatGreetingClose');
+
+  const hideGreeting = () => {
+    aiChatWidget.classList.remove('greeting-visible');
+    sessionStorage.setItem('aiChatGreetingHidden', 'true');
+  };
 
   const openAiChat = () => {
     setWhatsAppMenuState(false);
+    hideGreeting();
     aiChatWidget.classList.add('open');
   };
+
+  aiChatGreeting.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openAiChat();
+  });
+  aiChatGreetingClose.addEventListener('click', (e) => {
+    e.stopPropagation();
+    hideGreeting();
+  });
 
   const closeAiChat = () => {
     aiChatWidget.classList.remove('open');
@@ -177,10 +190,12 @@ function initAiChatbot() {
   // Estado inicial:
   // En pantallas de escritorio, abrir por defecto la primera vez para que esté activo;
   // si el usuario lo minimizó, recordar en sessionStorage para no resultar intrusivo.
-  const isMobile = window.innerWidth <= 768;
-  const wasDismissed = sessionStorage.getItem('aiChatDismissed') === 'true';
-  if (!isMobile && !wasDismissed) {
-    openAiChat();
+  if (sessionStorage.getItem('aiChatGreetingHidden') !== 'true') {
+    setTimeout(() => {
+      if (!aiChatWidget.classList.contains('open')) {
+        aiChatWidget.classList.add('greeting-visible');
+      }
+    }, 1500);
   }
 }
 

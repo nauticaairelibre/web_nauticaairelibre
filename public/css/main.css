@@ -871,61 +871,94 @@ body.no-scroll {
 /* Botón flotante para abrir/minimizar (ubicado por arriba de "Contactanos") */
 .ai-chat-float {
   position: fixed;
-  bottom: 96px;
+  bottom: 92px;
   right: 32px;
-  height: 50px;
-  padding: 0 20px 0 16px;
-  background: linear-gradient(135deg, #0e1e38 0%, #172a4d 100%);
-  border: 1px solid rgba(232, 123, 32, 0.55);
-  border-radius: 50px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(232, 123, 32, 0.25);
+  width: 58px;
+  height: 58px;
+  padding: 0;
+  background: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: #fff;
+  justify-content: center;
   cursor: pointer;
   z-index: 9999;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-              box-shadow 0.25s ease,
-              border-color 0.25s ease;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, opacity 0.25s;
   user-select: none;
 }
 
 .ai-chat-float:hover {
-  transform: scale(1.05);
-  border-color: #e87b20;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55), 0 0 22px rgba(232, 123, 32, 0.45);
+  transform: scale(1.08);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55), 0 0 18px rgba(232, 123, 32, 0.45);
 }
 
-.ai-chat-icon {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #e87b20;
-  flex-shrink: 0;
+/* Recorte del isotipo (sol + lancha) del logo de la marca */
+.ai-chat-brand-icon {
+  width: 42px;
+  height: 42px;
+  background-image: url('/images/logo.png');
+  background-repeat: no-repeat;
+  background-size: 124px auto;
+  background-position: -3px 7px;
 }
 
-.ai-chat-text {
-  font-size: 0.88rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: #f0f4f8;
+.ai-chat-online-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid #ffffff;
 }
 
-.ai-chat-badge {
-  font-size: 0.65rem;
-  font-weight: 700;
-  background: rgba(37, 211, 102, 0.18);
-  color: #25d366;
-  border: 1px solid rgba(37, 211, 102, 0.4);
-  padding: 2px 7px;
-  border-radius: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
+/* Burbuja de saludo predefinido */
+.ai-chat-greeting {
+  position: fixed;
+  bottom: 100px;
+  right: 104px;
+  max-width: 280px;
+  padding: 14px 18px;
+  background: #ffffff;
+  color: #1f2937;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px) scale(0.96);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
 }
+
+.ai-chat-widget.greeting-visible:not(.open) .ai-chat-greeting {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0) scale(1);
+}
+
+.ai-chat-greeting-close {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: #e5e7eb;
+  color: #374151;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+body.wa-menu-open .ai-chat-greeting { display: none; }
 
 /* Ocultar el botón launcher cuando la ventana del chat está abierta */
 .ai-chat-widget.open .ai-chat-float {
@@ -956,10 +989,10 @@ body:has(.wa-widget.open) .ai-chat-window,
   width: 380px;
   height: 600px;
   max-width: calc(100vw - 32px);
-  max-height: calc(100vh - 120px);
+  max-height: calc(100vh - 150px);
   background: #0b1320;
   border-radius: 16px;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid rgba(232, 123, 32, 0.35);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 30px rgba(232, 123, 32, 0.2);
   display: flex;
@@ -985,8 +1018,8 @@ body:has(.wa-widget.open) .ai-chat-window,
 /* Botón flotante para cerrar/minimizar dentro de la ventana */
 .ai-chat-btn-close-floating {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -38px;
+  right: 0;
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -1016,6 +1049,8 @@ body:has(.wa-widget.open) .ai-chat-window,
   height: 100%;
   position: relative;
   background: transparent;
+  overflow: hidden;
+  border-radius: 16px;
 }
 
 .ai-chat-iframe-container iframe {
@@ -1031,17 +1066,18 @@ body:has(.wa-widget.open) .ai-chat-window,
   .ai-chat-float {
     bottom: 78px;
     right: 22px;
-    height: 44px;
-    padding: 0 14px 0 12px;
-    gap: 8px;
-    font-size: 13px;
+    width: 52px;
+    height: 52px;
   }
-  .ai-chat-icon {
-    width: 20px;
-    height: 20px;
+  .ai-chat-brand-icon {
+    transform: scale(0.9);
   }
-  .ai-chat-text {
-    font-size: 0.8rem;
+  .ai-chat-greeting {
+    bottom: 84px;
+    right: 86px;
+    max-width: calc(100vw - 120px);
+    font-size: 0.85rem;
+    padding: 11px 14px;
   }
   .ai-chat-window {
     bottom: 76px;
