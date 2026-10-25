@@ -116,7 +116,7 @@ function initAiChatbot() {
       </div>
       <!-- Botón Flotante con icono de la marca (por arriba de Contactanos) -->
       <button class="ai-chat-float" id="aiChatToggle" aria-label="Abrir Asistente Virtual" title="Asistente Virtual">
-        <span class="ai-chat-brand-icon" aria-hidden="true"></span>
+        <img src="/images/brand-icon.png" alt="Asistente Virtual" class="ai-chat-brand-icon" />
         <span class="ai-chat-online-dot" aria-hidden="true"></span>
       </button>
 
